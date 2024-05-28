@@ -1,4 +1,4 @@
-package com.sency.smkit.demo
+package com.example.smkituidemoapp
 
 import org.junit.Test
 
