@@ -10,13 +10,25 @@
 ### Gradle
 Here is the current available version of the SMKitUI project:
 
-| Project | Version |
-|---------|:-------:|
-| smkitui |  0.1.0  |
+| Project |  Version  |
+|---------|:---------:|
+| smkitui | rc0.1.1.0 |
 
+At Sency we using different startegy with our Artifactories 
+In project level build.gradle please add our repo endpoint url
+```groovy
+allprojects {
+    ...
+    maven {
+        url "https://artifacts.sency.ai/artifactory/smkitui/"
+    }
+}
+```
+
+Sync and add the following dependency in app level build.gradle
 ```groovy
 dependencies {
-    implementation 'com.sency.smkitui:$latest_version'
+    implementation 'com.sency.smkitui:smkitui:$latest_version'
 }
 ```
 
@@ -46,18 +58,19 @@ Implement **SMKitUIWorkoutListener**.
 ```Kotlin
 class MainActivity : ComponentActivity(), SMKitUIWorkoutListener {
     // Runtime error callback
-    fun handleWorkoutErrors(error: Error) {
-        
+    override fun handleWorkoutErrors(error: Error) {
     }
 
     // Workout session end callback
-    fun workoutDidFinish(summary: WorkoutSummaryData) {
-        
+    override fun workoutDidFinish(summary: WorkoutSummaryData) {
     }
 
     // Exit workout callback
-    fun didExitWorkout(summary: WorkoutSummaryData) {
-        
+    overrice fun didExitWorkout(summary: WorkoutSummaryData) {
+    }
+    
+    // When exercise is finished
+    override fun exerciseDidFinish(data: ExerciseData) {
     }
 }
 ```
