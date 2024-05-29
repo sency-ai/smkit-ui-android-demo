@@ -3,6 +3,7 @@ package com.example.smkituidemoapp
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -20,6 +21,7 @@ import com.sency.smkitui.BuildConfig
 import com.sency.smkitui.SMKitUI
 import com.sency.smkitui.listener.SMKitUIWorkoutListener
 import com.sency.smkitui.model.ExerciseData
+import com.sency.smkitui.model.SMWorkout
 import com.sency.smkitui.model.WorkoutSummaryData
 
 class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
@@ -54,27 +56,52 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
         super.onCreate(savedInstanceState)
         _binding = MainActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        if (!hasPermissions(baseContext)) {
-            launcher.launch(PERMISSIONS_REQUIRED)
-        } else {
-            binding.configureButton.isEnabled = true
+        requestPermmions()
+        observeConfiguration()
+        setClickListeners()
+    }
+
+    private fun setClickListeners() {
+        binding.startAssessment.setOnClickListener {
+            if (smKitUI != null) {
+                smKitUI!!.startAssessment(this)
+            }
         }
+        binding.startCustomWorkout.setOnClickListener {
+            if(smKitUI != null) {
+                val smWorkout = SMWorkout(
+                    id = "",
+                    name = "TEST",
+                    workoutIntro = Uri.EMPTY,
+                    soundtrack = Uri.EMPTY,
+                    exercises = viewModel.exercies(),
+                    workoutClosure = Uri.EMPTY
+                )
+                smKitUI!!.startWorkout(smWorkout, this)
+            }
+        }
+        binding.configureButton.setOnClickListener {
+            binding.progressBar.visibility = View.VISIBLE
+            smKitUI = SMKitUI.Configuration(baseContext).setUIKey(apiPublicKey)
+                .configure(configurationResult)
+        }
+    }
+
+    private fun observeConfiguration() {
         viewModel.configured.observe(this) {
-            if(it) {
+            if (it) {
                 binding.progressBar.visibility = View.INVISIBLE
                 binding.startAssessment.visibility = View.VISIBLE
                 binding.startCustomWorkout.visibility = View.VISIBLE
             }
         }
-        binding.startAssessment.setOnClickListener {
-            if(smKitUI != null) {
-                smKitUI!!.startAssessment(this)
-            }
-        }
-        binding.configureButton.setOnClickListener {
-            binding.progressBar.visibility = View.VISIBLE
-            smKitUI = SMKitUI.Configuration(baseContext).setUIKey("public_live_#gdz3t)mW#\$39Crs")
-                .configure(configurationResult)
+    }
+
+    private fun requestPermmions() {
+        if (!hasPermissions(baseContext)) {
+            launcher.launch(PERMISSIONS_REQUIRED)
+        } else {
+            binding.configureButton.isEnabled = true
         }
     }
 
