@@ -10,17 +10,16 @@
 ### Gradle
 Here is the current available version of the SMKitUI project:
 
-| Project |  Version  |
-|---------|:---------:|
-| smkitui | rc0.1.1.0 |
+| Project | Version  |
+|---------|:--------:|
+| smkitui |  0.1.1   |
 
 At Sency we using different startegy with our Artifactories 
 In project level build.gradle please add our repo endpoint url
 ```groovy
 allprojects {
-    ...
     maven {
-        url "https://artifacts.sency.ai/artifactory/smkitui/"
+        url "https://artifacts.sency.ai/artifactory/release/"
     }
 }
 ```
