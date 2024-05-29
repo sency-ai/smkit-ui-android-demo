@@ -31,6 +31,14 @@ dependencies {
 }
 ```
 
+At AndroidManifest.xml the CAMERA permission has to be added
+```xml
+<!-- For using the camera -->
+<uses-permission android:name="android.permission.CAMERA" />
+<uses-feature android:name="android.hardware.camera" />
+<uses-feature android:name="android.hardware.camera.autofocus" />
+```
+
 <a name="conf"></a>
 ## 2. Configure
 ```Kotlin
