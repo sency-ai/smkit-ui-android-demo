@@ -35,10 +35,7 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
 
     private val tag = this::class.java.simpleName
 
-    private val apiPublicKey = when (!BuildConfig.DEBUG) {
-        true -> "public_live_BrYk+UxJaahIPdnb"
-        else -> "public_live_#gdz3t)mW#\$39Crs"
-    }
+    private val apiPublicKey = ""
 
     private val configurationResult = object : ConfigurationResult {
         override fun onFailure() {
