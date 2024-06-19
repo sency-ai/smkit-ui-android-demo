@@ -12,9 +12,9 @@ Here is the current available version of the SMKitUI project:
 
 | Project | Version  |
 |---------|:--------:|
-| smkitui |  0.1.1   |
+| smkitui |  0.1.2   |
 
-At Sency we using different startegy with our Artifactories 
+At Sency we using different startegy with our Artifactories
 In project level build.gradle please add our repo endpoint url
 ```groovy
 allprojects {
@@ -37,6 +37,14 @@ At AndroidManifest.xml the CAMERA permission has to be added
 <uses-permission android:name="android.permission.CAMERA" />
 <uses-feature android:name="android.hardware.camera" />
 <uses-feature android:name="android.hardware.camera.autofocus" />
+```
+
+At AndroidManifest.xml disable rotation of the app
+```xml
+<!-- For using the camera -->
+<activity
+    ...
+    android:screenOrientation="portrait">
 ```
 
 <a name="conf"></a>
@@ -102,53 +110,47 @@ val intro = applicationContext.getRawResourceUri(R.raw.customWorkoutIntro)
 val soundtrack = applicationContext.getRawResourceUri(R.raw.fullBodyLong)
 val exercises: List<SMExercise> = listOf(
     SMExercise(
-        name = "High Knees",
-        exerciseIntro = null, // Custom sound,
-        totalSeconds = 30,
+        prettyName = "Squat",
+        exerciseIntro = "exerciseIntro_SquatRegular_60",
+        totalSeconds = 60,
         introSeconds = 5,
-        videoInstruction = applicationContext.getRawResourceUri(R.raw.HighKnees),
-        uiElements = setOf(UiElement.RepsCounter, UiElement.Timer),
-        detector = "HighKnees",
+        videoInstruction = "SquatRegularInstructionVideo",
+        uiElements = setOf(UiElement.Timer, UiElement.GaugeOfMotion),
+        detector = "SquatRegular",
         repBased = true,
-        exerciseClosure = null // Custom sound
+        exerciseClosure = "exerciseClosure_0_2.mp3",
+        targetReps = 60,
+        targetTime = 0,
+        scoreFactor = 0.5,
+        passCriteria = null
     ),
     SMExercise(
-        name = "Squat Regular Static",
-        exerciseIntro = null, // Custom sound,
-        totalSeconds = 30,
-        introSeconds = 5,
-        videoInstruction = applicationContext.getRawResourceUri(R.raw.SquatRegularStatic),
-        uiElements = setOf(UiElement.GaugeOfMotion, UiElement.Timer),
-        detector = "SquatRegularStatic",
-        repBased = false,
-        exerciseClosure = null // Custom sound
-    ),
-    SMExercise(
-        name = "Plank High Static",
-        exerciseIntro = null, // Custom sound,
-        totalSeconds = 30,
-        introSeconds = 5,
-        videoInstruction = applicationContext.getRawResourceUri(R.raw.PlankHighStatic),
+        prettyName = "Plank",
+        totalSeconds = 60,
+        introSeconds = 8,
+        exerciseIntro = "exerciseIntro_PlankHighStatic_60",
+        videoInstruction = "PlankHighStaticInstructionVideo",
         uiElements = setOf(UiElement.GaugeOfMotion, UiElement.Timer),
         detector = "PlankHighStatic",
         repBased = false,
-        exerciseClosure = null // Custom sound
-    ),
+        exerciseClosure = "",
+        targetReps = 60,
+        targetTime = 0,
+        scoreFactor = 0.5,
+        passCriteria = null,
+    )
 )
-val smWorkout = SMWorkout(
-    id = "",
-    name = "TEST",
-    workoutIntro = intro,
-    soundtrack = soundtrack,
-    exercises = exercises,
-    workoutClosure = null // Custom sound
+ val smWorkout = SMWorkout(
+    id = "50",
+    name = "demo workout",
+    workoutIntro = "introduction",
+    soundtrack = "soundtrack_7",
+    exercises = viewModel.exercies(),
+    workoutClosure = "workoutClosure.mp3",
+    getInFrame = "bodycal_get_in_frame",
+    bodycalFinished = "bodycal_finished"
 )
-
-try {
-    smKitUI.startWorkout(smWorkout, this)
-} catch (e: Exception) {
-    println("startAssessment: $e")
-}
+smKitUI.startWorkout(smWorkout, object: SMKitUIWorkoutListener{})
 ```
 
 Having issues? [Contact us](mailto:support@sency.ai) and let us know what the problem is.
