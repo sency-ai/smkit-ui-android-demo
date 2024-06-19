@@ -67,12 +67,14 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
         binding.startCustomWorkout.setOnClickListener {
             if(smKitUI != null) {
                 val smWorkout = SMWorkout(
-                    id = "",
-                    name = "TEST",
-                    workoutIntro = Uri.EMPTY,
-                    soundtrack = Uri.EMPTY,
+                    id = "50",
+                    name = "demo workout",
+                    workoutIntro = "introduction",
+                    soundtrack = "soundtrack_7",
                     exercises = viewModel.exercies(),
-                    workoutClosure = Uri.EMPTY
+                    workoutClosure = "workoutClosure.mp3",
+                    getInFrame = "bodycal_get_in_frame",
+                    bodycalFinished = "bodycal_finished"
                 )
                 smKitUI!!.startWorkout(smWorkout, this)
             }

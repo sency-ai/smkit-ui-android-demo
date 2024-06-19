@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.sency.smkitui.model.SMExercise
 import com.sency.smkitui.model.SMWorkout
 import com.sency.smkitui.model.UiElement
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
@@ -26,38 +25,35 @@ class MainViewModel : ViewModel() {
 
     fun exercies() = listOf(
         SMExercise(
-            name = "High Knees",
-            exerciseIntro = Uri.EMPTY, // Custom sound,
-            totalSeconds = 30,
+            prettyName = "Squat",
+            exerciseIntro = "exerciseIntro_SquatRegular_60",
+            totalSeconds = 60,
             introSeconds = 5,
-            videoInstruction = Uri.EMPTY,
-            uiElements = setOf(UiElement.RepsCounter, UiElement.Timer),
-            detector = "HighKnees",
+            videoInstruction = "SquatRegularInstructionVideo",
+            uiElements = setOf(UiElement.Timer, UiElement.GaugeOfMotion),
+            detector = "SquatRegular",
             repBased = true,
-            exerciseClosure = Uri.EMPTY // Custom sound
+            exerciseClosure = "exerciseClosure_0_2.mp3",
+            targetReps = 60,
+            targetTime = 0,
+            scoreFactor = 0.5,
+            passCriteria = null
         ),
         SMExercise(
-            name = "Squat Regular Static",
-            exerciseIntro = Uri.EMPTY, // Custom sound,
-            totalSeconds = 30,
-            introSeconds = 5,
-            videoInstruction = Uri.EMPTY,
-            uiElements = setOf(UiElement.GaugeOfMotion, UiElement.Timer),
-            detector = "SquatRegularStatic",
-            repBased = false,
-            exerciseClosure = Uri.EMPTY // Custom sound
-        ),
-        SMExercise(
-            name = "Plank High Static",
-            exerciseIntro = Uri.EMPTY, // Custom sound,
-            totalSeconds = 30,
-            introSeconds = 5,
-            videoInstruction = Uri.EMPTY,
+            prettyName = "Plank",
+            totalSeconds = 60,
+            introSeconds = 8,
+            exerciseIntro = "exerciseIntro_PlankHighStatic_60",
+            videoInstruction = "PlankHighStaticInstructionVideo",
             uiElements = setOf(UiElement.GaugeOfMotion, UiElement.Timer),
             detector = "PlankHighStatic",
             repBased = false,
-            exerciseClosure = Uri.EMPTY // Custom sound
-        ),
+            exerciseClosure = "",
+            targetReps = 60,
+            targetTime = 0,
+            scoreFactor = 0.5,
+            passCriteria = null,
+        )
     )
 
 }
