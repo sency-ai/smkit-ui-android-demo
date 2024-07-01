@@ -12,12 +12,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModelProviders
 import com.example.smkituidemoapp.databinding.MainActivityBinding
 import com.example.smkituidemoapp.viewModels.MainViewModel
 import com.sency.smbase.core.listener.ConfigurationResult
-import com.sency.smkitui.BuildConfig
 import com.sency.smkitui.SMKitUI
 import com.sency.smkitui.listener.SMKitUIWorkoutListener
 import com.sency.smkitui.model.ExerciseData
