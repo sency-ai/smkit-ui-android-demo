@@ -12,7 +12,7 @@ Here is the current available version of the SMKitUI project:
 
 | Project | Version |
 |---------|:-------:|
-| smkitui |  0.1.3  |
+| smkitui |  0.1.6  |
 
 At Sency we using different startegy with our Artifactories
 In project level build.gradle please add our repo endpoint url
@@ -90,12 +90,15 @@ class MainActivity : ComponentActivity(), SMKitUIWorkoutListener {
 }
 ```
 
-### Start Assessment
-**startAssessment** starts one of Sency's blueprint assessments.
+### Start (Custom) Assessment
+**startAssessment** starts one of Sency's blueprint assessments or your Custom Assessment.
 ```Kotlin
 fun startAssessment() {
     try {
-        smKitUI.startAssessment(this)
+        // In order to start Sency's blueprint assessment
+        smKitUI.startAssessment(listener = this)
+        // In order to start your own custom assessment
+        smKitUI.startAssessment(Custom("YOUR_CUSTOM_ID"), listener = this)
     } catch (e: Exception) {
         println("startAssessment: $e")
     }
@@ -118,26 +121,34 @@ val exercises: List<SMExercise> = listOf(
         uiElements = setOf(UiElement.Timer, UiElement.GaugeOfMotion),
         detector = "SquatRegular",
         repBased = true,
-        exerciseClosure = "exerciseClosure_0_2.mp3",
-        targetReps = 60,
-        targetTime = 0,
-        scoreFactor = 0.5,
-        passCriteria = null
+        exerciseClosure = "exerciseClosure_0_0.mp3",
+        scoringParams = ScoringParams(
+            targetRom = null,
+            targetTime = 0,
+            scoreFactor = 0.5f,
+            passCriteria = null,
+            type = "time",
+            targetReps = 60
+        ),
     ),
     SMExercise(
-        prettyName = "Plank",
+        prettyName = "Push-ups",
         totalSeconds = 60,
         introSeconds = 8,
-        exerciseIntro = "exerciseIntro_PlankHighStatic_60",
-        videoInstruction = "PlankHighStaticInstructionVideo",
-        uiElements = setOf(UiElement.GaugeOfMotion, UiElement.Timer),
-        detector = "PlankHighStatic",
-        repBased = false,
+        exerciseIntro = "exerciseIntro_PushupRegular_60",
+        videoInstruction = "PushupRegularInstructionVideo",
+        uiElements = setOf(UiElement.RepsCounter, UiElement.Timer),
+        detector = "PushupRegular",
+        repBased = true,
         exerciseClosure = "",
-        targetReps = 60,
-        targetTime = 0,
-        scoreFactor = 0.5,
-        passCriteria = null,
+        scoringParams = ScoringParams(
+            targetRom = null,
+            targetTime = 0,
+            scoreFactor = 0.5f,
+            passCriteria = null,
+            type = "time",
+            targetReps = 60
+        ),
     )
 )
  val smWorkout = SMWorkout(

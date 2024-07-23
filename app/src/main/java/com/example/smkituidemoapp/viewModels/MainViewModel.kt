@@ -1,13 +1,11 @@
 package com.example.smkituidemoapp.viewModels
 
-import android.content.Context
-import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sency.smkitui.model.SMExercise
-import com.sency.smkitui.model.SMWorkout
+import com.sency.smkitui.model.ScoringParams
 import com.sency.smkitui.model.UiElement
 import kotlinx.coroutines.launch
 
@@ -34,10 +32,14 @@ class MainViewModel : ViewModel() {
             detector = "SquatRegular",
             repBased = true,
             exerciseClosure = "exerciseClosure_0_0.mp3",
-            targetReps = 60,
-            targetTime = 0,
-            scoreFactor = 0.5,
-            passCriteria = null
+            scoringParams = ScoringParams(
+                targetRom = null,
+                targetTime = 0,
+                scoreFactor = 0.5f,
+                passCriteria = null,
+                type = "time",
+                targetReps = 60
+            ),
         ),
         SMExercise(
             prettyName = "Push-ups",
@@ -49,10 +51,14 @@ class MainViewModel : ViewModel() {
             detector = "PushupRegular",
             repBased = true,
             exerciseClosure = "",
-            targetReps = 60,
-            targetTime = 0,
-            scoreFactor = 0.5,
-            passCriteria = null,
+            scoringParams = ScoringParams(
+                targetRom = null,
+                targetTime = 0,
+                scoreFactor = 0.5f,
+                passCriteria = null,
+                type = "time",
+                targetReps = 60
+            ),
         )
     )
 
