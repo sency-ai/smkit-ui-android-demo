@@ -1,4 +1,4 @@
-# Custom Assessment
+# Custom Workout
 
 Implement **SMKitUIWorkoutListener**.
 ```Kotlin
@@ -21,8 +21,7 @@ class MainActivity : ComponentActivity(), SMKitUIWorkoutListener {
 }
 ```
 
-### Start Custom Assessment
-**startWorkout** starts Sency's assessment with custom exercises.
+### Start Custom Workout
 ```Kotlin
 // List of exercises
 val intro = applicationContext.getRawResourceUri(R.raw.customWorkoutIntro)
@@ -77,5 +76,6 @@ val exercises: List<SMExercise> = listOf(
     getInFrame = "bodycal_get_in_frame",
     bodycalFinished = "bodycal_finished"
 )
+
 smKitUI.startWorkout(smWorkout, object: SMKitUIWorkoutListener{})
 ```
