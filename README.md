@@ -1,11 +1,13 @@
 # [smkit-ui-android-demo](https://github.com/sency-ai/smkit-sdk)
 
-1. [ Installation. ](#inst)
-2. [ Configure. ](#conf)
-3. [ Start. ](#start)
+## Table of contents
+1. [ Installation ](#inst)
+2. [ Setup ](#setup)
+3. [ Configure ](#conf)
+4. [ Start ](#start)
+5. [ Data ](https://github.com/sency-ai/smkit-ui-android-demo/blob/main/DataTypes.md)
 
-<a name="inst"></a>
-## 1. Installation
+## 1. Installation <a name="inst"></a>
 
 ### Gradle
 Here is the current available version of the SMKitUI project:
@@ -31,6 +33,7 @@ dependencies {
 }
 ```
 
+## 2. Setup <a name="setup"></a>
 At AndroidManifest.xml the CAMERA permission has to be added
 ```xml
 <!-- For using the camera -->
@@ -47,8 +50,7 @@ At AndroidManifest.xml disable rotation of the app
     android:screenOrientation="portrait">
 ```
 
-<a name="conf"></a>
-## 2. Configure
+## 3. Configure <a name="conf"></a>
 ```Kotlin
 val smKitUI: SMKitUI = SMKitUI.Configuration(applicationContext)
     .setUIKey("YOUR_KEY")
@@ -66,8 +68,12 @@ To reduce wait time we recommend to call `configure` on app launch.
 
 **⚠️ SMKitUI will not work if you don't first call configure.**
 
-### [Start Assessment](https://github.com/sency-ai/smkit-ui-android-demo/blob/main/Assessment.md)
+## 4. Start <a name="start"></a>
 
-### [Start Custom Assessment](https://github.com/sency-ai/smkit-ui-android-demo/blob/main/CustomAssessment.md)
+- [Start Assessment](https://github.com/sency-ai/smkit-ui-android-demo/blob/main/Assessment.md)
+
+- [Start Custom Workout](https://github.com/sency-ai/smkit-ui-android-demo/blob/main/CustomWorkout.md)
+
+------
 
 Having issues? [Contact us](mailto:support@sency.ai) and let us know what the problem is.
