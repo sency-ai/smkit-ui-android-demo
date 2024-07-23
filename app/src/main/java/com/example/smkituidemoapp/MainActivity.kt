@@ -19,6 +19,7 @@ import com.sency.smkitui.listener.SMKitUIWorkoutListener
 import com.sency.smkitui.model.ExerciseData
 import com.sency.smkitui.model.SMWorkout
 import com.sency.smkitui.model.WorkoutSummaryData
+import com.sency.smkitui.model.smkitui.Custom
 
 class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
 
@@ -57,7 +58,7 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
     private fun setClickListeners() {
         binding.startAssessment.setOnClickListener {
             if (smKitUI != null) {
-                smKitUI!!.startAssessment(this)
+                smKitUI!!.startAssessment(Custom("CA_360"), listener = this)
             }
         }
         binding.startCustomWorkout.setOnClickListener {

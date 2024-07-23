@@ -12,7 +12,7 @@ Here is the current available version of the SMKitUI project:
 
 | Project | Version |
 |---------|:-------:|
-| smkitui |  0.1.3  |
+| smkitui |  0.1.6  |
 
 At Sency we using different startegy with our Artifactories
 In project level build.gradle please add our repo endpoint url
@@ -66,91 +66,8 @@ To reduce wait time we recommend to call `configure` on app launch.
 
 **⚠️ SMKitUI will not work if you don't first call configure.**
 
+### [Start Assessment](https://github.com/sency-ai/smkit-ui-android-demo/blob/main/Assessment.md)
 
-<a name="start"></a>
-## 3. Start
-Implement **SMKitUIWorkoutListener**.
-```Kotlin
-class MainActivity : ComponentActivity(), SMKitUIWorkoutListener {
-    // Runtime error callback
-    override fun handleWorkoutErrors(error: Error) {
-    }
-
-    // Workout session end callback
-    override fun workoutDidFinish(summary: WorkoutSummaryData) {
-    }
-
-    // Exit workout callback
-    overrice fun didExitWorkout(summary: WorkoutSummaryData) {
-    }
-    
-    // When exercise is finished
-    override fun exerciseDidFinish(data: ExerciseData) {
-    }
-}
-```
-
-### Start Assessment
-**startAssessment** starts one of Sency's blueprint assessments.
-```Kotlin
-fun startAssessment() {
-    try {
-        smKitUI.startAssessment(this)
-    } catch (e: Exception) {
-        println("startAssessment: $e")
-    }
-}
-```
-
-### Start Custom Workout
-**startWorkout** starts a custom workout.
-```Kotlin
-// List of exercises
-val intro = applicationContext.getRawResourceUri(R.raw.customWorkoutIntro)
-val soundtrack = applicationContext.getRawResourceUri(R.raw.fullBodyLong)
-val exercises: List<SMExercise> = listOf(
-    SMExercise(
-        prettyName = "Squat",
-        exerciseIntro = "exerciseIntro_SquatRegular_60",
-        totalSeconds = 60,
-        introSeconds = 5,
-        videoInstruction = "SquatRegularInstructionVideo",
-        uiElements = setOf(UiElement.Timer, UiElement.GaugeOfMotion),
-        detector = "SquatRegular",
-        repBased = true,
-        exerciseClosure = "exerciseClosure_0_2.mp3",
-        targetReps = 60,
-        targetTime = 0,
-        scoreFactor = 0.5,
-        passCriteria = null
-    ),
-    SMExercise(
-        prettyName = "Plank",
-        totalSeconds = 60,
-        introSeconds = 8,
-        exerciseIntro = "exerciseIntro_PlankHighStatic_60",
-        videoInstruction = "PlankHighStaticInstructionVideo",
-        uiElements = setOf(UiElement.GaugeOfMotion, UiElement.Timer),
-        detector = "PlankHighStatic",
-        repBased = false,
-        exerciseClosure = "",
-        targetReps = 60,
-        targetTime = 0,
-        scoreFactor = 0.5,
-        passCriteria = null,
-    )
-)
- val smWorkout = SMWorkout(
-    id = "50",
-    name = "demo workout",
-    workoutIntro = "introduction",
-    soundtrack = "soundtrack_7",
-    exercises = viewModel.exercies(),
-    workoutClosure = "workoutClosure.mp3",
-    getInFrame = "bodycal_get_in_frame",
-    bodycalFinished = "bodycal_finished"
-)
-smKitUI.startWorkout(smWorkout, object: SMKitUIWorkoutListener{})
-```
+### [Start Custom Assessment](https://github.com/sency-ai/smkit-ui-android-demo/blob/main/CustomAssessment.md)
 
 Having issues? [Contact us](mailto:support@sency.ai) and let us know what the problem is.
