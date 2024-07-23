@@ -66,8 +66,8 @@ To reduce wait time we recommend to call `configure` on app launch.
 
 **⚠️ SMKitUI will not work if you don't first call configure.**
 
-### [Start Assessment](https://github.com/sency-ai/smkit-ui-ios-demo/blob/main/Assessment.md)
+### [Start Assessment](https://github.com/sency-ai/smkit-ui-android-demo/blob/main/Assessment.md)
 
-### [Start Custom Assessment](https://github.com/sency-ai/smkit-ui-ios-demo/blob/main/CustomAssessment.md)
+### [Start Custom Assessment](https://github.com/sency-ai/smkit-ui-android-demo/blob/main/CustomAssessment.md)
 
 Having issues? [Contact us](mailto:support@sency.ai) and let us know what the problem is.
