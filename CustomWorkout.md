@@ -22,17 +22,21 @@ class MainActivity : ComponentActivity(), SMKitUIWorkoutListener {
 ```
 
 ### Start Custom Workout
+In order to start Custom Workout please create a SMWorkout object. 
+You can pass you custom assets to the exercises. 
 ```Kotlin
 // List of exercises
-val intro = applicationContext.getRawResourceUri(R.raw.customWorkoutIntro)
-val soundtrack = applicationContext.getRawResourceUri(R.raw.fullBodyLong)
+val cacheFile = context?.cachedir
+val localFullPath = "$cacheFile/FULL/PATH"
+val onlineUrl = "https://www.youronlinefilename.mp3/4"
+
 val exercises: List<SMExercise> = listOf(
     SMExercise(
         prettyName = "Squat",
-        exerciseIntro = "exerciseIntro_SquatRegular_60",
+        exerciseIntro = localFullPath,
         totalSeconds = 60,
         introSeconds = 5,
-        videoInstruction = "SquatRegularInstructionVideo",
+        videoInstruction = onlineUrl,
         uiElements = setOf(UiElement.Timer, UiElement.GaugeOfMotion),
         detector = "SquatRegular",
         repBased = true,
@@ -66,7 +70,7 @@ val exercises: List<SMExercise> = listOf(
         ),
     )
 )
- val smWorkout = SMWorkout(
+val smWorkout = SMWorkout(
     id = "50",
     name = "demo workout",
     workoutIntro = "introduction",
@@ -77,5 +81,5 @@ val exercises: List<SMExercise> = listOf(
     bodycalFinished = "bodycal_finished"
 )
 
-smKitUI.startWorkout(smWorkout, object: SMKitUIWorkoutListener{})
+smKitUI.startWorkout(smWorkout, object : SMKitUIWorkoutListener {})
 ```
