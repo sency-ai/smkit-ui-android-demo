@@ -13,13 +13,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.smkituidemoapp.databinding.MainActivityBinding
 import com.example.smkituidemoapp.viewModels.MainViewModel
-import com.sency.smbase.core.listener.ConfigurationResult
 import com.sency.smkitui.SMKitUI
+import com.sency.smkitui.listener.SMKitUIConfigurationListener
 import com.sency.smkitui.listener.SMKitUIWorkoutListener
 import com.sency.smkitui.model.ExerciseData
 import com.sency.smkitui.model.SMWorkout
 import com.sency.smkitui.model.WorkoutSummaryData
-import com.sency.smkitui.model.smkitui.Custom
+import com.sency.smkitui.model.smkitui.Fitness
 
 class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
 
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
 
     private val apiPublicKey = ""
 
-    private val configurationResult = object : ConfigurationResult {
+    private val configurationResult = object : SMKitUIConfigurationListener {
         override fun onFailure() {
             viewModel.setConfigured(false)
             Log.d("Activity", "failed to configure")
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
     private fun setClickListeners() {
         binding.startAssessment.setOnClickListener {
             if (smKitUI != null) {
-                smKitUI!!.startAssessment(Custom("CA_360"), listener = this)
+                smKitUI?.startAssessment(Fitness, listener = this)
             }
         }
         binding.startCustomWorkout.setOnClickListener {
