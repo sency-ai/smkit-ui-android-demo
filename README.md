@@ -14,7 +14,7 @@ Here is the current available version of the SMKitUI project:
 
 | Project | Version |
 |---------|:-------:|
-| smkitui |  0.1.7  |
+| smkitui |  0.1.8  |
 
 At Sency we using different startegy with our Artifactories
 In project level build.gradle please add our repo endpoint url
@@ -54,7 +54,7 @@ At AndroidManifest.xml disable rotation of the app
 ```Kotlin
 val smKitUI: SMKitUI = SMKitUI.Configuration(applicationContext)
     .setUIKey("YOUR_KEY")
-    .configure(object : ConfigurationResult {
+    .configure(object : SMKitUIConfigurationListener {
         override fun onSuccess() {
             //The configuration was successful
         }
