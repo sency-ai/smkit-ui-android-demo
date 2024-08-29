@@ -57,9 +57,11 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
 
     private fun setClickListeners() {
         binding.startAssessment.setOnClickListener {
-            if (smKitUI != null) {
-                smKitUI?.startAssessment(Fitness, listener = this)
-            }
+            smKitUI?.startAssessment(
+                Fitness,
+                listener = this,
+                userData = null
+            )
         }
         binding.startCustomWorkout.setOnClickListener {
             if(smKitUI != null) {
