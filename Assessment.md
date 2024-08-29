@@ -27,12 +27,17 @@ class MainActivity : ComponentActivity(), SMKitUIWorkoutListener {
 fun startAssessment() {
     try {
         // In order to start Sency's blueprint assessment
-        smKitUI.startAssessment(listener = this)
+        smKitUI.startAssessment(
+            Fitness, // Assessment Type
+            listener = this, // Assessment Listener
+            userData = UserData(age = 28, gender = Gender.Female) // User Data 
+        )
     } catch (e: Exception) {
         println("startAssessment: $e")
     }
 }
 ```
+Passing User Data programmtically is optional, not passing will display User Details Page 
 
 ### Start Custom Assessment
 **startAssessment** and **Custom** starts one of your own Custom Assessments.
@@ -40,7 +45,7 @@ fun startAssessment() {
 fun startAssessment() {
     try {
         // In order to start your own custom assessment
-        smKitUI.startAssessment(Custom("YOUR_CUSTOM_ID"), listener = this)
+        smKitUI.startAssessment(Custom("YOUR_CUSTOM_ID"), listener = this, userData = null)
     } catch (e: Exception) {
         println("startAssessment: $e")
     }

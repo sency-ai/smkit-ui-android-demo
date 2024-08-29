@@ -41,13 +41,6 @@ At AndroidManifest.xml the CAMERA permission has to be added
 <uses-feature android:name="android.hardware.camera" />
 <uses-feature android:name="android.hardware.camera.autofocus" />
 ```
-Our SDK needs the user's full attention in order to maximaize Fitness Assessments.
-Therefore we also need to know if any phone-calls interapt user's assessment.
-Please also add the read-phone permssion in AndroidManifest.xml file  
-```xml
-<!-- For Detecting Incoming calls -->
-<uses-permission android:name="android.permission.READ_PHONE_STATE" />
-```
 
 At AndroidManifest.xml disable rotation of the app
 ```xml
