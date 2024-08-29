@@ -30,7 +30,8 @@ fun startAssessment() {
         smKitUI.startAssessment(
             Fitness, // Assessment Type
             listener = this, // Assessment Listener
-            userData = UserData(age = 28, gender = Gender.Female) // User Data 
+            userData = UserData(age = 28, gender = Gender.Female  // User Data Optional
+            ) 
         )
     } catch (e: Exception) {
         println("startAssessment: $e")
