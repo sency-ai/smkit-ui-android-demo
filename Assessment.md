@@ -45,7 +45,11 @@ Passing User Data programmtically is optional, not passing will display User Det
 fun startAssessment() {
     try {
         // In order to start your own custom assessment
-        smKitUI.startAssessment(Custom("YOUR_CUSTOM_ID"), listener = this, userData = null)
+        smKitUI.startAssessment(
+            Custom("YOUR_CUSTOM_ID"), 
+            listener = this, 
+            userData = null
+        )
     } catch (e: Exception) {
         println("startAssessment: $e")
     }
