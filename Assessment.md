@@ -2,7 +2,7 @@
 
 Implement **SMKitUIWorkoutListener**.
 ```Kotlin
-class MainActivity : ComponentActivity(), SMKitUIWorkoutListener {
+val listener = object:  SMKitUIWorkoutListener {
     // Runtime error callback
     override fun handleWorkoutErrors(error: Error) {
     }
@@ -12,7 +12,7 @@ class MainActivity : ComponentActivity(), SMKitUIWorkoutListener {
     }
 
     // Exit workout callback
-    overrice fun didExitWorkout(summary: WorkoutSummaryData) {
+    override fun didExitWorkout(summary: WorkoutSummaryData) {
     }
     
     // When exercise is finished
@@ -28,9 +28,12 @@ fun startAssessment() {
     try {
         // In order to start Sency's blueprint assessment
         smKitUI.startAssessment(
-            Fitness, // Assessment Type
-            listener = this, // Assessment Listener
-            userData = UserData(age = 28, gender = Gender.Female  // User Data Optional
+            assessmentType = Fitness, // Assessment Type
+            listener = listener, // Assessment Listener
+            userData = UserData( // User Data Optional 
+                age = 28,
+                gender = Gender.Female,
+                email = null
             ) 
         )
     } catch (e: Exception) {

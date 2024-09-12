@@ -1,28 +1,11 @@
-# Custom Workout
+# Customized Workout and Assessment
+With SMKitUI you can define, programmatically, a Customized Workout or Assessment
+The key differance between the two is the `ScoringParams` parameter inside `SMExercise` object.
+In Customized Workout `ScoringParams` is not mandatory. 
+In Customized Assessment `ScoringParams` is mandatory.
 
-Implement **SMKitUIWorkoutListener**.
-```Kotlin
-class MainActivity : ComponentActivity(), SMKitUIWorkoutListener {
-    // Runtime error callback
-    override fun handleWorkoutErrors(error: Error) {
-    }
-
-    // Workout session end callback
-    override fun workoutDidFinish(summary: WorkoutSummaryData) {
-    }
-
-    // Exit workout callback
-    overrice fun didExitWorkout(summary: WorkoutSummaryData) {
-    }
-    
-    // When exercise is finished
-    override fun exerciseDidFinish(data: ExerciseData) {
-    }
-}
-```
-
-### Start Custom Workout
-In order to start Custom Workout please create a SMWorkout object. 
+### Start Customized Workout\Assessment
+In order to start Custom Workout\Assessment please create a SMWorkout object. 
 You can pass you custom assets to the exercises. 
 ```Kotlin
 // List of exercises
@@ -49,6 +32,9 @@ val exercises: List<SMExercise> = listOf(
             type = "time",
             targetReps = 60
         ),
+        summaryTitle = "",
+        summarySubTitle = "",
+        summaryTitleMainMetric = ""
     ),
     SMExercise(
         prettyName = "Push-ups",
@@ -68,6 +54,9 @@ val exercises: List<SMExercise> = listOf(
             type = "time",
             targetReps = 60
         ),
+        summaryTitle = "",
+        summarySubTitle = "",
+        summaryTitleMainMetric = ""
     )
 )
 val smWorkout = SMWorkout(
@@ -81,5 +70,5 @@ val smWorkout = SMWorkout(
     bodycalFinished = "bodycal_finished"
 )
 
-smKitUI.startWorkout(smWorkout, object : SMKitUIWorkoutListener {})
+smKitUI.startCustomizedAssessment(smWorkout, object : SMKitUIWorkoutListener {})
 ```

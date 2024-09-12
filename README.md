@@ -14,7 +14,7 @@ Here is the current available version of the SMKitUI project:
 
 | Project | Version |
 |---------|:-------:|
-| smkitui |  0.1.8  |
+| smkitui |  0.1.9  |
 
 At Sency we using different startegy with our Artifactories
 In project level build.gradle please add our repo endpoint url
@@ -50,9 +50,18 @@ At AndroidManifest.xml disable rotation of the app
     android:screenOrientation="portrait">
 ```
 
+Our SDK targets minSdk 26, in your app level `build.gradle` please assert that.
+```groovy
+android {
+    defaultConfig {
+        minSdk 26
+    }
+}
+```
+
 ## 3. Configure <a name="conf"></a>
 ```Kotlin
-val smKitUI: SMKitUI = SMKitUI.Configuration(applicationContext)
+val smKitUI: SMKitUI = SMKitUI.Configuration(context)
     .setUIKey("YOUR_KEY")
     .configure(object : SMKitUIConfigurationListener {
         override fun onSuccess() {

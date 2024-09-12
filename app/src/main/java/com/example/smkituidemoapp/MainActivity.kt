@@ -17,7 +17,9 @@ import com.sency.smkitui.SMKitUI
 import com.sency.smkitui.listener.SMKitUIConfigurationListener
 import com.sency.smkitui.listener.SMKitUIWorkoutListener
 import com.sency.smkitui.model.ExerciseData
+import com.sency.smkitui.model.Gender
 import com.sency.smkitui.model.SMWorkout
+import com.sency.smkitui.model.UserData
 import com.sency.smkitui.model.WorkoutSummaryData
 import com.sency.smkitui.model.smkitui.Fitness
 
@@ -58,9 +60,9 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
     private fun setClickListeners() {
         binding.startAssessment.setOnClickListener {
             smKitUI?.startAssessment(
-                Fitness,
+                assessmentType = Fitness,
                 listener = this,
-                userData = null
+                userData = UserData(14, Gender.Male)
             )
         }
         binding.startCustomWorkout.setOnClickListener {
@@ -75,7 +77,7 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
                     getInFrame = "bodycal_get_in_frame",
                     bodycalFinished = "bodycal_finished"
                 )
-                smKitUI!!.startWorkout(smWorkout, this)
+                smKitUI?.startCustomizedAssessment(smWorkout, this)
             }
         }
         binding.configureButton.setOnClickListener {
