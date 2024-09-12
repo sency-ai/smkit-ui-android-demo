@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sency.smkitui.data.entity.ScoringParams
+import com.sency.smkitui.data.entity.UiElement
 import com.sency.smkitui.model.SMExercise
-import com.sency.smkitui.model.ScoringParams
-import com.sency.smkitui.model.UiElement
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
@@ -33,13 +33,16 @@ class MainViewModel : ViewModel() {
             repBased = true,
             exerciseClosure = "exerciseClosure_0_0.mp3",
             scoringParams = ScoringParams(
+                type = "time",
                 targetRom = null,
                 targetTime = 0,
                 scoreFactor = 0.5f,
                 passCriteria = null,
-                type = "time",
                 targetReps = 60
             ),
+            summaryTitle = "",
+            summarySubTitle = "",
+            summaryTitleMainMetric = ""
         ),
         SMExercise(
             prettyName = "Push-ups",
@@ -59,6 +62,9 @@ class MainViewModel : ViewModel() {
                 type = "time",
                 targetReps = 60
             ),
+            summaryTitle = "",
+            summarySubTitle = "",
+            summaryTitleMainMetric = ""
         )
     )
 
