@@ -21,8 +21,8 @@ val listener = object:  SMKitUIWorkoutListener {
 }
 ```
 
-### Start Fitness Assessment
-**startAssessment** starts one of Sency's blueprint assessments
+### Start 'Off-The-Shelf' Assessment
+**startAssessment** starts one of Sency's [blueprint assessments](#assessment-types)
 ```Kotlin
 fun startAssessment() {
     try {
@@ -60,7 +60,7 @@ fun startAssessment() {
 }
 ```
 
-### AssessmentTypes
+### AssessmentTypes <a name="assessment-types"></a>
 | Name                | Description |More info|
 |---------------------|---------------------|---------------------|
 | Fitness             | For individuals of any activity level who seek to enhance their physical abilities, strength, and endurance through a tailored plan.| [Link](https://github.com/sency-ai/smkit-sdk/blob/main/Assessments/AI-Fitness-Assessment.md) |
