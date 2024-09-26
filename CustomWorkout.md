@@ -34,7 +34,9 @@ val exercises: List<SMExercise> = listOf(
         ),
         summaryTitle = "",
         summarySubTitle = "",
-        summaryTitleMainMetric = ""
+        summaryTitleMainMetric = "",
+        summarySubTitleMainMetric = "",
+        side = ""
     ),
     SMExercise(
         prettyName = "Push-ups",
@@ -56,7 +58,9 @@ val exercises: List<SMExercise> = listOf(
         ),
         summaryTitle = "",
         summarySubTitle = "",
-        summaryTitleMainMetric = ""
+        summaryTitleMainMetric = "",
+        summarySubTitleMainMetric = "",
+        side = ""
     )
 )
 val smWorkout = SMWorkout(

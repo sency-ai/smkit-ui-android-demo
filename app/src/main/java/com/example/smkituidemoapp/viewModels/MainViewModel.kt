@@ -42,7 +42,9 @@ class MainViewModel : ViewModel() {
             ),
             summaryTitle = "",
             summarySubTitle = "",
-            summaryTitleMainMetric = ""
+            summaryTitleMainMetric = "",
+            summarySubTitleMainMetric = "",
+            side = ""
         ),
         SMExercise(
             prettyName = "Push-ups",
@@ -64,7 +66,9 @@ class MainViewModel : ViewModel() {
             ),
             summaryTitle = "",
             summarySubTitle = "",
-            summaryTitleMainMetric = ""
+            summaryTitleMainMetric = "",
+            summarySubTitleMainMetric = "",
+            side = ""
         )
     )
 
