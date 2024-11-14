@@ -25,11 +25,12 @@ import com.sency.smkitui.model.smkitui.Fitness
 
 class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
 
+    private val tag = this::class.java.simpleName
+
     private var _binding: MainActivityBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel : MainViewModel by viewModels()
-
     private var smKitUI: SMKitUI? = null
 
     private val tag = this::class.java.simpleName
@@ -55,6 +56,10 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
         requestPermmions()
         observeConfiguration()
         setClickListeners()
+        binding.progressBar.visibility = View.VISIBLE
+        smKitUI = SMKitUI.Configuration(baseContext)
+            .setUIKey(apiPublicKey)
+            .configure(configurationResult)
     }
 
     private fun setClickListeners() {
@@ -62,7 +67,8 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
             smKitUI?.startAssessment(
                 assessmentType = Fitness,
                 listener = this,
-                userData = UserData(14, Gender.Male)
+                userData = UserData(14, Gender.Male),
+                showSummary = true,
             )
         }
         binding.startCustomWorkout.setOnClickListener {
@@ -77,13 +83,8 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
                     getInFrame = "bodycal_get_in_frame",
                     bodycalFinished = "bodycal_finished"
                 )
-                smKitUI?.startCustomizedAssessment(smWorkout, this)
+                smKitUI?.startCustomizedAssessment(smWorkout, true, this)
             }
-        }
-        binding.configureButton.setOnClickListener {
-            binding.progressBar.visibility = View.VISIBLE
-            smKitUI = SMKitUI.Configuration(baseContext).setUIKey(apiPublicKey)
-                .configure(configurationResult)
         }
     }
 
@@ -100,8 +101,6 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
     private fun requestPermmions() {
         if (!hasPermissions(baseContext)) {
             launcher.launch(PERMISSIONS_REQUIRED)
-        } else {
-            binding.configureButton.isEnabled = true
         }
     }
 
@@ -126,9 +125,6 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
         var permissionGranted = true
         permissions.entries.forEach {
             if (it.key in PERMISSIONS_REQUIRED && !it.value) permissionGranted = false
-        }
-        if (permissionGranted && permissions.isNotEmpty()) {
-            binding.configureButton.isEnabled = true
         }
         if (!permissionGranted) {
             Toast.makeText(baseContext, "Permission request denied", Toast.LENGTH_LONG).show()

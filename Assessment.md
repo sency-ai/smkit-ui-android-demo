@@ -34,7 +34,8 @@ fun startAssessment() {
                 age = 28,
                 gender = Gender.Female,
                 email = null
-            ) 
+            ) ,
+            showSummary = true // show summary screen for the assessment
         )
     } catch (e: Exception) {
         println("startAssessment: $e")
@@ -52,7 +53,8 @@ fun startAssessment() {
         smKitUI.startAssessment(
             Custom("YOUR_CUSTOM_ID"), 
             listener = this, 
-            userData = null
+            userData = null,
+            showSummary = true,
         )
     } catch (e: Exception) {
         println("startAssessment: $e")

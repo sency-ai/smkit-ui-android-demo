@@ -3,6 +3,10 @@ With SMKitUI you can define, programmatically, a Customized Workout or Assessmen
 The key differance between the two is the `ScoringParams` parameter inside `SMExercise` object.
 In Customized Workout `ScoringParams` is not mandatory. 
 In Customized Assessment `ScoringParams` is mandatory.
+Also, In Customized Workout by default there is no `Summary Screen`, in Customized Assessment there is.
+
+Please take in mind that you can programmaticaly ask to show a `Summary Screen` when starting assessments.
+In order to do so, pass showSummary Boolean argument. 
 
 ### Start Customized Workout\Assessment
 In order to start Custom Workout\Assessment please create a SMWorkout object. 
@@ -74,5 +78,5 @@ val smWorkout = SMWorkout(
     bodycalFinished = "bodycal_finished"
 )
 
-smKitUI.startCustomizedAssessment(smWorkout, object : SMKitUIWorkoutListener {})
+smKitUI.startCustomizedAssessment(smWorkout, showSummary = true , object : SMKitUIWorkoutListener {})
 ```
