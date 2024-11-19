@@ -14,7 +14,7 @@ Here is the current available version of the SMKitUI project:
 
 | Project | Version |
 |---------|:-------:|
-| smkitui |  0.2.0  |
+| smkitui |  0.2.1  |
 
 At Sency we using different startegy with our Artifactories
 In project level build.gradle please add our repo endpoint url
@@ -81,7 +81,7 @@ To reduce wait time we recommend to call `configure` on app launch.
 
 - [Start Assessment](https://github.com/sency-ai/smkit-ui-android-demo/blob/main/Assessment.md)
 
-- [Start Custom Workout](https://github.com/sency-ai/smkit-ui-android-demo/blob/main/CustomWorkout.md)
+- [Start Custom Workout/Assessment](https://github.com/sency-ai/smkit-ui-android-demo/blob/main/CustomWorkout.md)
 
 ------
 

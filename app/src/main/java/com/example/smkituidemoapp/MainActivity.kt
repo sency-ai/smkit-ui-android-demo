@@ -25,8 +25,6 @@ import com.sency.smkitui.model.smkitui.Fitness
 
 class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
 
-    private val tag = this::class.java.simpleName
-
     private var _binding: MainActivityBinding? = null
     private val binding get() = _binding!!
 
