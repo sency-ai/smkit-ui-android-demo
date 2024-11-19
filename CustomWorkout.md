@@ -2,9 +2,28 @@
 
 - **Definition**: Custom Assessments are programmatically created assessment flows in SMKitUI where scoring and summarization are essential.
 - **Key Characteristics**:
-    - The `ScoringParams` parameter inside the `SMExercise` object is **mandatory**.
-    - Includes a **Summary Screen** by default.
-    - The **Summary Screen** can be configured by passing the `showSummary` Boolean argument when starting the assessment.
+  - The `ScoringParams` parameter inside the `SMExercise` object is **mandatory**.
+  - Includes a **Summary Screen** by default.
+  - The **Summary Screen** can be configured by passing the `showSummary` Boolean argument when starting the assessment.
+- **ScoringParams Constraints**:
+  - **General Constraints**:
+    - `scoreFactor`:
+      - Must not be `null`.
+      - Must be in the range `0 ≤ scoreFactor ≤ 1`.
+      - Throws `ScoreFactorInvalid()` if invalid.
+  - **Type-specific Constraints**:
+    - For `"rom"` type:
+      - `targetRom` must not be `null`; throws `MissingTargetRom()` if not provided.
+      - `targetRom` must be valid according to `FormFeedbackType`; throws `TargetRomInvalid()` if invalid.
+      - Cannot be used with dynamic exercises (`SMBaseExerciseType.Dynamic`); throws `ScoringTypeInvalid()` if mismatched.
+    - For `"time"` type:
+      - `targetTime` must not be `null`; throws `MissingTargetTime()` if not provided.
+      - `targetTime` must be greater than `0`; throws `TargetTimeInvalid()` if invalid.
+      - Cannot be used with dynamic exercises (`SMBaseExerciseType.Dynamic`); throws `ScoringTypeInvalid()` if mismatched.
+    - For `"reps"` type:
+      - `targetReps` must not be `null`; throws `MissingTargetReps()` if not provided.
+      - `targetReps` must be greater than `0`; throws `TargetRepsInvalid()` if invalid.
+      - Must be used with dynamic exercises (`SMBaseExerciseType.Dynamic`); throws `ScoringTypeInvalid()` if mismatched.
 - **Initialization**:  
   To start a Custom Assessment, create an `SMWorkout` object. You can also pass custom assets to the exercises.
 
