@@ -25,8 +25,6 @@ import com.sency.smkitui.model.smkitui.Fitness
 
 class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
 
-    private val tag = this::class.java.simpleName
-
     private var _binding: MainActivityBinding? = null
     private val binding get() = _binding!!
 
@@ -76,12 +74,12 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
                 val smWorkout = SMWorkout(
                     id = "50",
                     name = "demo workout",
-                    workoutIntro = "introduction",
+                    workoutIntro = "workoutIntro",
                     soundtrack = "soundtrack_7",
                     exercises = viewModel.exercies(),
-                    workoutClosure = "workoutClosure.mp3",
-                    getInFrame = "bodycal_get_in_frame",
-                    bodycalFinished = "bodycal_finished"
+                    workoutClosure = "workoutClosure",
+                    getInFrame = "getInFrame",
+                    bodycalFinished = "bodycalFinished"
                 )
                 smKitUI?.startCustomizedAssessment(smWorkout, true, this)
             }
