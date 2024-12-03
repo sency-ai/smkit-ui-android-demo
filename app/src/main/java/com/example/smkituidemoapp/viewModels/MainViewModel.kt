@@ -22,14 +22,12 @@ class MainViewModel : ViewModel() {
     }
 
     fun exercies() = listOf(
-        SMExercise( //2
+        SMExercise(
             prettyName = "Lunge Front Right",
             totalSeconds = 60,
-            introSeconds = 5,
             videoInstruction = "LungeFrontRight",
             uiElements = setOf(UiElement.timer, UiElement.repsCounter),
             detector = "LungeSideRight",
-            repBased = true,
             scoringParams = ScoringParams(
                 targetReps = 54,
                 scoreFactor = 0.5f,
@@ -38,22 +36,20 @@ class MainViewModel : ViewModel() {
                 targetTime = null,
                 type = "reps"
             ),
-            summaryTitleMainMetric = "Info for the SummaryPage",
+            summaryMainMetricTitle = "Info for the SummaryPage",
             summaryTitle = "Info for the SummaryPage",
             summarySubTitle = "Info for the SummaryPage",
-            summarySubTitleMainMetric = "Info for the SummaryPage",
+            summaryMainMetricSubTitle = "Info for the SummaryPage",
             exerciseIntro = "YOUR_ASSET",
             exerciseClosure = "YOUR_ASSET",
             side = "right"
         ),
-        SMExercise( //3
+        SMExercise(
             prettyName = "Lunge Front Left",
             totalSeconds = 60,
-            introSeconds = 5,
             videoInstruction = "LungeFrontLeft",
             uiElements = setOf(UiElement.timer, UiElement.repsCounter),
             detector = "LungeSideLeft",
-            repBased = true,
             scoringParams = ScoringParams(
                 targetReps = 54,
                 scoreFactor = 0.5f,
@@ -62,22 +58,21 @@ class MainViewModel : ViewModel() {
                 targetTime = null,
                 type = "reps"
             ),
-            summaryTitleMainMetric = "Info for the SummaryPage",
+
+            summaryMainMetricTitle = "Info for the SummaryPage",
             summaryTitle = "Info for the SummaryPage",
             summarySubTitle = "Info for the SummaryPage",
-            summarySubTitleMainMetric = "Info for the SummaryPage",
+            summaryMainMetricSubTitle = "Info for the SummaryPage",
             exerciseIntro = "YOUR_ASSET",
             exerciseClosure = "YOUR_ASSET",
             side = "left"
         ),
-        SMExercise( //4
+        SMExercise(
             prettyName = "Standing Knee Raise Right",
             totalSeconds = 60,
-            introSeconds = 5,
             videoInstruction = "StandingKneeRaiseRight",
             uiElements = setOf(UiElement.timer, UiElement.gaugeOfMotion),
             detector = "StandingKneeRaiseRight",
-            repBased = false,
             scoringParams = ScoringParams(
                 targetReps = null,
                 scoreFactor = 0.5f,
@@ -86,22 +81,21 @@ class MainViewModel : ViewModel() {
                 targetTime = null,
                 type = "rom"
             ),
-            summaryTitleMainMetric = "Info for the SummaryPage",
+
+            summaryMainMetricTitle = "Info for the SummaryPage",
             summaryTitle = "Info for the SummaryPage",
             summarySubTitle = "Info for the SummaryPage",
-            summarySubTitleMainMetric = "Info for the SummaryPage",
+            summaryMainMetricSubTitle = "Info for the SummaryPage",
             exerciseIntro = "YOUR_ASSET",
             exerciseClosure = "YOUR_ASSET",
             side = "right"
         ),
-        SMExercise( //5
+        SMExercise(
             prettyName = "Standing Knee Raise Left",
             totalSeconds = 60,
-            introSeconds = 5,
             videoInstruction = "StandingKneeRaiseLeft",
             uiElements = setOf(UiElement.timer, UiElement.gaugeOfMotion),
             detector = "StandingKneeRaiseLeft",
-            repBased = false,
             scoringParams = ScoringParams(
                 targetReps = null,
                 scoreFactor = 0.5f,
@@ -110,22 +104,21 @@ class MainViewModel : ViewModel() {
                 targetTime = null,
                 type = "rom"
             ),
-            summaryTitleMainMetric = "Info for the SummaryPage",
+
+            summaryMainMetricTitle = "Info for the SummaryPage",
             summaryTitle = "Info for the SummaryPage",
             summarySubTitle = "Info for the SummaryPage",
-            summarySubTitleMainMetric = "Info for the SummaryPage",
+            summaryMainMetricSubTitle = "Info for the SummaryPage",
             exerciseIntro = "YOUR_ASSET",
             exerciseClosure = "YOUR_ASSET",
             side = "left"
         ),
-        SMExercise( //6
+        SMExercise(
             prettyName = "Squat Regular Overhead Static",
             totalSeconds = 20,
-            introSeconds = 5,
             videoInstruction = "SquatRegularOverheadStatic",
             uiElements = setOf(UiElement.timer, UiElement.gaugeOfMotion),
             detector = "SquatRegularOverheadStatic",
-            repBased = true,
             scoringParams = ScoringParams(
                 targetReps = 20,
                 scoreFactor = 0.9f,
@@ -134,10 +127,11 @@ class MainViewModel : ViewModel() {
                 targetTime = 10,
                 type = "time"
             ),
-            summaryTitleMainMetric = "Info for the SummaryPage",
+
+            summaryMainMetricTitle = "Info for the SummaryPage",
             summaryTitle = "Info for the SummaryPage",
             summarySubTitle = "Info for the SummaryPage",
-            summarySubTitleMainMetric = "Info for the SummaryPage",
+            summaryMainMetricSubTitle = "Info for the SummaryPage",
             exerciseIntro = "YOUR_ASSET",
             exerciseClosure = "YOUR_ASSET",
             side = null
