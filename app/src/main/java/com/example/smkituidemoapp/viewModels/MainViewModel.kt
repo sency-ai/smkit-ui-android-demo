@@ -22,54 +22,126 @@ class MainViewModel : ViewModel() {
     }
 
     fun exercies() = listOf(
-        SMExercise(
-            prettyName = "Squat",
-            exerciseIntro = "exerciseIntro_SquatRegular_60",
+        SMExercise( //2
+            prettyName = "Lunge Front Right",
             totalSeconds = 60,
             introSeconds = 5,
-            videoInstruction = "SquatRegularInstructionVideo",
-            uiElements = setOf(UiElement.timer, UiElement.gaugeOfMotion),
-            detector = "SquatRegular",
+            videoInstruction = "LungeFrontRight",
+            uiElements = setOf(UiElement.timer, UiElement.repsCounter),
+            detector = "LungeSideRight",
             repBased = true,
-            exerciseClosure = "exerciseClosure_0_0.mp3",
             scoringParams = ScoringParams(
-                type = "time",
-                targetRom = null,
-                targetTime = 0,
+                targetReps = 54,
                 scoreFactor = 0.5f,
                 passCriteria = null,
-                targetReps = 60
+                targetRom = null,
+                targetTime = null,
+                type = "reps"
             ),
-            summaryTitle = "",
-            summarySubTitle = "",
-            summaryTitleMainMetric = "",
-            summarySubTitleMainMetric = "",
-            side = ""
+            summaryTitleMainMetric = "Info for the SummaryPage",
+            summaryTitle = "Info for the SummaryPage",
+            summarySubTitle = "Info for the SummaryPage",
+            summarySubTitleMainMetric = "Info for the SummaryPage",
+            exerciseIntro = "YOUR_ASSET",
+            exerciseClosure = "YOUR_ASSET",
+            side = "right"
         ),
-        SMExercise(
-            prettyName = "Push-ups",
+        SMExercise( //3
+            prettyName = "Lunge Front Left",
             totalSeconds = 60,
-            introSeconds = 8,
-            exerciseIntro = "exerciseIntro_PushupRegular_60",
-            videoInstruction = "PushupRegularInstructionVideo",
-            uiElements = setOf(UiElement.repsCounter, UiElement.timer),
-            detector = "PushupRegular",
+            introSeconds = 5,
+            videoInstruction = "LungeFrontLeft",
+            uiElements = setOf(UiElement.timer, UiElement.repsCounter),
+            detector = "LungeSideLeft",
             repBased = true,
-            exerciseClosure = "",
             scoringParams = ScoringParams(
-                targetRom = null,
-                targetTime = 0,
+                targetReps = 54,
                 scoreFactor = 0.5f,
                 passCriteria = null,
-                type = "time",
-                targetReps = 60
+                targetRom = null,
+                targetTime = null,
+                type = "reps"
             ),
-            summaryTitle = "",
-            summarySubTitle = "",
-            summaryTitleMainMetric = "",
-            summarySubTitleMainMetric = "",
-            side = ""
-        )
+            summaryTitleMainMetric = "Info for the SummaryPage",
+            summaryTitle = "Info for the SummaryPage",
+            summarySubTitle = "Info for the SummaryPage",
+            summarySubTitleMainMetric = "Info for the SummaryPage",
+            exerciseIntro = "YOUR_ASSET",
+            exerciseClosure = "YOUR_ASSET",
+            side = "left"
+        ),
+        SMExercise( //4
+            prettyName = "Standing Knee Raise Right",
+            totalSeconds = 60,
+            introSeconds = 5,
+            videoInstruction = "StandingKneeRaiseRight",
+            uiElements = setOf(UiElement.timer, UiElement.gaugeOfMotion),
+            detector = "StandingKneeRaiseRight",
+            repBased = false,
+            scoringParams = ScoringParams(
+                targetReps = null,
+                scoreFactor = 0.5f,
+                passCriteria = null,
+                targetRom = "StandingKneeRaiseElevation",
+                targetTime = null,
+                type = "rom"
+            ),
+            summaryTitleMainMetric = "Info for the SummaryPage",
+            summaryTitle = "Info for the SummaryPage",
+            summarySubTitle = "Info for the SummaryPage",
+            summarySubTitleMainMetric = "Info for the SummaryPage",
+            exerciseIntro = "YOUR_ASSET",
+            exerciseClosure = "YOUR_ASSET",
+            side = "right"
+        ),
+        SMExercise( //5
+            prettyName = "Standing Knee Raise Left",
+            totalSeconds = 60,
+            introSeconds = 5,
+            videoInstruction = "StandingKneeRaiseLeft",
+            uiElements = setOf(UiElement.timer, UiElement.gaugeOfMotion),
+            detector = "StandingKneeRaiseLeft",
+            repBased = false,
+            scoringParams = ScoringParams(
+                targetReps = null,
+                scoreFactor = 0.5f,
+                passCriteria = null,
+                targetRom = "StandingKneeRaiseElevation",
+                targetTime = null,
+                type = "rom"
+            ),
+            summaryTitleMainMetric = "Info for the SummaryPage",
+            summaryTitle = "Info for the SummaryPage",
+            summarySubTitle = "Info for the SummaryPage",
+            summarySubTitleMainMetric = "Info for the SummaryPage",
+            exerciseIntro = "YOUR_ASSET",
+            exerciseClosure = "YOUR_ASSET",
+            side = "left"
+        ),
+        SMExercise( //6
+            prettyName = "Squat Regular Overhead Static",
+            totalSeconds = 20,
+            introSeconds = 5,
+            videoInstruction = "SquatRegularOverheadStatic",
+            uiElements = setOf(UiElement.timer, UiElement.gaugeOfMotion),
+            detector = "SquatRegularOverheadStatic",
+            repBased = true,
+            scoringParams = ScoringParams(
+                targetReps = 20,
+                scoreFactor = 0.9f,
+                passCriteria = null,
+                targetRom = null,
+                targetTime = 10,
+                type = "time"
+            ),
+            summaryTitleMainMetric = "Info for the SummaryPage",
+            summaryTitle = "Info for the SummaryPage",
+            summarySubTitle = "Info for the SummaryPage",
+            summarySubTitleMainMetric = "Info for the SummaryPage",
+            exerciseIntro = "YOUR_ASSET",
+            exerciseClosure = "YOUR_ASSET",
+            side = null
+        ),
     )
 
 }
