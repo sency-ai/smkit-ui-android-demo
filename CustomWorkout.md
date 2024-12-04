@@ -35,14 +35,12 @@ val localFullPath = "$cacheFile/FULL/PATH"
 val onlineUrl = "https://www.youronlinefilename.mp3/4"
 
 val exercises: List<SMExercise> = listOf(
-  SMExercise( //2
+  SMExercise(
     prettyName = "Lunge Front Right",
     totalSeconds = 60,
-    introSeconds = 5,
     videoInstruction = "LungeFrontRight",
     uiElements = setOf(UiElement.timer, UiElement.repsCounter),
     detector = "LungeSideRight",
-    repBased = true,
     scoringParams = ScoringParams(
       targetReps = 54,
       scoreFactor = 0.5f,
@@ -51,22 +49,20 @@ val exercises: List<SMExercise> = listOf(
       targetTime = null,
       type = "reps"
     ),
-    summaryTitleMainMetric = "Info for the SummaryPage",
+    summaryMainMetricTitle = "Info for the SummaryPage",
     summaryTitle = "Info for the SummaryPage",
     summarySubTitle = "Info for the SummaryPage",
-    summarySubTitleMainMetric = "Info for the SummaryPage",
+    summaryMainMetricSubTitle = "Info for the SummaryPage",
     exerciseIntro = "YOUR_ASSET",
     exerciseClosure = "YOUR_ASSET",
     side = "right"
   ),
-  SMExercise( //3
+  SMExercise(
     prettyName = "Lunge Front Left",
     totalSeconds = 60,
-    introSeconds = 5,
     videoInstruction = "LungeFrontLeft",
     uiElements = setOf(UiElement.timer, UiElement.repsCounter),
     detector = "LungeSideLeft",
-    repBased = true,
     scoringParams = ScoringParams(
       targetReps = 54,
       scoreFactor = 0.5f,
@@ -75,22 +71,20 @@ val exercises: List<SMExercise> = listOf(
       targetTime = null,
       type = "reps"
     ),
-    summaryTitleMainMetric = "Info for the SummaryPage",
+    summaryMainMetricTitle = "Info for the SummaryPage",
     summaryTitle = "Info for the SummaryPage",
     summarySubTitle = "Info for the SummaryPage",
-    summarySubTitleMainMetric = "Info for the SummaryPage",
+    summaryMainMetricSubTitle = "Info for the SummaryPage",
     exerciseIntro = "YOUR_ASSET",
     exerciseClosure = "YOUR_ASSET",
     side = "left"
   ),
-  SMExercise( //4
+  SMExercise(
     prettyName = "Standing Knee Raise Right",
     totalSeconds = 60,
-    introSeconds = 5,
     videoInstruction = "StandingKneeRaiseRight",
     uiElements = setOf(UiElement.timer, UiElement.gaugeOfMotion),
     detector = "StandingKneeRaiseRight",
-    repBased = false,
     scoringParams = ScoringParams(
       targetReps = null,
       scoreFactor = 0.5f,
@@ -99,22 +93,20 @@ val exercises: List<SMExercise> = listOf(
       targetTime = null,
       type = "rom"
     ),
-    summaryTitleMainMetric = "Info for the SummaryPage",
+    summaryMainMetricTitle = "Info for the SummaryPage",
     summaryTitle = "Info for the SummaryPage",
     summarySubTitle = "Info for the SummaryPage",
-    summarySubTitleMainMetric = "Info for the SummaryPage",
+    summaryMainMetricSubTitle = "Info for the SummaryPage",
     exerciseIntro = "YOUR_ASSET",
     exerciseClosure = "YOUR_ASSET",
     side = "right"
   ),
-  SMExercise( //5
+  SMExercise(
     prettyName = "Standing Knee Raise Left",
     totalSeconds = 60,
-    introSeconds = 5,
     videoInstruction = "StandingKneeRaiseLeft",
     uiElements = setOf(UiElement.timer, UiElement.gaugeOfMotion),
     detector = "StandingKneeRaiseLeft",
-    repBased = false,
     scoringParams = ScoringParams(
       targetReps = null,
       scoreFactor = 0.5f,
@@ -123,22 +115,20 @@ val exercises: List<SMExercise> = listOf(
       targetTime = null,
       type = "rom"
     ),
-    summaryTitleMainMetric = "Info for the SummaryPage",
+    summaryMainMetricTitle = "Info for the SummaryPage",
     summaryTitle = "Info for the SummaryPage",
     summarySubTitle = "Info for the SummaryPage",
-    summarySubTitleMainMetric = "Info for the SummaryPage",
+    summaryMainMetricSubTitle = "Info for the SummaryPage",
     exerciseIntro = "YOUR_ASSET",
     exerciseClosure = "YOUR_ASSET",
     side = "left"
   ),
-  SMExercise( //6
+  SMExercise(
     prettyName = "Squat Regular Overhead Static",
     totalSeconds = 20,
-    introSeconds = 5,
     videoInstruction = "SquatRegularOverheadStatic",
     uiElements = setOf(UiElement.timer, UiElement.gaugeOfMotion),
     detector = "SquatRegularOverheadStatic",
-    repBased = true,
     scoringParams = ScoringParams(
       targetReps = 20,
       scoreFactor = 0.9f,
@@ -147,10 +137,10 @@ val exercises: List<SMExercise> = listOf(
       targetTime = 10,
       type = "time"
     ),
-    summaryTitleMainMetric = "Info for the SummaryPage",
+    summaryMainMetricTitle = "Info for the SummaryPage",
     summaryTitle = "Info for the SummaryPage",
     summarySubTitle = "Info for the SummaryPage",
-    summarySubTitleMainMetric = "Info for the SummaryPage",
+    summaryMainMetricSubTitle = "Info for the SummaryPage",
     exerciseIntro = "YOUR_ASSET",
     exerciseClosure = "YOUR_ASSET",
     side = null
@@ -188,40 +178,21 @@ val localFullPath = "$cacheFile/FULL/PATH"
 val onlineUrl = "https://www.youronlinefilename.mp3/4"
 
 val exercises: List<SMExercise> = listOf(
-    SMExercise(
-        prettyName = "Squat",
-        exerciseIntro = localFullPath,
-        totalSeconds = 60,
-        introSeconds = 5,
-        videoInstruction = onlineUrl,
-        uiElements = setOf(UiElement.Timer, UiElement.GaugeOfMotion),
-        detector = "SquatRegular",
-        repBased = true,
-        exerciseClosure = "exerciseClosure_0_0.mp3",
-        scoringParams = null,
-        summaryTitle = "",
-        summarySubTitle = "",
-        summaryTitleMainMetric = "",
-        summarySubTitleMainMetric = "",
-        side = ""
-    ),
-    SMExercise(
-        prettyName = "Push-ups",
-        totalSeconds = 60,
-        introSeconds = 8,
-        exerciseIntro = "exerciseIntro_PushupRegular_60",
-        videoInstruction = "PushupRegularInstructionVideo",
-        uiElements = setOf(UiElement.RepsCounter, UiElement.Timer),
-        detector = "PushupRegular",
-        repBased = true,
-        exerciseClosure = "",
-        scoringParams = null,
-        summaryTitle = "",
-        summarySubTitle = "",
-        summaryTitleMainMetric = "",
-        summarySubTitleMainMetric = "",
-        side = ""
-    )
+  SMExercise(
+    prettyName = "Squat Regular Overhead Static",
+    totalSeconds = 20,
+    videoInstruction = "SquatRegularOverheadStatic",
+    uiElements = setOf(UiElement.timer, UiElement.gaugeOfMotion),
+    detector = "SquatRegularOverheadStatic",
+    scoringParams = null,
+    summaryMainMetricTitle = "Info for the SummaryPage",
+    summaryTitle = "Info for the SummaryPage",
+    summarySubTitle = "Info for the SummaryPage",
+    summaryMainMetricSubTitle = "Info for the SummaryPage",
+    exerciseIntro = "YOUR_ASSET",
+    exerciseClosure = "YOUR_ASSET",
+    side = null
+  ),
 )
 val smWorkout = SMWorkout(
     id = "50",
