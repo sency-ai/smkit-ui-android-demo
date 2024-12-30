@@ -1,6 +1,14 @@
 # Assessment
 
-Implement **SMKitUIWorkoutListener**.
+> Sency offers two primary types of assessments: Sency Blueprint assessments and Customized assessments.
+
+> **Sency's Blueprint Assessments:** Developed in collaboration with Sency’s medical and fitness experts, these assessments provide a standardized, professional way to measure core aspects of movement, fitness, and a healthy lifestyle. Simply follow the "start assessment" instructions and select the [type of assessment](#assessment-types) you need.
+
+> **Sency's Custom Assessments:** For those who prefer sency to create their Blueprint assessment, please contact our Service Center.
+
+### Start Blueprint Assessments
+
+**SMKitUIWorkoutListener** First Implement an Assessment Listener
 ```Kotlin
 val listener = object:  SMKitUIWorkoutListener {
     // Runtime error callback
@@ -20,9 +28,8 @@ val listener = object:  SMKitUIWorkoutListener {
     }
 }
 ```
-
-### Start 'Off-The-Shelf' Assessment
-**startAssessment** starts one of Sency's [blueprint assessments](#assessment-types)
+**Start Assessment** Now you can starts one of Sency's [blueprint assessments](#assessment-types)
+Passing `UserData` programmatically is optional, not passing will display the 'User Details' Fragment.
 ```Kotlin
 fun startAssessment() {
     try {
@@ -42,16 +49,17 @@ fun startAssessment() {
     }
 }
 ```
-Passing User Data programmtically is optional, not passing will display User Details Page 
+
 
 ### Start Custom Assessment
-**startAssessment** and **Custom** starts one of your own Custom Assessments.
+If Sency provided you with a special key, not auth-key, please use it here. 
+
 ```Kotlin
 fun startAssessment() {
     try {
         // In order to start your own custom assessment
         smKitUI.startAssessment(
-            Custom("YOUR_CUSTOM_ID"), 
+            assessmentType = Custom("YOUR_CUSTOM_ID"), 
             listener = this, 
             userData = null,
             showSummary = true,
