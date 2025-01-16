@@ -14,7 +14,7 @@ Here is the current available version of the SMKitUI project:
 
 | Project | Version |
 |---------|:-------:|
-| smkitui |  0.2.5  |
+| smkitui |  0.2.6  |
 
 At Sency we using different startegy with our Artifactories
 In project level build.gradle please add our repo endpoint url
