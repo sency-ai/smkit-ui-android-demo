@@ -81,7 +81,11 @@ To reduce wait time we recommend to call `configure` on app launch.
 
 - [Start Assessment](https://github.com/sency-ai/smkit-ui-android-demo/blob/main/Assessment.md)
 
-- [Start Custom Workout/Assessment](https://github.com/sency-ai/smkit-ui-android-demo/blob/main/CustomWorkout.md)
+- [Build Your Own Assessment](https://github.com/sency-ai/smkit-ui-android-demo/blob/main/CustomizedAssessment.md)
+
+- [Build Your Own Workout](https://github.com/sency-ai/smkit-ui-android-demo/blob/main/CustomizedWorkout.md)
+
+- [Workout From Program](https://github.com/sency-ai/smkit-ui-android-demo/blob/main/WFP.md)
 
 ------
 
