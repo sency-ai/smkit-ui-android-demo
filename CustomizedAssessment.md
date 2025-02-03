@@ -1,10 +1,9 @@
 # Customized Assessment
 
 > The customized assessment enables you to create a personalized evaluation using the exercises and movements from our [Movement catalog](https://github.com/sency-ai/smkit-sdk/blob/main/SDK-Movement-Catalog.md), tailored to your professional standards or personal preferences.
-> Exercises are programmatically. please refer to the [Constraints](#cons) Section Below
 
 - **Initialization**:  
-    To start a Custom Assessment, create an `SMWorkout` object.
+  To start a Custom Assessment, create an `SMWorkout` object.
 
 
 - **SMWorkout**
@@ -23,7 +22,13 @@ val smWorkout = SMWorkout(
 ```
 
 - **SMExercise**
-  In order to create `SMExericse` object you need to pass your own assets (audios & videos) to the exercise object.
+- In order to create `SMExericse` object you need to pass your own assets (audios & videos) to the exercise object. 
+- In `videoInstruction` parameter you may choose from different options: 
+  - if you pass null -> no video will be presented. 
+  - if you pass a string that matches the `detector` -> Sency's video will be presented if it exists.
+  - if you pass a string url to a local video -> the local video will play.
+  - if you pass a string to a remote resource (a url) -> then the remote video will be presented.
+
 ```kotlin
 val smExercise = SMExercise(
     prettyName = "High Knees", // String | Your pretty name to the exercise
@@ -52,7 +57,34 @@ val smExercise = SMExercise(
 ```
 
 
-# Customized Assessment Example: 
+## Constraints on Exercises <a name="cons"></a>
+> - **Definition**: Customized Assessments are programmatically created assessment flows in SMKitUI where scoring and summarization are essential.
+> - **Key Characteristics**:
+    >   - The `ScoringParams` parameter inside the `SMExercise` object is **mandatory**.
+    >   - Includes a **Summary Screen** by default.
+>   - The **Summary Screen** can be configured by passing the `showSummary` Boolean argument when starting the assessment.
+> - **ScoringParams Constraints**:
+    >   - **General Constraints**:
+    >     - `scoreFactor`:
+    >       - Must not be `null`.
+    >       - Must be in the range `0 ≤ scoreFactor ≤ 1`.
+    >       - Throws `ScoreFactorInvalid()` if invalid.
+    >   - **Type-specific Constraints**:
+          >     - For `"rom"` type:
+          >       - `targetRom` must not be `null`; throws `MissingTargetRom()` if not provided.
+          >       - `targetRom` must be valid according to `FormFeedbackType`; throws `TargetRomInvalid()` if invalid.
+>       - Cannot be used with dynamic exercises (`SMBaseExerciseType.Dynamic`); throws `ScoringTypeInvalid()` if mismatched.
+>     - For `"time"` type:
+        >       - `targetTime` must not be `null`; throws `MissingTargetTime()` if not provided.
+        >       - `targetTime` must be greater than `0`; throws `TargetTimeInvalid()` if invalid.
+>       - Cannot be used with dynamic exercises (`SMBaseExerciseType.Dynamic`); throws `ScoringTypeInvalid()` if mismatched.
+>     - For `"reps"` type:
+        >       - `targetReps` must not be `null`; throws `MissingTargetReps()` if not provided.
+        >       - `targetReps` must be greater than `0`; throws `TargetRepsInvalid()` if invalid.
+>       - Must be used with dynamic exercises (`SMBaseExerciseType.Dynamic`); throws `ScoringTypeInvalid()` if mismatched.
+
+
+# Customized Assessment Example:
 ```Kotlin
 val exercises: List<SMExercise> = listOf(
   SMExercise(
@@ -201,45 +233,3 @@ val smWorkout = SMWorkout(
 
 smKitUI.startCustomizedAssessment(smWorkout, showSummary = true , object : SMKitUIWorkoutListener {})
 ```
-
----
-
-## Customized Workout
-
-- **Definition**: Customized Workouts are exactly like Customized Assessment, but their exercises expecting to get null inside `ScoringParams` and they don't show a Summary page. 
-- **Key Characteristics**:
-    - The `ScoringParams` parameter inside the `SMExercise` object is **not allowed** execption will be thrown.
-    - By default, there is **no Summary Screen** included.
-- **Initialization**:  
-  To start a Custom Workout, follow the same steps from Customized Assessment but call:
-
-```Kotlin
-smKitUI.startCustomizedWorkout(smWorkout, object : SMKitUIWorkoutListener {})
-```
-
-
-## Constraints on Exercises <a name="cons"></a>
-> - **Definition**: Custom Assessments are programmatically created assessment flows in SMKitUI where scoring and summarization are essential.
-> - **Key Characteristics**:
-    >   - The `ScoringParams` parameter inside the `SMExercise` object is **mandatory**.
->   - Includes a **Summary Screen** by default.
->   - The **Summary Screen** can be configured by passing the `showSummary` Boolean argument when starting the assessment.
-> - **ScoringParams Constraints**:
-    >   - **General Constraints**:
-          >     - `scoreFactor`:
-                  >       - Must not be `null`.
->       - Must be in the range `0 ≤ scoreFactor ≤ 1`.
->       - Throws `ScoreFactorInvalid()` if invalid.
->   - **Type-specific Constraints**:
-      >     - For `"rom"` type:
-              >       - `targetRom` must not be `null`; throws `MissingTargetRom()` if not provided.
->       - `targetRom` must be valid according to `FormFeedbackType`; throws `TargetRomInvalid()` if invalid.
->       - Cannot be used with dynamic exercises (`SMBaseExerciseType.Dynamic`); throws `ScoringTypeInvalid()` if mismatched.
->     - For `"time"` type:
-        >       - `targetTime` must not be `null`; throws `MissingTargetTime()` if not provided.
->       - `targetTime` must be greater than `0`; throws `TargetTimeInvalid()` if invalid.
->       - Cannot be used with dynamic exercises (`SMBaseExerciseType.Dynamic`); throws `ScoringTypeInvalid()` if mismatched.
->     - For `"reps"` type:
-        >       - `targetReps` must not be `null`; throws `MissingTargetReps()` if not provided.
->       - `targetReps` must be greater than `0`; throws `TargetRepsInvalid()` if invalid.
->       - Must be used with dynamic exercises (`SMBaseExerciseType.Dynamic`); throws `ScoringTypeInvalid()` if mismatched.
