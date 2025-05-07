@@ -25,16 +25,16 @@ class MainViewModel : ViewModel() {
         SMExercise(
             prettyName = "Lunge Front Right",
             totalSeconds = 60,
-            videoInstruction = "LungeFrontRight",
+            videoInstruction = "StandingHamstringMobility",
             uiElements = setOf(UiElement.timer, UiElement.repsCounter),
-            detector = "LungeSideRight",
+            detector = "StandingHamstringMobility",
             scoringParams = ScoringParams(
-                targetReps = 54,
+                targetReps = null,
                 scoreFactor = 0.5f,
                 passCriteria = null,
                 targetRom = null,
-                targetTime = null,
-                type = "reps"
+                targetTime = 10,
+                type = "time"
             ),
             summaryMainMetricTitle = "Info for the SummaryPage",
             summaryTitle = "Info for the SummaryPage",
@@ -42,6 +42,7 @@ class MainViewModel : ViewModel() {
             summaryMainMetricSubTitle = "Info for the SummaryPage",
             exerciseIntro = "YOUR_ASSET",
             exerciseClosure = "YOUR_ASSET",
+            closureFailedSound = null,
             side = "right"
         ),
         SMExercise(
@@ -65,6 +66,7 @@ class MainViewModel : ViewModel() {
             summaryMainMetricSubTitle = "Info for the SummaryPage",
             exerciseIntro = "YOUR_ASSET",
             exerciseClosure = "YOUR_ASSET",
+            closureFailedSound = null,
             side = "left"
         ),
         SMExercise(
@@ -88,6 +90,7 @@ class MainViewModel : ViewModel() {
             summaryMainMetricSubTitle = "Info for the SummaryPage",
             exerciseIntro = "YOUR_ASSET",
             exerciseClosure = "YOUR_ASSET",
+            closureFailedSound = null,
             side = "right"
         ),
         SMExercise(
@@ -111,6 +114,7 @@ class MainViewModel : ViewModel() {
             summaryMainMetricSubTitle = "Info for the SummaryPage",
             exerciseIntro = "YOUR_ASSET",
             exerciseClosure = "YOUR_ASSET",
+            closureFailedSound = null,
             side = "left"
         ),
         SMExercise(
@@ -134,6 +138,7 @@ class MainViewModel : ViewModel() {
             summaryMainMetricSubTitle = "Info for the SummaryPage",
             exerciseIntro = "YOUR_ASSET",
             exerciseClosure = "YOUR_ASSET",
+            closureFailedSound = null,
             side = null
         ),
     )

@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
 
     private val tag = this::class.java.simpleName
 
-    private val apiPublicKey = ""
+    private val apiPublicKey = "public_live_BrYk+UxJaahIPdnb"
 
     private val configurationResult = object : SMKitUIConfigurationListener {
         override fun onFailure() {
@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
 
         override fun onSuccess() {
             viewModel.setConfigured(true)
-            Log.d("Activity", "succeced to configure")
+            Log.d("Activity", "succeeded to configure")
         }
     }
 
