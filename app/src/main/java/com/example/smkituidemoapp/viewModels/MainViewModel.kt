@@ -23,13 +23,13 @@ class MainViewModel : ViewModel() {
 
     fun exercies() = listOf(
         SMExercise(
-            prettyName = "Lunge Front Right",
+            prettyName = "Air Squat",
             totalSeconds = 60,
-            videoInstruction = "LungeFrontRight",
+            videoInstruction = "SquatRegular",
             uiElements = setOf(UiElement.timer, UiElement.repsCounter),
-            detector = "LungeSideRight",
+            detector = "SquatRegular",
             scoringParams = ScoringParams(
-                targetReps = 54,
+                targetReps = 10,
                 scoreFactor = 0.5f,
                 passCriteria = null,
                 targetRom = null,
@@ -42,6 +42,7 @@ class MainViewModel : ViewModel() {
             summaryMainMetricSubTitle = "Info for the SummaryPage",
             exerciseIntro = "YOUR_ASSET",
             exerciseClosure = "YOUR_ASSET",
+            closureFailedSound = null,
             side = "right"
         ),
         SMExercise(
@@ -65,6 +66,7 @@ class MainViewModel : ViewModel() {
             summaryMainMetricSubTitle = "Info for the SummaryPage",
             exerciseIntro = "YOUR_ASSET",
             exerciseClosure = "YOUR_ASSET",
+            closureFailedSound = null,
             side = "left"
         ),
         SMExercise(
@@ -88,6 +90,7 @@ class MainViewModel : ViewModel() {
             summaryMainMetricSubTitle = "Info for the SummaryPage",
             exerciseIntro = "YOUR_ASSET",
             exerciseClosure = "YOUR_ASSET",
+            closureFailedSound = null,
             side = "right"
         ),
         SMExercise(
@@ -111,6 +114,7 @@ class MainViewModel : ViewModel() {
             summaryMainMetricSubTitle = "Info for the SummaryPage",
             exerciseIntro = "YOUR_ASSET",
             exerciseClosure = "YOUR_ASSET",
+            closureFailedSound = null,
             side = "left"
         ),
         SMExercise(
@@ -134,6 +138,7 @@ class MainViewModel : ViewModel() {
             summaryMainMetricSubTitle = "Info for the SummaryPage",
             exerciseIntro = "YOUR_ASSET",
             exerciseClosure = "YOUR_ASSET",
+            closureFailedSound = null,
             side = null
         ),
     )
