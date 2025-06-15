@@ -21,6 +21,9 @@ import com.sency.smkitui.model.Gender
 import com.sency.smkitui.model.SMWorkout
 import com.sency.smkitui.model.UserData
 import com.sency.smkitui.model.WorkoutSummaryData
+import com.sency.smkitui.model.workoutConfig.CounterPreference
+import com.sency.smkitui.model.workoutConfig.EndExercisePreference
+import com.sency.smkitui.presentation.fragment.PauseDialogTypes
 import com.sency.smkitui.model.smkitui.Fitness
 
 class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
@@ -33,7 +36,7 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
 
     private val tag = this::class.java.simpleName
 
-    private val apiPublicKey = "public_live_BrYk+UxJaahIPdnb"
+    private val apiPublicKey = BuildConfig.sdk_auth_key
 
     private val configurationResult = object : SMKitUIConfigurationListener {
         override fun onFailure() {

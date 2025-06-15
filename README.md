@@ -14,7 +14,7 @@ Here is the current available version of the SMKitUI project:
 
 | Project | Version |
 |---------|:-------:|
-| smkitui |  0.2.6  |
+| smkitui |  0.2.9  |
 
 At Sency we using different startegy with our Artifactories
 In project level build.gradle please add our repo endpoint url
@@ -78,6 +78,8 @@ To reduce wait time we recommend to call `configure` on app launch.
 **⚠️ SMKitUI will not work if you don't first call configure.**
 
 ## 4. Start <a name="start"></a>
+
+- [Session Options](https://github.com/sency-ai/smkit-ui-android-demo/blob/main/SessionOptions.md)
 
 - [Start Assessment](https://github.com/sency-ai/smkit-ui-android-demo/blob/main/Assessment.md)
 
