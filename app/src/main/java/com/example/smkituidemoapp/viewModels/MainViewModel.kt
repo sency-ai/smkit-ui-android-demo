@@ -23,18 +23,18 @@ class MainViewModel : ViewModel() {
 
     fun exercies() = listOf(
         SMExercise(
-            prettyName = "Lunge Front Right",
+            prettyName = "Air Squat",
             totalSeconds = 60,
-            videoInstruction = "StandingHamstringMobility",
+            videoInstruction = "SquatRegular",
             uiElements = setOf(UiElement.timer, UiElement.repsCounter),
-            detector = "StandingHamstringMobility",
+            detector = "SquatRegular",
             scoringParams = ScoringParams(
-                targetReps = null,
+                targetReps = 10,
                 scoreFactor = 0.5f,
                 passCriteria = null,
                 targetRom = null,
-                targetTime = 10,
-                type = "time"
+                targetTime = null,
+                type = "reps"
             ),
             summaryMainMetricTitle = "Info for the SummaryPage",
             summaryTitle = "Info for the SummaryPage",
