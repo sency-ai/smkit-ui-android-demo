@@ -107,6 +107,7 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
 
     override fun didExitWorkout(summary: WorkoutSummaryData) {
         Log.d(tag, "didExitWorkout: $summary")
+        smKitUI?.quitWorkout()
     }
 
     override fun exerciseDidFinish(data: ExerciseData) {
