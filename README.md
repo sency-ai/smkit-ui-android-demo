@@ -1,23 +1,14 @@
-# [smkit-ui-android-demo](https://github.com/sency-ai/smkit-sdk)
+# SMKitUI Android Demo
 
-## Table of contents
-1. [ Installation ](#inst)
-2. [ Setup ](#setup)
-3. [ Configure ](#conf)
-4. [ Start ](#start)
-5. [ Data ](https://github.com/sency-ai/smkit-ui-android-demo/blob/main/DataTypes.md)
+Welcome to the Sency SMKitUI Android SDK demo project! This guide will help you get started quickly and provide links to detailed documentation for each SDK feature.
 
-## 1. Installation <a name="inst"></a>
+## 🚀 Quick Start
+1. **Install the SDK**
+2. **Configure your app**
+3. **Start using SMKitUI features**
 
-### Gradle
-Here is the current available version of the SMKitUI project:
-
-| Project | Version |
-|---------|:-------:|
-| smkitui |  1.3.1  |
-
-At Sency we using different startegy with our Artifactories
-In project level build.gradle please add our repo endpoint url
+## 📦 Installation
+Add Sency's Maven repo to your project-level `build.gradle`:
 ```groovy
 allprojects {
     maven {
@@ -25,70 +16,51 @@ allprojects {
     }
 }
 ```
-
-Sync and add the following dependency in app level build.gradle
+Add the dependency to your app-level `build.gradle`:
 ```groovy
 dependencies {
-    implementation 'com.sency.smkitui:smkitui:$latest_version'
+    implementation 'com.sency.smkitui:smkitui:1.3.2'
 }
 ```
 
-## 2. Setup <a name="setup"></a>
-At AndroidManifest.xml the CAMERA permission has to be added
+## ⚙️ Setup
+- Add CAMERA permission to your `AndroidManifest.xml`:
 ```xml
-<!-- For using the camera -->
 <uses-permission android:name="android.permission.CAMERA" />
 <uses-feature android:name="android.hardware.camera" />
 <uses-feature android:name="android.hardware.camera.autofocus" />
 ```
+- Lock screen orientation to portrait for the main activity.
+- Set `minSdk` to 26 in your app-level `build.gradle`.
 
-At AndroidManifest.xml disable rotation of the app
-```xml
-<!-- For using the camera -->
-<activity
-    ...
-    android:screenOrientation="portrait">
-```
-
-Our SDK targets minSdk 26, in your app level `build.gradle` please assert that.
-```groovy
-android {
-    defaultConfig {
-        minSdk 26
-    }
-}
-```
-
-## 3. Configure <a name="conf"></a>
-```Kotlin
+## 🔑 Configuration
+Call `configure` on app launch:
+```kotlin
 val smKitUI: SMKitUI = SMKitUI.Configuration(context)
     .setUIKey("YOUR_KEY")
     .configure(object : SMKitUIConfigurationListener {
-        override fun onSuccess() {
-            //The configuration was successful
-        }
-
-        override fun onFailure() {
-            //The configuration failed with error
-        }
+        override fun onSuccess() { /* Success */ }
+        override fun onFailure() { /* Failure */ }
     })
 ```
-To reduce wait time we recommend to call `configure` on app launch.
+> **SMKitUI will not work if you don't first call configure.**
 
-**⚠️ SMKitUI will not work if you don't first call configure.**
+## 🏁 Main Features & Guides
+- [Start Assessment](./StartAssessment.md)
+- [Start Customized Assessment](./StartCustomizedAssessment.md)
+- [Start Customized Workout](./StartCustomizedWorkout.md)
+- [Workout From Program](./StartWorkoutFromProgram.md)
+- [Session Options](./SessionOptionsFull.md)
+- [Data Types & Results](./DataTypes.md)
 
-## 4. Start <a name="start"></a>
+## 🧩 Advanced Topics
+- [Session Options](./SessionOptionsFull.md)
+- [Data Types](./DataTypes.md)
 
-- [Session Options](https://github.com/sency-ai/smkit-ui-android-demo/blob/main/SessionOptions.md)
+## 🆘 Troubleshooting & Support
+- Always call `configure` before starting any session
+- If you have issues, [contact us](mailto:support@sency.ai)
 
-- [Start Assessment](https://github.com/sency-ai/smkit-ui-android-demo/blob/main/Assessment.md)
+---
 
-- [Build Your Own Assessment](https://github.com/sency-ai/smkit-ui-android-demo/blob/main/CustomizedAssessment.md)
-
-- [Build Your Own Workout](https://github.com/sency-ai/smkit-ui-android-demo/blob/main/CustomizedWorkout.md)
-
-- [Workout From Program](https://github.com/sency-ai/smkit-ui-android-demo/blob/main/WFP.md)
-
-------
-
-Having issues? [Contact us](mailto:support@sency.ai) and let us know what the problem is.
+Enjoy building with Sency SMKitUI!

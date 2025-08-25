@@ -38,6 +38,8 @@ gen/
 .project
 .metadata/
 # Local configuration file (sdk path, etc)
+# VS Code settings
+.vscode/
 local.properties
 # Visual Studio
 _UpgradeReport_Files/
