@@ -19,7 +19,7 @@ allprojects {
 Add the dependency to your app-level `build.gradle`:
 ```groovy
 dependencies {
-    implementation 'com.sency.smkitui:smkitui:1.3.5'
+    implementation 'com.sency.smkitui:smkitui:1.3.8'
 }
 ```
 
@@ -32,6 +32,9 @@ dependencies {
 ```
 - Lock screen orientation to portrait for the main activity.
 - Set `minSdk` to 26 in your app-level `build.gradle`.
+
+### 📱 Android 15 Compatibility
+SMKitUI v1.3.8+ is fully compatible with **Android 15's 16KB page size requirements**. The library has been optimized to work seamlessly on devices running Android 15, including those with 16KB page size configurations. No additional configuration is required on your part - the SDK automatically handles the necessary optimizations for optimal performance across all Android versions.
 
 ## 🔑 Configuration
 Call `configure` on app launch:
@@ -56,6 +59,13 @@ val smKitUI: SMKitUI = SMKitUI.Configuration(context)
 ## 🧩 Advanced Topics
 - [Session Options](./SessionOptionsFull.md)
 - [Data Types](./DataTypes.md)
+
+## 📝 Changelog
+
+### Version 1.3.8 (Latest)
+- ✅ **Android 15 Compatibility**: Full support for Android 15's 16KB page size requirements
+- 🔧 Performance optimizations for enhanced stability
+- 🚀 Improved compatibility across all Android versions
 
 ## 🆘 Troubleshooting & Support
 - Always call `configure` before starting any session
