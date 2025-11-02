@@ -19,22 +19,31 @@ allprojects {
 Add the dependency to your app-level `build.gradle`:
 ```groovy
 dependencies {
-    implementation 'com.sency.smkitui:smkitui:1.3.8'
+    implementation 'com.sency.smkitui:smkitui:1.3.9'
 }
 ```
 
-## ⚙️ Setup
-- Add CAMERA permission to your `AndroidManifest.xml`:
-```xml
-<uses-permission android:name="android.permission.CAMERA" />
-<uses-feature android:name="android.hardware.camera" />
-<uses-feature android:name="android.hardware.camera.autofocus" />
-```
-- Lock screen orientation to portrait for the main activity.
-- Set `minSdk` to 26 in your app-level `build.gradle`.
+## ⚙️ Setup & Prerequisites
 
-### 📱 Android 15 Compatibility
-SMKitUI v1.3.8+ is fully compatible with **Android 15's 16KB page size requirements**. The library has been optimized to work seamlessly on devices running Android 15, including those with 16KB page size configurations. No additional configuration is required on your part - the SDK automatically handles the necessary optimizations for optimal performance across all Android versions.
+### Basic Setup
+- Add CAMERA permission to your `AndroidManifest.xml`
+- Lock screen orientation to portrait for activities using SMKitUI
+- Set `minSdk` to 26 in your app-level `build.gradle`
+
+### 📱 Android 15 (16KB Page Size) Compatibility
+
+SMKitUI v1.3.9+ is fully compatible with **Android 15's 16KB page size requirements**. 
+
+To ensure your project works with Android 15 devices, you must meet specific build configuration requirements including:
+- Gradle 8.4+
+- Android Gradle Plugin 8.0+
+- Kotlin 2.0+
+- Java 17 compatibility
+- Target SDK 36
+
+**📋 See [PREREQUISITES.md](./PREREQUISITES.md) for detailed setup instructions and requirements.**
+
+The SDK automatically handles 16KB page size optimizations internally - no additional runtime configuration is needed beyond meeting the build prerequisites.
 
 ## 🔑 Configuration
 Call `configure` on app launch:
@@ -62,10 +71,15 @@ val smKitUI: SMKitUI = SMKitUI.Configuration(context)
 
 ## 📝 Changelog
 
-### Version 1.3.8 (Latest)
-- ✅ **Android 15 Compatibility**: Full support for Android 15's 16KB page size requirements
+### Version 1.3.9 (Latest)
+- ✅ **Android 15 (16KB Page Size) Compatibility**: Full support for Android 15's 16KB page size requirements
+- 🔧 Updated native libraries optimized for 16KB page alignment
+- 🚀 Enhanced stability and performance across all Android versions
+- ⚙️ Requires Gradle 8.4+, AGP 8.0+, and Kotlin 2.0+ for full Android 15 support
+
+### Version 1.3.8
+- ✅ Initial Android 15 compatibility improvements
 - 🔧 Performance optimizations for enhanced stability
-- 🚀 Improved compatibility across all Android versions
 
 ## 🆘 Troubleshooting & Support
 - Always call `configure` before starting any session

@@ -14,12 +14,12 @@ if (localPropertiesFile.exists()) {
 
 android {
     namespace 'com.example.smkituidemoapp'
-    compileSdk 34
+    compileSdk 36
 
     defaultConfig {
         applicationId "com.example.smkituidemoapp"
         minSdk 29
-        targetSdk 34
+        targetSdk 36
         versionCode 1
         versionName "1.0"
 
@@ -46,15 +46,16 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
     buildFeatures {
         dataBinding true
         viewBinding true
+        buildConfig true
     }
     packagingOptions {
         pickFirst '**/*.so'
@@ -62,7 +63,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.sency.smkitui:smkitui:1.3.8'
+    implementation 'com.sency.smkitui:smkitui:1.3.9'
 
     implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
