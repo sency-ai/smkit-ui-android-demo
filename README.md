@@ -19,7 +19,7 @@ allprojects {
 Add the dependency to your app-level `build.gradle`:
 ```groovy
 dependencies {
-    implementation 'com.sency.smkitui:smkitui:1.3.9'
+    implementation 'com.sency.smkitui:smkitui:1.4.2'
 }
 ```
 
@@ -69,17 +69,68 @@ val smKitUI: SMKitUI = SMKitUI.Configuration(context)
 - [Session Options](./SessionOptionsFull.md)
 - [Data Types](./DataTypes.md)
 
+## 🔧 Modifying Feedback Parameters <a name="modify"></a>
+
+You have the ability to modify specific feedback parameters for exercises.
+This allows you to customize the thresholds and ranges for feedback detection.
+
+To modify feedback parameters, use the following example:
+
+```kotlin
+val modifications = """
+{
+    "Crunches": {
+        "CrunchesShallowDepth": {
+            "low": 0.25,
+            "high": 0.75
+        }
+    }
+}
+""".trimIndent()
+
+smKitUI.startAssessment(
+    assessmentType = Fitness,
+    listener = myListener,
+    userData = null,
+    showSummary = true,
+    modifications = modifications
+)
+```
+
+**Note:** We will release our feedbacks catalog soon. Feel free to reach us for assistant in applying modifications.
+
+## 🤖 MCP Server Access
+- Cursor: add the server definition below to `~/.cursor/mcp.json` and reload Cursor.
+[Contact us](mailto:support@sency.ai) to receive your API key.
+
+```json
+{
+  "mcpServers": {
+    "smkitui": {
+      "type": "streamable-http",
+      "url": "https://sency-mcp-production.up.railway.app/mcp",
+      "headers": {
+        "X-API-Key": "Your-API-Key"
+      }
+    }
+  }
+}
+```
+
+- CLI: run 
+```npx @modelcontextprotocol/cli client http --url https://sency-mcp-production.up.railway.app/mcp --header "X-API-Key: Your-API-Key"```.
+
 ## 📝 Changelog
 
-### Version 1.3.9 (Latest)
+### Version 1.4.2
+- ✅ Multiple new exercises - check our movement catalog
+- 🚀 Customization in exercise feedbacks made possible
+
+### Version 1.3.9
 - ✅ **Android 15 (16KB Page Size) Compatibility**: Full support for Android 15's 16KB page size requirements
 - 🔧 Updated native libraries optimized for 16KB page alignment
 - 🚀 Enhanced stability and performance across all Android versions
 - ⚙️ Requires Gradle 8.4+, AGP 8.0+, and Kotlin 2.0+ for full Android 15 support
-
-### Version 1.3.8
-- ✅ Initial Android 15 compatibility improvements
-- 🔧 Performance optimizations for enhanced stability
 
 ## 🆘 Troubleshooting & Support
 - Always call `configure` before starting any session
