@@ -44,11 +44,7 @@ val smWorkout = SMWorkout(
     getInFrame = "bodycal_get_in_frame",
     bodycalFinished = "bodycal_finished"
 )
-smKitUI.startCustomizedWorkout(
-    smWorkout, 
-    listener = object : SMKitUIWorkoutListener {},
-    modifications = null // optional: JSON string with exercise parameter modifications
-)
+smKitUI.startCustomizedWorkout(smWorkout, object : SMKitUIWorkoutListener {})
 ```
 
 ## 🔧 Modifying Feedback Parameters <a name="modify"></a>

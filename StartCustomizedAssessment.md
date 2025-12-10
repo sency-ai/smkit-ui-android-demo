@@ -17,29 +17,29 @@ Customized Assessments let you create a personalized evaluation using exercises 
 ### Example
 ```kotlin
 val exercises: List<SMExercise> = listOf(
-    SMExercise(
-        prettyName = "High Knees",
-        totalSeconds = 20,
-        videoInstruction = "HighKnees",
-        uiElements = setOf(UiElement.timer, UiElement.repsCounter),
-        detector = "HighKnees",
-        scoringParams = ScoringParams(
-            targetReps = 10,
-            scoreFactor = 0.5f,
-            passCriteria = null,
-            targetRom = null,
-            targetTime = null,
-            type = "reps"
-        ),
-        summaryMainMetricTitle = "Info for the SummaryPage",
-        summaryTitle = "Info for the SummaryPage",
-        summarySubTitle = "Info for the SummaryPage",
-        summaryMainMetricSubTitle = "Info for the SummaryPage",
-        exerciseIntro = com.sency.smkitapp.R.raw.simple.toString(),
-        exerciseClosure = null,
-        side = null
+  SMExercise(
+    prettyName = "High Knees",
+    totalSeconds = 20,
+    videoInstruction = "HighKnees",
+    uiElements = setOf(UiElement.timer, UiElement.repsCounter),
+    detector = "HighKnees",
+    scoringParams = ScoringParams(
+      targetReps = 10,
+      scoreFactor = 0.5f,
+      passCriteria = null,
+      targetRom = null,
+      targetTime = null,
+      type = "reps"
     ),
-    // ... more exercises ...
+    summaryMainMetricTitle = "Info for the SummaryPage",
+    summaryTitle = "Info for the SummaryPage",
+    summarySubTitle = "Info for the SummaryPage",
+    summaryMainMetricSubTitle = "Info for the SummaryPage",
+    exerciseIntro = com.sency.smkitapp.R.raw.simple.toString(),
+    exerciseClosure = null,
+    side = null
+  ),
+  // ... more exercises ...
 )
 val smWorkout = SMWorkout(
     id = "50",
