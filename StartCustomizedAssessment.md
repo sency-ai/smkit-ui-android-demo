@@ -17,29 +17,29 @@ Customized Assessments let you create a personalized evaluation using exercises 
 ### Example
 ```kotlin
 val exercises: List<SMExercise> = listOf(
-  SMExercise(
-    prettyName = "High Knees",
-    totalSeconds = 20,
-    videoInstruction = "HighKnees",
-    uiElements = setOf(UiElement.timer, UiElement.repsCounter),
-    detector = "HighKnees",
-    scoringParams = ScoringParams(
-      targetReps = 10,
-      scoreFactor = 0.5f,
-      passCriteria = null,
-      targetRom = null,
-      targetTime = null,
-      type = "reps"
+    SMExercise(
+        prettyName = "High Knees",
+        totalSeconds = 20,
+        videoInstruction = "HighKnees",
+        uiElements = setOf(UiElement.timer, UiElement.repsCounter),
+        detector = "HighKnees",
+        scoringParams = ScoringParams(
+            targetReps = 10,
+            scoreFactor = 0.5f,
+            passCriteria = null,
+            targetRom = null,
+            targetTime = null,
+            type = "reps"
+        ),
+        summaryMainMetricTitle = "Info for the SummaryPage",
+        summaryTitle = "Info for the SummaryPage",
+        summarySubTitle = "Info for the SummaryPage",
+        summaryMainMetricSubTitle = "Info for the SummaryPage",
+        exerciseIntro = com.sency.smkitapp.R.raw.simple.toString(),
+        exerciseClosure = null,
+        side = null
     ),
-    summaryMainMetricTitle = "Info for the SummaryPage",
-    summaryTitle = "Info for the SummaryPage",
-    summarySubTitle = "Info for the SummaryPage",
-    summaryMainMetricSubTitle = "Info for the SummaryPage",
-    exerciseIntro = com.sency.smkitapp.R.raw.simple.toString(),
-    exerciseClosure = null,
-    side = null
-  ),
-  // ... more exercises ...
+    // ... more exercises ...
 )
 val smWorkout = SMWorkout(
     id = "50",
@@ -52,6 +52,33 @@ val smWorkout = SMWorkout(
     bodycalFinished = "bodycal_finished"
 )
 smKitUI.startCustomizedAssessment(smWorkout, showSummary = true, object : SMKitUIWorkoutListener {})
+```
+
+## 🔧 Modifying Feedback Parameters <a name="modify"></a>
+
+You have the ability to modify specific feedback parameters for exercises.
+This allows you to customize the thresholds and ranges for feedback detection.
+
+To modify feedback parameters, use the following example:
+
+```kotlin
+val modifications = """
+{
+    "Crunches": {
+        "CrunchesShallowDepth": {
+            "low": 0.25,
+            "high": 0.75
+        }
+    }
+}
+""".trimIndent()
+
+smKitUI.startCustomizedAssessment(
+    smWorkout,
+    showSummary = true,
+    listener = myListener,
+    modifications = modifications
+)
 ```
 
 ## Constraints
