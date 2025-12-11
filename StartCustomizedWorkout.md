@@ -47,6 +47,32 @@ val smWorkout = SMWorkout(
 smKitUI.startCustomizedWorkout(smWorkout, object : SMKitUIWorkoutListener {})
 ```
 
+## 🔧 Modifying Feedback Parameters <a name="modify"></a>
+
+You have the ability to modify specific feedback parameters for exercises.
+This allows you to customize the thresholds and ranges for feedback detection.
+
+To modify feedback parameters, use the following example:
+```kotlin
+val modifications = """
+{
+    "Crunches": {
+        "CrunchesShallowDepth": {
+            "low": 0.25,
+            "high": 0.75
+        }
+    }
+}
+""".trimIndent()
+
+smKitUI.startCustomizedWorkout(
+    smWorkout,
+    listener = myListener,
+    modifications = modifications
+)
+```
+
+
 ## Constraints
 - `ScoringParams` must be **null** for each exercise
 - No summary screen is shown

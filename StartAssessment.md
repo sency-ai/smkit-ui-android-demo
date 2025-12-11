@@ -24,6 +24,34 @@ smKitUI.startAssessment(
 )
 ```
 
+## 🔧 Modifying Feedback Parameters <a name="modify"></a>
+
+You have the ability to modify specific feedback parameters for exercises.
+This allows you to customize the thresholds and ranges for feedback detection.
+
+To modify feedback parameters, use the following example:
+
+```kotlin
+val modifications = """
+{
+    "Crunches": {
+        "CrunchesShallowDepth": {
+            "low": 0.25,
+            "high": 0.75
+        }
+    }
+}
+""".trimIndent()
+
+smKitUI.startAssessment(
+    assessmentType = Fitness,
+    listener = myListener,
+    userData = null,
+    showSummary = true,
+    modifications = modifications
+)
+```
+
 ## Assessment Types
 | Name      | Description | More info |
 |-----------|-------------|-----------|
