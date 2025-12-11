@@ -65,11 +65,13 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
 
     private fun setClickListeners() {
         binding.startAssessment.setOnClickListener {
+            val modifications = getExampleModificationsJson()
             smKitUI?.startAssessment(
                 assessmentType = Fitness,
                 listener = this,
                 userData = UserData(14, Gender.Male),
                 showSummary = true,
+                modifications = modifications // Pass modifications dict here
             )
         }
         binding.startCustomWorkout.setOnClickListener {
@@ -84,9 +86,38 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
                     getInFrame = "getInFrame",
                     bodycalFinished = "bodycalFinished"
                 )
-                smKitUI?.startCustomizedAssessment(smWorkout, true, this)
+                val modifications = getExampleModificationsJson()
+                smKitUI?.startCustomizedAssessment(
+                    smWorkout, 
+                    showSummary = true, 
+                    listener = this,
+                    modifications = modifications
+                )
             }
         }
+    }
+    private fun getExampleModificationsJson(): String? {
+        // Example 1: JSON format (recommended - easier to read and maintain)
+        // return """
+        // {
+        //     "Crunches": {
+        //         "CrunchesShallowDepth": {
+        //             "low": 0.25,
+        //             "high": 0.75
+        //         }
+        //     }
+        // }
+        // """.trimIndent()
+        
+        // Example 2: Return null for no modifications (default behavior)
+        return null
+        
+        // Example 3: Use setConfigString() directly with flat format
+        // smKitUI?.setConfigString("""
+        //     # Crunches
+        //     CrunchesShallowDepth.low=0.25
+        //     CrunchesShallowDepth.high=0.75
+        // """.trimIndent())
     }
 
     private fun observeConfiguration() {
