@@ -19,7 +19,7 @@ allprojects {
 Add the dependency to your app-level `build.gradle`:
 ```groovy
 dependencies {
-    implementation 'com.sency.smkitui:smkitui:1.4.2'
+    implementation 'com.sency.smkitui:smkitui:1.4.3'
 }
 ```
 
