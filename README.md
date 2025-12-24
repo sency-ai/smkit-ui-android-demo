@@ -93,7 +93,8 @@ smKitUI.startAssessment(
     listener = myListener,
     userData = null,
     showSummary = true,
-    modifications = modifications
+    modifications = modifications,
+    showPhoneCalibration = true
 )
 ```
 
@@ -121,6 +122,10 @@ smKitUI.startAssessment(
   ```npx @modelcontextprotocol/cli client http --url https://sency-mcp-production.up.railway.app/mcp --header "X-API-Key: Your-API-Key"```.
 
 ## 📝 Changelog
+
+### Version 1.4.3
+- ✅ Added `showPhoneCalibration` parameter to all workout/assessment methods (default: true)
+- 📱 Phone calibration screen can now be controlled via API
 
 ### Version 1.4.2
 - ✅ Multiple new exercises - check our movement catalog

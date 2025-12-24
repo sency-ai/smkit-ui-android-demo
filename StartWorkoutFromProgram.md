@@ -23,12 +23,16 @@ val workoutConfig = WorkoutConfig(
     durationType = WorkoutDuration.Short,
     languageType = SMLanguage.Hebrew
 )
-smKitUI.startWorkoutProgram(workoutConfig, object : SMKitUIWorkoutListener {
-    override fun handleWorkoutErrors(error: Error) { /* handle error */ }
-    override fun workoutDidFinish(summary: WorkoutSummaryData) { /* handle summary */ }
-    override fun didExitWorkout(summary: WorkoutSummaryData) { /* handle exit */ }
-    override fun exerciseDidFinish(data: ExerciseData) { /* handle exercise end */ }
-})
+smKitUI.startWorkoutProgram(
+    workoutConfig,
+    listener = object : SMKitUIWorkoutListener {
+        override fun handleWorkoutErrors(error: Error) { /* handle error */ }
+        override fun workoutDidFinish(summary: WorkoutSummaryData) { /* handle summary */ }
+        override fun didExitWorkout(summary: WorkoutSummaryData) { /* handle exit */ }
+        override fun exerciseDidFinish(data: ExerciseData) { /* handle exercise end */ }
+    },
+    showPhoneCalibration = true
+)
 ```
 
 ## 🔧 Modifying Feedback Parameters <a name="modify"></a>
@@ -53,7 +57,8 @@ val modifications = """
 smKitUI.startWorkoutProgram(
     workoutConfig,
     listener = myListener,
-    modifications = modifications
+    modifications = modifications,
+    showPhoneCalibration = true
 )
 ```
 

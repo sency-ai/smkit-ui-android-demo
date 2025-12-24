@@ -71,7 +71,8 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
                 listener = this,
                 userData = UserData(14, Gender.Male),
                 showSummary = true,
-                modifications = modifications // Pass modifications dict here
+                modifications = modifications, // Pass modifications dict here
+                showPhoneCalibration = true
             )
         }
         binding.startCustomWorkout.setOnClickListener {
@@ -91,7 +92,8 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
                     smWorkout, 
                     showSummary = true, 
                     listener = this,
-                    modifications = modifications
+                    modifications = modifications,
+                    showPhoneCalibration = true
                 )
             }
         }

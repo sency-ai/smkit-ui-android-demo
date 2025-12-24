@@ -20,7 +20,8 @@ smKitUI.startAssessment(
         override fun exerciseDidFinish(data: ExerciseData) { /* handle exercise end */ }
     },
     userData = UserData(age = 28, gender = Gender.Female), // optional
-    showSummary = true // show summary screen
+    showSummary = true, // show summary screen
+    showPhoneCalibration = true // show phone calibration screen (default: true)
 )
 ```
 
@@ -48,7 +49,8 @@ smKitUI.startAssessment(
     listener = myListener,
     userData = null,
     showSummary = true,
-    modifications = modifications
+    modifications = modifications,
+    showPhoneCalibration = true
 )
 ```
 
@@ -73,7 +75,8 @@ smKitUI.startAssessment(
     assessmentType = Custom("YOUR_CUSTOM_ID"),
     listener = myListener,
     userData = null,
-    showSummary = false
+    showSummary = false,
+    showPhoneCalibration = true
 )
 ```
 
