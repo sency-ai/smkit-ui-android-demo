@@ -69,6 +69,10 @@ val smKitUI: SMKitUI = SMKitUI.Configuration(context)
 - [Session Options](./SessionOptionsFull.md)
 - [Data Types](./DataTypes.md)
 
+## 🎨 Customizing UI Colors
+
+To change the UI color theme, use `UIColorTheme.current = UIColorTheme.BLUE` (available colors: BLUE, GREEN, PURPLE, ORANGE, SILVER, GOLD, PINK).
+
 ## 🔧 Modifying Feedback Parameters <a name="modify"></a>
 
 You have the ability to modify specific feedback parameters for exercises.

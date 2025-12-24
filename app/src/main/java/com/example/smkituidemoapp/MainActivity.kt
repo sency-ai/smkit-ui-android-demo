@@ -58,6 +58,8 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
         observeConfiguration()
         setClickListeners()
         binding.progressBar.visibility = View.VISIBLE
+        // To customize UI colors, use: UIColorTheme.current = UIColorTheme.BLUE
+        // Available colors: BLUE, GREEN (default), PURPLE, ORANGE, SILVER, GOLD, PINK
         smKitUI = SMKitUI.Configuration(baseContext)
             .setUIKey(apiPublicKey)
             .configure(configurationResult)
