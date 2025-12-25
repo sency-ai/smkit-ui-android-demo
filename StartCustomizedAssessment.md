@@ -51,7 +51,7 @@ val smWorkout = SMWorkout(
     getInFrame = "bodycal_get_in_frame",
     bodycalFinished = "bodycal_finished"
 )
-smKitUI.startCustomizedAssessment(smWorkout, showSummary = true, object : SMKitUIWorkoutListener {})
+smKitUI.startCustomizedAssessment(smWorkout, showSummary = true, listener = object : SMKitUIWorkoutListener {}, showPhoneCalibration = true)
 ```
 
 ## 🔧 Modifying Feedback Parameters <a name="modify"></a>
@@ -77,7 +77,8 @@ smKitUI.startCustomizedAssessment(
     smWorkout,
     showSummary = true,
     listener = myListener,
-    modifications = modifications
+    modifications = modifications,
+    showPhoneCalibration = true
 )
 ```
 

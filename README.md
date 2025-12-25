@@ -19,7 +19,7 @@ allprojects {
 Add the dependency to your app-level `build.gradle`:
 ```groovy
 dependencies {
-    implementation 'com.sency.smkitui:smkitui:1.4.2'
+    implementation 'com.sency.smkitui:smkitui:1.4.3'
 }
 ```
 
@@ -69,6 +69,10 @@ val smKitUI: SMKitUI = SMKitUI.Configuration(context)
 - [Session Options](./SessionOptionsFull.md)
 - [Data Types](./DataTypes.md)
 
+## 🎨 Customizing UI Colors
+
+To change the UI color theme, use `UIColorTheme.current = UIColorTheme.BLUE` (available colors: BLUE, GREEN, PURPLE, ORANGE, SILVER, GOLD, PINK).
+
 ## 🔧 Modifying Feedback Parameters <a name="modify"></a>
 
 You have the ability to modify specific feedback parameters for exercises.
@@ -93,7 +97,8 @@ smKitUI.startAssessment(
     listener = myListener,
     userData = null,
     showSummary = true,
-    modifications = modifications
+    modifications = modifications,
+    showPhoneCalibration = true
 )
 ```
 
@@ -121,6 +126,10 @@ smKitUI.startAssessment(
   ```npx @modelcontextprotocol/cli client http --url https://sency-mcp-production.up.railway.app/mcp --header "X-API-Key: Your-API-Key"```.
 
 ## 📝 Changelog
+
+### Version 1.4.3
+- ✅ Added `showPhoneCalibration` parameter to all workout/assessment methods (default: true)
+- 📱 Phone calibration screen can now be controlled via API
 
 ### Version 1.4.2
 - ✅ Multiple new exercises - check our movement catalog

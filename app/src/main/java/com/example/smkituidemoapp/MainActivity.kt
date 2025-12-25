@@ -58,6 +58,8 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
         observeConfiguration()
         setClickListeners()
         binding.progressBar.visibility = View.VISIBLE
+        // To customize UI colors, use: UIColorTheme.current = UIColorTheme.BLUE
+        // Available colors: BLUE, GREEN (default), PURPLE, ORANGE, SILVER, GOLD, PINK
         smKitUI = SMKitUI.Configuration(baseContext)
             .setUIKey(apiPublicKey)
             .configure(configurationResult)
@@ -71,7 +73,8 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
                 listener = this,
                 userData = UserData(14, Gender.Male),
                 showSummary = true,
-                modifications = modifications // Pass modifications dict here
+                modifications = modifications, // Pass modifications dict here
+                showPhoneCalibration = true
             )
         }
         binding.startCustomWorkout.setOnClickListener {
@@ -91,7 +94,8 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
                     smWorkout, 
                     showSummary = true, 
                     listener = this,
-                    modifications = modifications
+                    modifications = modifications,
+                    showPhoneCalibration = true
                 )
             }
         }
