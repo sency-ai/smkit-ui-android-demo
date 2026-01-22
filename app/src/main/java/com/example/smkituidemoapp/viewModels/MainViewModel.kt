@@ -46,30 +46,6 @@ class MainViewModel : ViewModel() {
             side = "right"
         ),
         SMExercise(
-            prettyName = "Lunge Front Left",
-            totalSeconds = 60,
-            videoInstruction = "LungeFrontLeft",
-            uiElements = setOf(UiElement.timer, UiElement.repsCounter),
-            detector = "LungeSideLeft",
-            scoringParams = ScoringParams(
-                targetReps = 54,
-                scoreFactor = 0.5f,
-                passCriteria = null,
-                targetRom = null,
-                targetTime = null,
-                type = "reps"
-            ),
-
-            summaryMainMetricTitle = "Info for the SummaryPage",
-            summaryTitle = "Info for the SummaryPage",
-            summarySubTitle = "Info for the SummaryPage",
-            summaryMainMetricSubTitle = "Info for the SummaryPage",
-            exerciseIntro = "YOUR_ASSET",
-            exerciseClosure = "YOUR_ASSET",
-            closureFailedSound = null,
-            side = "left"
-        ),
-        SMExercise(
             prettyName = "Standing Knee Raise Right",
             totalSeconds = 60,
             videoInstruction = "StandingKneeRaiseRight",
