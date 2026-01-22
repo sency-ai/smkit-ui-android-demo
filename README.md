@@ -19,7 +19,7 @@ allprojects {
 Add the dependency to your app-level `build.gradle`:
 ```groovy
 dependencies {
-    implementation 'com.sency.smkitui:smkitui:1.4.3'
+    implementation 'com.sency.smkitui:smkitui:1.4.5'
 }
 ```
 
@@ -126,6 +126,10 @@ smKitUI.startAssessment(
   ```npx @modelcontextprotocol/cli client http --url https://sency-mcp-production.up.railway.app/mcp --header "X-API-Key: Your-API-Key"```.
 
 ## 📝 Changelog
+
+### Version 1.4.5
+- The SDK automatically selects the best pose estimation model based on device capabilities - Pro for maximum accuracy, Lite and UltraLite for smooth real-time performance on lower-end devices.
+- UI updates
 
 ### Version 1.4.3
 - ✅ Added `showPhoneCalibration` parameter to all workout/assessment methods (default: true)
