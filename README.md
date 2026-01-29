@@ -19,7 +19,7 @@ allprojects {
 Add the dependency to your app-level `build.gradle`:
 ```groovy
 dependencies {
-    implementation 'com.sency.smkitui:smkitui:1.4.5'
+    implementation 'com.sency.smkitui:smkitui:1.4.6'
 }
 ```
 
@@ -127,7 +127,7 @@ smKitUI.startAssessment(
 
 ## 📝 Changelog
 
-### Version 1.4.5
+### Version 1.4.6
 - The SDK automatically selects the best pose estimation model based on device capabilities - Pro for maximum accuracy, Lite and UltraLite for smooth real-time performance on lower-end devices.
 - UI updates
 
