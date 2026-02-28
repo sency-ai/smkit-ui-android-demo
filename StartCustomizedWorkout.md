@@ -47,6 +47,20 @@ val smWorkout = SMWorkout(
 smKitUI.startCustomizedWorkout(smWorkout, listener = object : SMKitUIWorkoutListener {}, showPhoneCalibration = true)
 ```
 
+## 🧩 UiElement Reference
+
+| Value | Description |
+|---|---|
+| `timer` | Countdown timer for the exercise duration |
+| `repsCounter` | Rep counter, increments on each detected rep |
+| `gaugeOfMotion` | Arc gauge showing real-time range of motion |
+| `countdownTimer` | Large countdown shown before the exercise starts |
+| `holdingPosition` | Indicator shown while the user holds a static position (e.g. plank, stretch) |
+| `quickMotion` | Pace indicator for fast, rhythmic movements (e.g. shoulder circles, squat pulses) |
+| `skeleton` | Draws the pose skeleton overlay on the camera feed |
+
+Use `holdingPosition` for static holds and stretches. Use `quickMotion` for exercises with rapid, repeated motions where pace feedback is meaningful.
+
 ## 🔧 Modifying Feedback Parameters <a name="modify"></a>
 
 You have the ability to modify specific feedback parameters for exercises.

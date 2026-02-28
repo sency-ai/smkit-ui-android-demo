@@ -80,7 +80,7 @@
 | exercise_id         | `String`          | Exercise id.                                                                                                 |
 | total_time          | `Int?`            | Optional, exercise total time in seconds (to be used in exercise timer).                                      |
 | scoring_params      | `ScoringParamsData` | Scoring params information.                                                                                  |
-| ui_elements         | `[String]`        | “timer”, “repsCounter”, “gaugeOfMotion”.                                                                     |
+| ui_elements         | `[String]`        | “timer”, “repsCounter”, “gaugeOfMotion”, “countdownTimer”, “holdingPosition”, “quickMotion”, “skeleton”.     |
 | instruction_video   | `String?`         | Optional, file name.                                                                                         |
 | voice_intro         | `String?`         | Optional, file name.                                                                                         |
 | voice_outro         | `String?`         | Optional, file name.                                                                                         |
