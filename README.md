@@ -19,7 +19,7 @@ allprojects {
 Add the dependency to your app-level `build.gradle`:
 ```groovy
 dependencies {
-    implementation 'com.sency.smkitui:smkitui:1.4.7'
+    implementation 'com.sency.smkitui:smkitui:1.4.9'
 }
 ```
 
@@ -127,7 +127,13 @@ smKitUI.startAssessment(
 
 ## 📝 Changelog
 
-### Version 1.4.7
+### Version 1.4.9
+- ✅ Multiple new exercises — check our movement catalog
+- 🖐️ Pause by hovering palm over pause-menu icons (gesture-driven selection, no tap required)
+- 🧠 Intelligence rest and exercise modification suggestions — automatically detects fatigue and recommends in-session rest
+- 🦴 Full skeleton visualisation customisation system (presets, connection styles, joint shapes, colors, glow, opacity, and more)
+
+### Version 1.4.8
 - The SDK automatically selects the best pose estimation model based on device capabilities - Pro for maximum accuracy, Lite and UltraLite for smooth real-time performance on lower-end devices.
 - UI updates
 
@@ -144,6 +150,78 @@ smKitUI.startAssessment(
 - 🔧 Updated native libraries optimized for 16KB page alignment
 - 🚀 Enhanced stability and performance across all Android versions
 - ⚙️ Requires Gradle 8.4+, AGP 8.0+, and Kotlin 2.0+ for full Android 15 support
+
+## ⚙️ Advanced Configuration (1.4.9) <a name="advanced"></a>
+
+These properties must be set **before** starting a session.
+
+### Intelligence / Fatigue Detection
+```kotlin
+smKitUI.setIntelligenceRestEnabled(true)  // Enable in-session rest suggestions based on fatigue
+```
+
+### Configurable Pause Menu
+Choose which buttons appear on the pause overlay:
+```kotlin
+smKitUI.setPauseTypes(arrayOf(
+    PauseDialogTypes.Resume,
+    PauseDialogTypes.Skip,
+    PauseDialogTypes.Quit
+))
+```
+
+### `PauseDialogTypes`
+| Type       | Description                          |
+|------------|--------------------------------------|
+| Resume     | Resume the workout                   |
+| StartOver  | Restart the current exercise         |
+| Skip       | Skip to the next exercise            |
+| Quit       | Quit the session                     |
+| Rest       | Take a rest                          |
+| Switch     | Switch exercise variant              |
+
+> **Note:** Pause buttons are activated by hovering your palm over the icon (gesture-based, ~1.5 s hold).
+
+### Skeleton Visualisation
+Use a preset for quick theming:
+```kotlin
+smKitUI.applySkeletonSettings {
+    skeletonPreset = SkeletonPreset.NEON_GLOW
+}
+```
+
+Or fine-tune individual properties:
+```kotlin
+smKitUI.applySkeletonSettings {
+    skeletonHidden = false
+    skeletonConnectionStyle = SkeletonConnectionStyle.SOLID   // NONE, DOTTED, DASHED, SOLID, LONG_DASHED, THIN_DOTS, DOT_DASHED, ROUNDED
+    skeletonJointShape = SkeletonJointShape.CIRCLE            // CIRCLE, SQUARE, TRIANGLE, DIAMOND, STAR, HEXAGON
+    skeletonDotsOpacity = 1.0f
+    skeletonConnectionsOpacity = 0.8f
+    skeletonDotsGlow = 0.5f
+    skeletonConnectionsGlow = 0.3f
+    skeletonLineWidthScale = 1.0f
+    skeletonOutlineScale = 1.0f
+    skeletonSoftness = 0.0f
+    skeletonAnimationDurationSeconds = 0.05f
+    skeletonDotsInnerColorOption = SkeletonColorOption.WHITE
+    skeletonDotsOuterColorOption = SkeletonColorOption.CYAN
+    skeletonConnectionsInnerColorOption = SkeletonColorOption.WHITE
+    skeletonConnectionsOuterColorOption = SkeletonColorOption.CYAN
+}
+```
+
+You can also apply skeleton settings at configuration time:
+```kotlin
+val smKitUI = SMKitUI.Configuration(context)
+    .setUIKey("YOUR_KEY")
+    .applySkeletonSettings {
+        skeletonPreset = SkeletonPreset.ATHLETIC
+    }
+    .configure(listener)
+```
+
+Available `SkeletonPreset` values: `DEFAULT`, `MINIMAL_DOTS`, `THIN_OUTLINE`, `MONOCHROME_CLEAN`, `NEON_GLOW`, `BOLD_HIGHLIGHT`, `SOFT_FILL`, `WIREFRAME`, `HIGH_CONTRAST`, `PASTEL`, `DARK_OUTLINE`, `MINIMAL_LINE`, `DOUBLE_STROKE`, `GRADIENT_READY`, `SUBTLE_SHADOW`, `CLASSIC`, `ATHLETIC`, `PREMIUM`, `HOLOGRAM`, `MATTE`, `NEON_PULSE`, `OUTLINE_ONLY`, `SLIM`, `THICK`, `STUDIO`, `ACCESSIBILITY`.
 
 ## 🆘 Troubleshooting & Support
 - Always call `configure` before starting any session

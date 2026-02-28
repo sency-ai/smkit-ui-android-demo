@@ -23,6 +23,7 @@ import com.sency.smkitui.model.UserData
 import com.sency.smkitui.model.WorkoutSummaryData
 import com.sency.smkitui.model.workoutConfig.CounterPreference
 import com.sency.smkitui.model.workoutConfig.EndExercisePreference
+import com.sency.smkitui.model.SkeletonPreset
 import com.sency.smkitui.presentation.fragment.PauseDialogTypes
 import com.sency.smkitui.model.smkitui.Fitness
 
@@ -58,11 +59,30 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
         observeConfiguration()
         setClickListeners()
         binding.progressBar.visibility = View.VISIBLE
-        // To customize UI colors, use: UIColorTheme.current = UIColorTheme.BLUE
+        // To customize UI colors, use setColorTheme(UIColorTheme.BLUE)
         // Available colors: BLUE, GREEN (default), PURPLE, ORANGE, SILVER, GOLD, PINK
         smKitUI = SMKitUI.Configuration(baseContext)
             .setUIKey(apiPublicKey)
+            // 1.4.9: Apply a skeleton visualisation preset at configuration time.
+            // Fine-tune further with individual properties (see README for all options).
+            .applySkeletonSettings {
+                skeletonPreset = SkeletonPreset.DEFAULT
+            }
             .configure(configurationResult)
+
+        // 1.4.9: Enable intelligence-driven rest suggestions based on fatigue detection.
+        smKitUI?.setIntelligenceRestEnabled(true)
+
+        // 1.4.9: Choose which buttons appear on the pause overlay.
+        // Buttons are activated by hovering the palm over the icon (~1.5 s hold).
+        smKitUI?.setPauseTypes(
+            arrayOf(
+                PauseDialogTypes.Resume,
+                PauseDialogTypes.Skip,
+                PauseDialogTypes.StartOver,
+                PauseDialogTypes.Quit,
+            )
+        )
     }
 
     private fun setClickListeners() {
