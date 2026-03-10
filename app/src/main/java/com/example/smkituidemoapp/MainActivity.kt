@@ -24,6 +24,8 @@ import com.sency.smkitui.model.WorkoutSummaryData
 import com.sency.smkitui.model.workoutConfig.CounterPreference
 import com.sency.smkitui.model.workoutConfig.EndExercisePreference
 import com.sency.smkitui.model.SkeletonPreset
+import com.sency.smkitui.model.InstructionVideoConfig
+import com.sency.smkitui.model.VideoDisplayMode
 import com.sency.smkitui.presentation.fragment.PauseDialogTypes
 import com.sency.smkitui.model.smkitui.Fitness
 
@@ -88,6 +90,15 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
     private fun setClickListeners() {
         binding.startAssessment.setOnClickListener {
             val modifications = getExampleModificationsJson()
+
+            // Configure instruction video cycling (optional - uncomment to test)
+            // smKitUI?.setInstructionVideoConfig(
+            //     InstructionVideoConfig(
+            //         displayMode = VideoDisplayMode.MEDIUM_CYCLE,
+            //         mediumSizeCycles = 3
+            //     )
+            // )
+
             smKitUI?.startAssessment(
                 assessmentType = Fitness,
                 listener = this,

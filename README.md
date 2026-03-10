@@ -19,7 +19,7 @@ allprojects {
 Add the dependency to your app-level `build.gradle`:
 ```groovy
 dependencies {
-    implementation 'com.sency.smkitui:smkitui:1.5.0'
+    implementation 'com.sency.smkitui:smkitui:1.5.1'
 }
 ```
 
@@ -151,9 +151,11 @@ smKitUI.startAssessment(
 - 🚀 Enhanced stability and performance across all Android versions
 - ⚙️ Requires Gradle 8.4+, AGP 8.0+, and Kotlin 2.0+ for full Android 15 support
 
-## ⚙️ Advanced Configuration (1.4.9) <a name="advanced"></a>
+## ⚙️ Advanced Configuration (1.5.1) <a name="advanced"></a>
 
 These properties must be set **before** starting a session.
+
+**New in 1.5.1:** Enhanced SDK crash handling with graceful error propagation, download retry logic with exponential backoff, and improved native library initialization.
 
 ### Intelligence / Fatigue Detection
 ```kotlin
@@ -181,6 +183,26 @@ smKitUI.setPauseTypes(arrayOf(
 | Switch     | Switch exercise variant              |
 
 > **Note:** Pause buttons are activated by hovering your palm over the icon (gesture-based, ~1.5 s hold).
+
+### Instruction Video Cycling
+Control how the instruction video transitions after the instruction phase ends:
+```kotlin
+// Default mode: video shrinks to small corner immediately
+smKitUI.setInstructionVideoConfig(InstructionVideoConfig())
+
+// Medium cycle mode: video stays at 75% size while exercise video loops N times, then shrinks
+smKitUI.setInstructionVideoConfig(
+    InstructionVideoConfig(
+        displayMode = VideoDisplayMode.MEDIUM_CYCLE,
+        mediumSizeCycles = 3  // Video stays medium-sized for 3 loops (range 1-5)
+    )
+)
+```
+
+| Mode | Behavior |
+|------|----------|
+| `DEFAULT` | Instruction video immediately shrinks to 50% size (original behavior) |
+| `MEDIUM_CYCLE` | Instruction video transitions to 75% size, stays medium while exercise loops N times, then shrinks to 50% |
 
 ### Skeleton Visualisation
 Use a preset for quick theming:
