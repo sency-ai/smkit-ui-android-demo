@@ -19,7 +19,7 @@ allprojects {
 Add the dependency to your app-level `build.gradle`:
 ```groovy
 dependencies {
-    implementation 'com.sency.smkitui:smkitui:1.5.1'
+    implementation 'com.sency.smkitui:smkitui:1.6.5'
 }
 ```
 
@@ -71,7 +71,7 @@ val smKitUI: SMKitUI = SMKitUI.Configuration(context)
 
 ## 🎨 Customizing UI Colors
 
-To change the UI color theme, use `UIColorTheme.current = UIColorTheme.BLUE` (available colors: BLUE, GREEN, PURPLE, ORANGE, SILVER, GOLD, PINK).
+To change the UI color theme, use `smKitUI.setColorTheme(UIColorTheme.BLUE)` (available colors: BLUE, GREEN, PURPLE, ORANGE, SILVER, GOLD, PINK).
 
 ## 🔧 Modifying Feedback Parameters <a name="modify"></a>
 
@@ -127,6 +127,15 @@ smKitUI.startAssessment(
 
 ## 📝 Changelog
 
+### Version 1.6.5
+- ✅ Built-in guidance mode for supported exercises, plus per-exercise `guidanceMode` and custom `guidanceVideoSegments`
+- ✅ Adaptive ROM feedback with persistent ROM cache and `clearAdaptiveRomCache()`
+- ✅ Stretch sets through `SMStretchSetConfig`
+- ✅ Short intros, pre-exercise countdown audio, per-rep sounds, and rep milestone vocals
+- ✅ Workout continuation prompt with listener callbacks
+- ✅ Phone movement count prevention, start-timer-on-first-activity, calibration audio controls, button tutorial, and variation mismatch feedback
+- ✅ Richer workout summary modification events
+
 ### Version 1.4.9
 - ✅ Multiple new exercises — check our movement catalog
 - 🖐️ Pause by hovering palm over pause-menu icons (gesture-driven selection, no tap required)
@@ -151,15 +160,114 @@ smKitUI.startAssessment(
 - 🚀 Enhanced stability and performance across all Android versions
 - ⚙️ Requires Gradle 8.4+, AGP 8.0+, and Kotlin 2.0+ for full Android 15 support
 
-## ⚙️ Advanced Configuration (1.5.1) <a name="advanced"></a>
+## ⚙️ Advanced Configuration (1.6.5) <a name="advanced"></a>
 
 These properties must be set **before** starting a session.
 
-**New in 1.5.1:** Enhanced SDK crash handling with graceful error propagation, download retry logic with exponential backoff, and improved native library initialization.
+**New in 1.6.5:** Guidance mode, adaptive ROM, stretch sets, workout continuation, phone movement count prevention, audio controls, and richer workout summaries.
 
 ### Intelligence / Fatigue Detection
 ```kotlin
 smKitUI.setIntelligenceRestEnabled(true)  // Enable in-session rest suggestions based on fatigue
+```
+
+### Guidance, Timer, Phone Movement, and Audio Controls
+Set these on `SMKitUI.Configuration` before `configure`, or call the matching setter on the configured `SMKitUI` instance before starting a workout.
+The demo app exposes these options from **SDK Features Demo > Settings**. All switches default to off.
+
+```kotlin
+val smKitUI = SMKitUI.Configuration(context)
+    .setUIKey("YOUR_KEY")
+    .setUseDefaultGuidanceMode(true)
+    .setGuidanceDebugLogging(BuildConfig.DEBUG)
+    .setVariationMismatchFeedbackEnabled(true)
+    .setPhoneMovementCountPreventionEnabled(true)
+    .setStartTimerOnFirstActivity(true)
+    .setWorkoutContinuationTimerDuration(12)
+    .setPlayPhoneCalibrationAudio(true)
+    .setPlayBodyCalibrationAudio(true)
+    .setAllowAudioMixing(true)
+    .setShowExternalAudioControl(true)
+    .setEnableButtonTutorial(true)
+    .configure(listener)
+
+smKitUI.clearAdaptiveRomCache()
+```
+
+### Per-Exercise 1.6.5 Options
+Use these fields when building `SMExercise` objects for customized workouts or assessments.
+
+```kotlin
+SMExercise(
+    prettyName = "Standing Knee Raise Right",
+    totalSeconds = 60,
+    videoInstruction = "StandingKneeRaiseRight",
+    uiElements = setOf(UiElement.timer, UiElement.gaugeOfMotion),
+    detector = "StandingKneeRaiseRight",
+    exerciseIntro = "YOUR_ASSET",
+    exerciseClosure = "YOUR_ASSET",
+    closureFailedSound = null,
+    summaryTitle = "Summary",
+    summarySubTitle = "Subtitle",
+    summaryMainMetricTitle = "ROM",
+    summaryMainMetricSubTitle = "Best range",
+    side = "right",
+    scoringParams = null,
+    shortIntro = true,
+    playPreExerciseCountdown = true,
+    playSoundOnEachRep = true,
+    playRepMilestoneVoice = true,
+    repMilestoneInterval = 5,
+    guidanceMode = true,
+    guidanceVideoSegments = mapOf(
+        "phase1_orient" to GuidanceVideoSegment(
+            kind = GuidanceVideoSegment.Kind.FREEZE,
+            startSeconds = 0.0,
+            endSeconds = 0.0,
+        ),
+        "phase4_action" to GuidanceVideoSegment(
+            kind = GuidanceVideoSegment.Kind.PLAY,
+            startSeconds = 1.2,
+            endSeconds = 4.8,
+        ),
+    ),
+    adaptiveRomFeedbackEnabled = true,
+    adaptiveRomWarmupReps = 2,
+    stretchSetConfig = SMStretchSetConfig(
+        repetitions = 3,
+        secondsPerStretch = 6,
+        restSecondsBetweenStretches = 2,
+    ),
+)
+```
+
+### Workout Continuation
+Attach continuation content to a custom workout and observe the callbacks.
+
+```kotlin
+val workout = SMWorkout(
+    id = "50",
+    name = "demo workout",
+    workoutIntro = "workoutIntro",
+    soundtrack = "soundtrack_7",
+    exercises = workoutExercises,
+    workoutClosure = "workoutClosure",
+    getInFrame = "getInFrame",
+    bodycalFinished = "bodycalFinished",
+    continuation = SMWorkoutContinuation(
+        introSoundKey = "continue_workout_intro",
+        interactionUnlockSoundKey = "smkitui_button_tutorial_start",
+        exercises = continuationExercises,
+    ),
+)
+
+smKitUI.startCustomizedWorkout(workout, object : SMKitUIWorkoutListener {
+    override fun workoutContinuationPromptDidAppear() {}
+    override fun workoutContinuationUserDidChoose(continueWorkout: Boolean) {}
+    override fun didExitWorkout(summary: WorkoutSummaryData) {
+        val modificationEvents = summary.modifications
+    }
+})
 ```
 
 ### Configurable Pause Menu
