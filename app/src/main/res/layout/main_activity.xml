@@ -2,43 +2,293 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <Button
-        android:id="@+id/startAssessment"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+    <ScrollView
+        android:id="@+id/homeScreen"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start Assessment"
-        />
-
-    <Button
-        android:id="@+id/startCustomWorkout"
-        app:layout_constraintTop_toBottomOf="@id/startAssessment"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start Custom Workout"
-        />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@id/startAssessment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toTopOf="parent">
 
+        <LinearLayout
+            android:id="@+id/homeContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="20dp">
 
+            <TextView
+                android:id="@+id/homeTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="SMKitUI Demo"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="24dp"
+                android:visibility="invisible"
+                tools:visibility="visible" />
+
+            <Button
+                android:id="@+id/startAssessment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Start Assessment" />
+
+            <Button
+                android:id="@+id/startCustomWorkout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Start Custom Workout" />
+
+            <Button
+                android:id="@+id/sdkFeaturesDemo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="SDK Features Demo" />
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/sdkFeaturesScreen"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:id="@+id/sdkFeaturesHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/backToHome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Back" />
+
+            <TextView
+                android:id="@+id/sdkFeaturesTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:layout_weight="1"
+                android:text="SDK Features Demo"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/sdkFeatureSettings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Settings" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/sdkFeatureSettingsPanel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <Switch
+                android:id="@+id/useDefaultGuidanceModeSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Use default guidance mode" />
+
+            <Switch
+                android:id="@+id/guidanceDebugLoggingSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Guidance debug logging" />
+
+            <Switch
+                android:id="@+id/variationMismatchFeedbackSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Variation mismatch feedback" />
+
+            <Switch
+                android:id="@+id/phoneMovementPreventionSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Phone movement count prevention" />
+
+            <Switch
+                android:id="@+id/startTimerOnFirstActivitySwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Start timer on first activity" />
+
+            <Switch
+                android:id="@+id/playPhoneCalibrationAudioSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Phone calibration audio" />
+
+            <Switch
+                android:id="@+id/playBodyCalibrationAudioSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Body calibration audio" />
+
+            <Switch
+                android:id="@+id/allowAudioMixingSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Allow audio mixing" />
+
+            <Switch
+                android:id="@+id/showExternalAudioControlSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Show external audio control" />
+
+            <Switch
+                android:id="@+id/enableButtonTutorialSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Enable button tutorial" />
+
+            <Switch
+                android:id="@+id/shortIntroSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Short intro" />
+
+            <Switch
+                android:id="@+id/preExerciseCountdownSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pre-exercise countdown" />
+
+            <Switch
+                android:id="@+id/soundOnEachRepSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sound on each rep" />
+
+            <Switch
+                android:id="@+id/repMilestoneVoiceSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rep milestone voice" />
+
+            <Switch
+                android:id="@+id/adaptiveRomFeedbackSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Adaptive ROM feedback" />
+
+            <Switch
+                android:id="@+id/stretchSetConfigSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Stretch set config" />
+
+            <TextView
+                android:id="@+id/workoutContinuationTimerLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Workout continuation timer seconds"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/workoutContinuationTimerInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:inputType="number"
+                android:maxLines="1"
+                android:text="10" />
+
+            <Button
+                android:id="@+id/clearAdaptiveRomCache"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Clear Adaptive ROM Cache" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/sdkFeatureSelectedCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Selected: 0"
+            android:textSize="16sp" />
+
+        <ScrollView
+            android:id="@+id/sdkExerciseListScroll"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/sdkExerciseListContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/sdkFeatureActions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/selectAllSdkExercises"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_weight="1"
+                android:text="Select All" />
+
+            <Button
+                android:id="@+id/clearSdkExerciseSelection"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:layout_weight="1"
+                android:text="Clear" />
+
+            <Button
+                android:id="@+id/startSdkFeaturesWorkout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:text="Start" />
+        </LinearLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
