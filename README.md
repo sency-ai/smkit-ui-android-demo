@@ -19,7 +19,7 @@ allprojects {
 Add the dependency to your app-level `build.gradle`:
 ```groovy
 dependencies {
-    implementation 'com.sency.smkitui:smkitui:1.6.5'
+    implementation 'com.sency.smkitui:smkitui:1.6.6'
 }
 ```
 
@@ -127,6 +127,9 @@ smKitUI.startAssessment(
 
 ## 📝 Changelog
 
+### Version 1.6.6
+- ✅ More resilient pose-estimation warmup when configure data is not ready yet
+
 ### Version 1.6.5
 - ✅ Built-in guidance mode for supported exercises, plus per-exercise `guidanceMode` and custom `guidanceVideoSegments`
 - ✅ Adaptive ROM feedback with persistent ROM cache and `clearAdaptiveRomCache()`
@@ -160,11 +163,11 @@ smKitUI.startAssessment(
 - 🚀 Enhanced stability and performance across all Android versions
 - ⚙️ Requires Gradle 8.4+, AGP 8.0+, and Kotlin 2.0+ for full Android 15 support
 
-## ⚙️ Advanced Configuration (1.6.5) <a name="advanced"></a>
+## ⚙️ Advanced Configuration (1.6.5+) <a name="advanced"></a>
 
 These properties must be set **before** starting a session.
 
-**New in 1.6.5:** Guidance mode, adaptive ROM, stretch sets, workout continuation, phone movement count prevention, audio controls, and richer workout summaries.
+**Available in 1.6.5+:** Guidance mode, adaptive ROM, stretch sets, workout continuation, phone movement count prevention, audio controls, and richer workout summaries.
 
 ### Intelligence / Fatigue Detection
 ```kotlin
@@ -194,7 +197,7 @@ val smKitUI = SMKitUI.Configuration(context)
 smKitUI.clearAdaptiveRomCache()
 ```
 
-### Per-Exercise 1.6.5 Options
+### Per-Exercise 1.6.5+ Options
 Use these fields when building `SMExercise` objects for customized workouts or assessments.
 
 ```kotlin
