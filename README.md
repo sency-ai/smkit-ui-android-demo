@@ -19,7 +19,7 @@ allprojects {
 Add the dependency to your app-level `build.gradle`:
 ```groovy
 dependencies {
-    implementation 'com.sency.smkitui:smkitui:1.6.6'
+    implementation 'com.sency.smkitui:smkitui:1.7.1'
 }
 ```
 
@@ -127,7 +127,7 @@ smKitUI.startAssessment(
 
 ## 📝 Changelog
 
-### Version 1.6.6
+### Version 1.7.1
 - ✅ More resilient pose-estimation warmup when configure data is not ready yet
 
 ### Version 1.6.5
