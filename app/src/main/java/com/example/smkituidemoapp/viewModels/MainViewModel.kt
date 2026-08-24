@@ -7,6 +7,10 @@ import androidx.lifecycle.viewModelScope
 import com.sency.smkitui.data.entity.ScoringParams
 import com.sency.smkitui.data.entity.UiElement
 import com.sency.smkitui.model.SMExercise
+import com.sency.smkitui.model.SMExerciseDisplayContext
+import com.sency.smkitui.model.SMExerciseDisplayGroup
+import com.sency.smkitui.model.SMExerciseDisplayGroupKind
+import com.sency.smkitui.model.SMPositionRepConfig
 import com.sency.smkitui.model.SMStretchSetConfig
 import kotlinx.coroutines.launch
 
@@ -141,15 +145,28 @@ class MainViewModel : ViewModel() {
         detectors: List<String>,
         settings: SdkFeatureSettings,
     ): List<SMExercise> =
-        detectors.map { detector ->
+        detectors.mapIndexed { index, detector ->
             val uiElements = sdkUiElements(detector)
+            val supportsTargetReps =
+                UiElement.repsCounter in uiElements && UiElement.gaugeOfMotion !in uiElements
             SMExercise(
                 prettyName = detector.toPrettyName(),
                 totalSeconds = if (UiElement.repsCounter in uiElements) 45 else 30,
                 videoInstruction = detector,
                 uiElements = uiElements,
                 detector = detector,
-                scoringParams = null,
+                scoringParams = if (settings.showTargetProgress && supportsTargetReps) {
+                    ScoringParams(
+                        targetReps = 10,
+                        scoreFactor = 1f,
+                        passCriteria = null,
+                        targetRom = null,
+                        targetTime = null,
+                        type = "reps",
+                    )
+                } else {
+                    null
+                },
                 summaryMainMetricTitle = "Result",
                 summaryTitle = detector.toPrettyName(),
                 summarySubTitle = "SDK feature demo",
@@ -163,7 +180,11 @@ class MainViewModel : ViewModel() {
                 playSoundOnEachRep = settings.soundOnEachRep,
                 playRepMilestoneVoice = settings.repMilestoneVoice,
                 repMilestoneInterval = 10,
+                playTargetRepsCompletionVoice = settings.targetRepsCompletionVoice,
+                intentVoiceFeedbackEnabled = settings.intentVoiceFeedback,
                 guidanceMode = null,
+                enableGuidanceModeSuggestion = settings.guidanceModeSuggestion,
+                enableSmallBodyPartFocus = settings.smallBodyPartFocus,
                 adaptiveRomFeedbackEnabled = settings.adaptiveRomFeedback,
                 adaptiveRomWarmupReps = 2,
                 stretchSetConfig = if (settings.stretchSetConfig && UiElement.holdingPosition in uiElements) {
@@ -176,6 +197,35 @@ class MainViewModel : ViewModel() {
                 } else {
                     null
                 },
+                showTargetProgress = settings.showTargetProgress && supportsTargetReps,
+                internalInsightsKey = detector,
+                positionRepConfig = if (
+                    settings.positionReps && UiElement.holdingPosition in uiElements
+                ) {
+                    SMPositionRepConfig(targetReps = 3, secondsPerRep = 5)
+                } else {
+                    null
+                },
+            ).also { exercise ->
+                if (settings.exerciseProgressDisplay && detector != "Rest") {
+                    exercise.displayContext = sdkDisplayContext(index)
+                }
+            }
+        }
+
+    private fun sdkDisplayContext(index: Int): SMExerciseDisplayContext =
+        if (index < 2) {
+            SMExerciseDisplayContext(sectionTitle = "WARM-UP", playsTitleSound = true)
+        } else {
+            val circuitNumber = ((index - 2) / 3) + 1
+            SMExerciseDisplayContext(
+                sectionTitle = "MAIN SET",
+                playsTitleSound = true,
+                group = SMExerciseDisplayGroup(
+                    id = "demo-circuit-$circuitNumber",
+                    kind = SMExerciseDisplayGroupKind.CIRCUIT,
+                    number = circuitNumber,
+                ),
             )
         }
 
@@ -419,10 +469,19 @@ class MainViewModel : ViewModel() {
 
 data class SdkFeatureSettings(
     val useDefaultGuidanceMode: Boolean,
+    val guidanceModeSuggestion: Boolean,
     val guidanceDebugLogging: Boolean,
+    val smallBodyPartFocus: Boolean,
     val variationMismatchFeedback: Boolean,
     val phoneMovementPrevention: Boolean,
     val startTimerOnFirstActivity: Boolean,
+    val exerciseSummaryTimingMetrics: Boolean,
+    val includeAssessmentInsights: Boolean,
+    val exportAssessmentInsights: Boolean,
+    val hebrewSession: Boolean,
+    val perfectOnlyCounter: Boolean,
+    val targetBasedCompletion: Boolean,
+    val mediumCycleInstructionVideo: Boolean,
     val workoutContinuationTimerSeconds: Int,
     val playPhoneCalibrationAudio: Boolean,
     val playBodyCalibrationAudio: Boolean,
@@ -433,6 +492,11 @@ data class SdkFeatureSettings(
     val preExerciseCountdown: Boolean,
     val soundOnEachRep: Boolean,
     val repMilestoneVoice: Boolean,
+    val targetRepsCompletionVoice: Boolean,
+    val intentVoiceFeedback: Boolean,
+    val showTargetProgress: Boolean,
     val adaptiveRomFeedback: Boolean,
     val stretchSetConfig: Boolean,
+    val positionReps: Boolean,
+    val exerciseProgressDisplay: Boolean,
 )

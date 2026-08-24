@@ -55,6 +55,28 @@
                 android:text="Start Custom Workout" />
 
             <Button
+                android:id="@+id/startCustomAssessment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Start Custom Assessment" />
+
+            <EditText
+                android:id="@+id/programIdInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="Program ID supplied by Sency"
+                android:importantForAutofill="no"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/startWorkoutProgram"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Start Workout Program" />
+
+            <Button
                 android:id="@+id/sdkFeaturesDemo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -128,6 +150,18 @@
                 android:text="Guidance debug logging" />
 
             <Switch
+                android:id="@+id/guidanceModeSuggestionSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Guidance suggestions" />
+
+            <Switch
+                android:id="@+id/smallBodyPartFocusSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Instruction-video body-part focus" />
+
+            <Switch
                 android:id="@+id/variationMismatchFeedbackSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -144,6 +178,48 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Start timer on first activity" />
+
+            <Switch
+                android:id="@+id/exerciseSummaryTimingMetricsSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Export exercise timing metrics (reconfigure)" />
+
+            <Switch
+                android:id="@+id/includeAssessmentInsightsSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Download assessment insights (reconfigure)" />
+
+            <Switch
+                android:id="@+id/exportAssessmentInsightsSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Export assessment insights" />
+
+            <Switch
+                android:id="@+id/hebrewSessionSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hebrew session and calibration" />
+
+            <Switch
+                android:id="@+id/perfectOnlyCounterSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Count perfect reps only" />
+
+            <Switch
+                android:id="@+id/targetBasedCompletionSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Target-based exercise completion" />
+
+            <Switch
+                android:id="@+id/mediumCycleInstructionVideoSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Medium-cycle instruction video" />
 
             <Switch
                 android:id="@+id/playPhoneCalibrationAudioSwitch"
@@ -200,6 +276,24 @@
                 android:text="Rep milestone voice" />
 
             <Switch
+                android:id="@+id/targetRepsCompletionVoiceSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Target-reps completion voice" />
+
+            <Switch
+                android:id="@+id/intentVoiceFeedbackSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Exercise intent voice feedback" />
+
+            <Switch
+                android:id="@+id/showTargetProgressSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Show target-reps progress" />
+
+            <Switch
                 android:id="@+id/adaptiveRomFeedbackSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -210,6 +304,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Stretch set config" />
+
+            <Switch
+                android:id="@+id/positionRepsSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Repeated position holds" />
+
+            <Switch
+                android:id="@+id/exerciseProgressDisplaySwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Section and circuit progress display" />
 
             <TextView
                 android:id="@+id/workoutContinuationTimerLabel"
@@ -227,6 +333,22 @@
                 android:inputType="number"
                 android:maxLines="1"
                 android:text="10" />
+
+            <EditText
+                android:id="@+id/sdkConfigStringInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Optional flat native config string"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine"
+                android:maxLines="3" />
+
+            <Button
+                android:id="@+id/applySdkConfiguration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Reconfigure SDK" />
 
             <Button
                 android:id="@+id/clearAdaptiveRomCache"
