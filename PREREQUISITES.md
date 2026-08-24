@@ -1,139 +1,93 @@
-# Prerequisites for SMKitUI Android SDK
+# SMKitUI Android prerequisites
 
-This document outlines the prerequisites required to use SMKitUI Android SDK, particularly for Android 15 (16KB page size) compatibility.
+SMKitUI 1.8.0 supports Android API 24 and later and includes native libraries compatible with Android's 16 KB page-size requirements.
 
-## Android 15 (16KB Page Size) Compatibility
+## Build requirements
 
-Starting with **SMKitUI v1.3.9**, the SDK is fully compatible with Android 15's 16KB page size requirements. To ensure your project works correctly with Android 15 devices, you must meet the following requirements:
+- minSdk 24
+- compileSdk and targetSdk 36 (recommended and used by this demo)
+- Gradle 8.13
+- Android Gradle Plugin 8.11.1
+- Kotlin 2.0.21
+- Java 17
 
-### 1. Minimum Gradle Version
-
-**Gradle 8.4 or higher** is required for Android 15 compatibility.
-
-Update your `gradle/wrapper/gradle-wrapper.properties`:
-```properties
-distributionUrl=https\://services.gradle.org/distributions/gradle-8.13-bin.zip
-```
-
-### 2. Android Gradle Plugin (AGP)
-
-**AGP 8.0 or higher** is required.
-
-Update your project-level `build.gradle`:
-```groovy
-buildscript {
-    dependencies {
-        classpath 'com.android.tools.build:gradle:8.11.1'
-    }
-}
-```
-
-### 3. Kotlin Version
-
-**Kotlin 2.0 or higher** is required when using AGP 8.11+.
-
-Update your project-level `build.gradle`:
-```groovy
-buildscript {
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.21"
-    }
-}
-```
-
-### 4. Java Compatibility
-
-**Java 17** is required for AGP 8.0+.
-
-Update your app-level `build.gradle`:
 ```groovy
 android {
+    compileSdk 36
+
+    defaultConfig {
+        minSdk 24
+        targetSdk 36
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
+
     kotlinOptions {
-        jvmTarget = '17'
+        jvmTarget = "17"
     }
 }
 ```
 
-### 5. Target SDK Version
+## Repository and dependencies
 
-**compileSdk 36 and targetSdk 36** are recommended for full Android 15 support.
-
-Update your app-level `build.gradle`:
 ```groovy
-android {
-    compileSdk 36
-    
-    defaultConfig {
-        targetSdk 36
-        minSdk 26  // Minimum required by SMKitUI
-    }
+repositories {
+    google()
+    mavenCentral()
+    maven { url "https://artifacts.sency.ai/artifactory/release" }
+}
+
+dependencies {
+    implementation "com.sency.smkitui:smkitui:1.8.0"
+    implementation "com.sency.smkit:smkit:1.8.0"
+    implementation "com.sency.smbase.nativeclient:smbase-native-client:1.8.0"
 }
 ```
 
-## Basic Requirements
+The SMKit dependency exposes `PoseModelChoice`; the native-client dependency exposes public feedback model types used by APIs such as `setFeedbacksUIToExclude`.
 
-### Minimum SDK Version
-- **minSdk 26** (Android 8.0) or higher
+## Permissions and features
 
-### Required Permissions
-
-Add these permissions to your `AndroidManifest.xml`:
 ```xml
 <uses-permission android:name="android.permission.CAMERA" />
+
 <uses-feature android:name="android.hardware.camera" />
 <uses-feature android:name="android.hardware.camera.autofocus" />
 ```
 
-### Screen Orientation
+Camera permission is required and must be requested at runtime before starting an SDK session.
 
-Lock screen orientation to portrait for activities using SMKitUI:
+Lock the hosting activity to portrait:
+
 ```xml
 <activity
-    android:name=".YourActivity"
+    android:name=".MainActivity"
     android:screenOrientation="portrait" />
 ```
 
-## Maven Repository
+## SDK key
 
-Add Sency's Maven repository to your project-level `build.gradle`:
-```groovy
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        maven {
-            url "https://artifacts.sency.ai/artifactory/release"
-        }
-    }
-}
+Put the key in the untracked `local.properties` file:
+
+```properties
+sdk_auth_key=your_sency_sdk_key_here
 ```
 
-## Verification
+## Verify
 
-After updating your project to meet these prerequisites, verify your setup:
+For a published release:
 
-1. Clean your project:
-   ```bash
-   ./gradlew clean
-   ```
+```bash
+./gradlew clean assembleDebug
+```
 
-2. Build your project:
-   ```bash
-   ./gradlew build
-   ```
+For an SDK build published to a local Maven directory:
 
-3. If you encounter any issues, ensure all the above prerequisites are correctly configured.
+```bash
+./gradlew assembleDebug -PsmkitLocalRepo=/absolute/path/to/smkit_android/repo
+```
 
-## Additional Notes
-
-- The SDK automatically handles 16KB page size optimizations internally
-- No additional runtime configuration is needed beyond meeting the build prerequisites
-- These requirements ensure compatibility with both current Android versions and Android 15
-
-## Support
-
-If you have issues with prerequisites or configuration, [contact us](mailto:support@sency.ai).
+No additional runtime work is required for 16 KB page-size support.

@@ -1,7 +1,6 @@
 package com.example.smkituidemoapp
 
 import android.Manifest
-import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.Editable
@@ -17,6 +16,7 @@ import androidx.core.content.ContextCompat
 import com.example.smkituidemoapp.databinding.MainActivityBinding
 import com.example.smkituidemoapp.viewModels.MainViewModel
 import com.example.smkituidemoapp.viewModels.SdkFeatureSettings
+import com.sency.smkit.PoseModelChoice
 import com.sency.smkitui.SMKitUI
 import com.sency.smkitui.listener.SMKitUIConfigurationListener
 import com.sency.smkitui.listener.SMKitUIWorkoutListener
@@ -30,9 +30,15 @@ import com.sency.smkitui.model.workoutConfig.CounterPreference
 import com.sency.smkitui.model.workoutConfig.EndExercisePreference
 import com.sency.smkitui.model.SkeletonPreset
 import com.sency.smkitui.model.InstructionVideoConfig
+import com.sency.smkitui.model.UIColorTheme
 import com.sency.smkitui.model.VideoDisplayMode
 import com.sency.smkitui.presentation.fragment.PauseDialogTypes
 import com.sency.smkitui.model.smkitui.Fitness
+import com.sency.smkitui.model.workoutConfig.BodyZone
+import com.sency.smkitui.model.workoutConfig.DifficultyLevel
+import com.sency.smkitui.model.workoutConfig.SMLanguage
+import com.sency.smkitui.model.workoutConfig.WorkoutConfig
+import com.sency.smkitui.model.workoutConfig.WorkoutDuration
 
 class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
 
@@ -51,12 +57,12 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
     private val configurationResult = object : SMKitUIConfigurationListener {
         override fun onFailure() {
             viewModel.setConfigured(false)
-            Log.d("Activity", "failed to configure")
+            showConfigurationFailure("SMKitUI configuration failed")
         }
 
         override fun onFailure(error: String) {
             viewModel.setConfigured(false)
-            Log.d("Activity", error)
+            showConfigurationFailure(error)
         }
 
         override fun onSuccess() {
@@ -65,32 +71,43 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
         }
     }
 
+    private fun showConfigurationFailure(message: String) {
+        Log.e(tag, message)
+        binding.progressBar.visibility = View.INVISIBLE
+        Toast.makeText(baseContext, message, Toast.LENGTH_LONG).show()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = MainActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        requestPermmions()
+        requestCameraPermission()
         observeConfiguration()
         setClickListeners()
         populateSdkFeatureExerciseMenu()
+        configureSdk()
+    }
+
+    private fun configureSdk() {
+        val settings = readBasicSettings()
+        viewModel.setConfigured(false)
         binding.progressBar.visibility = View.VISIBLE
-        // To customize UI colors, use setColorTheme(UIColorTheme.BLUE)
-        // Available colors: BLUE, GREEN (default), PURPLE, ORANGE, SILVER, GOLD, PINK
-        smKitUI = SMKitUI.Configuration(baseContext)
+        smKitUI = SMKitUI.Configuration(applicationContext)
             .setUIKey(apiPublicKey)
-            // 1.4.9: Apply a skeleton visualisation preset at configuration time.
-            // Fine-tune further with individual properties (see README for all options).
-            .applySkeletonSettings {
-                skeletonPreset = SkeletonPreset.DEFAULT
-            }
-            .applyBasicSettings(readBasicSettings())
+            .setPoseModelChoice(PoseModelChoice.AdaptiveChoice)
+            .setConfigureLanguage(settings.sessionLanguage())
+            .setInstructionVideoConfig(settings.instructionVideoConfig())
+            .setSmallBodyPartFocusEnabled(settings.smallBodyPartFocus)
+            .setExerciseSummaryTimingMetricsEnabled(settings.exerciseSummaryTimingMetrics)
+            .setIncludeAssessmentInsights(settings.includeAssessmentInsights)
+            .setGuidanceModeSuggestionEnabled(settings.guidanceModeSuggestion)
+            .setColorTheme(UIColorTheme.GREEN)
+            .setButtonTutorialCompletionAudioUri(null)
+            .applySkeletonSettings { skeletonPreset = SkeletonPreset.DEFAULT }
+            .applyBasicSettings(settings)
             .configure(configurationResult)
 
-        // 1.4.9: Enable intelligence-driven rest suggestions based on fatigue detection.
-        smKitUI?.setIntelligenceRestEnabled(true)
-
-        // 1.4.9: Choose which buttons appear on the pause overlay.
-        // Buttons are activated by hovering the palm over the icon (~1.5 s hold).
+        applyBasicSettingsToSdk(settings)
         smKitUI?.setPauseTypes(
             arrayOf(
                 PauseDialogTypes.Resume,
@@ -147,6 +164,7 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
         binding.startCustomWorkout.setOnClickListener {
             if(smKitUI != null) {
                 applyBasicSettingsToSdk()
+                val settings = readBasicSettings()
                 val smWorkout = SMWorkout(
                     id = "50",
                     name = "demo workout",
@@ -160,7 +178,8 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
                         introSoundKey = "continue_workout_intro",
                         interactionUnlockSoundKey = "smkitui_button_tutorial_start",
                         exercises = viewModel.continuationExercises(),
-                    )
+                    ),
+                    exportInternalInsights = settings.exportAssessmentInsights,
                 )
                 val modifications = getExampleModificationsJson()
                 smKitUI?.startCustomizedWorkout(
@@ -170,6 +189,55 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
                     showPhoneCalibration = true
                 )
             }
+        }
+        binding.startCustomAssessment.setOnClickListener {
+            val settings = readBasicSettings()
+            applyBasicSettingsToSdk(settings)
+            val assessment = SMWorkout(
+                id = "custom_assessment_demo",
+                name = "Custom Assessment Demo",
+                workoutIntro = "",
+                soundtrack = "",
+                exercises = viewModel.exercies(),
+                workoutClosure = "",
+                getInFrame = "",
+                bodycalFinished = "",
+                exportInternalInsights = settings.exportAssessmentInsights,
+            )
+            smKitUI?.startCustomizedAssessment(
+                workout = assessment,
+                showSummary = true,
+                listener = this,
+                modifications = getExampleModificationsJson(),
+                showPhoneCalibration = true,
+            )
+        }
+        binding.startWorkoutProgram.setOnClickListener {
+            val programId = binding.programIdInput.text?.toString()?.trim().orEmpty()
+            if (programId.isEmpty()) {
+                Toast.makeText(baseContext, "Enter the program ID supplied by Sency", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+            val settings = readBasicSettings()
+            applyBasicSettingsToSdk(settings)
+            smKitUI?.startWorkoutProgram(
+                workoutConfig = WorkoutConfig(
+                    programId = programId,
+                    week = 1,
+                    bodyZone = BodyZone.FullBody,
+                    difficultyLevel = DifficultyLevel.MidDifficulty,
+                    workoutDuration = WorkoutDuration.Short,
+                    language = settings.sessionLanguage(),
+                    shortIntro = settings.shortIntro,
+                ),
+                listener = this,
+                modifications = getExampleModificationsJson(),
+                showPhoneCalibration = true,
+            )
+        }
+        binding.applySdkConfiguration.setOnClickListener {
+            configureSdk()
+            Toast.makeText(baseContext, "Reconfiguring SMKitUI with current settings", Toast.LENGTH_SHORT).show()
         }
         binding.clearAdaptiveRomCache.setOnClickListener {
             smKitUI?.clearAdaptiveRomCache()
@@ -231,6 +299,7 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
             workoutClosure = "",
             getInFrame = "",
             bodycalFinished = "",
+            exportInternalInsights = settings.exportAssessmentInsights,
         )
         smKitUI?.startCustomizedWorkout(
             smWorkout,
@@ -243,10 +312,19 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
     private fun bindBasicSettings() {
         val settingSwitches = listOf(
             binding.useDefaultGuidanceModeSwitch,
+            binding.guidanceModeSuggestionSwitch,
             binding.guidanceDebugLoggingSwitch,
+            binding.smallBodyPartFocusSwitch,
             binding.variationMismatchFeedbackSwitch,
             binding.phoneMovementPreventionSwitch,
             binding.startTimerOnFirstActivitySwitch,
+            binding.exerciseSummaryTimingMetricsSwitch,
+            binding.includeAssessmentInsightsSwitch,
+            binding.exportAssessmentInsightsSwitch,
+            binding.hebrewSessionSwitch,
+            binding.perfectOnlyCounterSwitch,
+            binding.targetBasedCompletionSwitch,
+            binding.mediumCycleInstructionVideoSwitch,
             binding.playPhoneCalibrationAudioSwitch,
             binding.playBodyCalibrationAudioSwitch,
             binding.allowAudioMixingSwitch,
@@ -256,8 +334,13 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
             binding.preExerciseCountdownSwitch,
             binding.soundOnEachRepSwitch,
             binding.repMilestoneVoiceSwitch,
+            binding.targetRepsCompletionVoiceSwitch,
+            binding.intentVoiceFeedbackSwitch,
+            binding.showTargetProgressSwitch,
             binding.adaptiveRomFeedbackSwitch,
             binding.stretchSetConfigSwitch,
+            binding.positionRepsSwitch,
+            binding.exerciseProgressDisplaySwitch,
         )
         settingSwitches.forEach { settingSwitch ->
             settingSwitch.setOnCheckedChangeListener { _, _ ->
@@ -278,7 +361,19 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
     }
 
     private fun applyBasicSettingsToSdk(settings: SdkFeatureSettings) {
+        smKitUI?.setSessionLanguage(settings.sessionLanguage())
+        smKitUI?.setPhoneCalibrationLanguage(settings.sessionLanguage())
+        smKitUI?.setCounterPreferences(
+            if (settings.perfectOnlyCounter) CounterPreference.PerfectOnly else CounterPreference.Default
+        )
+        smKitUI?.setEndExercisePreferences(
+            if (settings.targetBasedCompletion) EndExercisePreference.TargetBased else EndExercisePreference.Default
+        )
+        smKitUI?.setIntelligenceRestEnabled(true)
+        smKitUI?.setInstructionVideoConfig(settings.instructionVideoConfig())
+        smKitUI?.setSmallBodyPartFocusEnabled(settings.smallBodyPartFocus)
         smKitUI?.setUseDefaultGuidanceMode(settings.useDefaultGuidanceMode)
+        smKitUI?.setGuidanceModeSuggestionEnabled(settings.guidanceModeSuggestion)
         smKitUI?.setGuidanceDebugLogging(settings.guidanceDebugLogging)
         smKitUI?.setVariationMismatchFeedbackEnabled(settings.variationMismatchFeedback)
         smKitUI?.setPhoneMovementCountPreventionEnabled(settings.phoneMovementPrevention)
@@ -289,14 +384,30 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
         smKitUI?.setAllowAudioMixing(settings.allowAudioMixing)
         smKitUI?.setShowExternalAudioControl(settings.showExternalAudioControl)
         smKitUI?.setEnableButtonTutorial(settings.enableButtonTutorial)
+        smKitUI?.setButtonTutorialCompletionAudioUri(null)
+        smKitUI?.setColorTheme(UIColorTheme.GREEN)
+        smKitUI?.applySkeletonSettings { skeletonPreset = SkeletonPreset.DEFAULT }
+        smKitUI?.setFeedbacksUIToExclude(emptySet())
+        smKitUI?.setConfigString(
+            binding.sdkConfigStringInput.text?.toString()?.trim()?.takeIf(String::isNotEmpty)
+        )
     }
 
     private fun readBasicSettings() = SdkFeatureSettings(
         useDefaultGuidanceMode = binding.useDefaultGuidanceModeSwitch.isChecked,
+        guidanceModeSuggestion = binding.guidanceModeSuggestionSwitch.isChecked,
         guidanceDebugLogging = binding.guidanceDebugLoggingSwitch.isChecked,
+        smallBodyPartFocus = binding.smallBodyPartFocusSwitch.isChecked,
         variationMismatchFeedback = binding.variationMismatchFeedbackSwitch.isChecked,
         phoneMovementPrevention = binding.phoneMovementPreventionSwitch.isChecked,
         startTimerOnFirstActivity = binding.startTimerOnFirstActivitySwitch.isChecked,
+        exerciseSummaryTimingMetrics = binding.exerciseSummaryTimingMetricsSwitch.isChecked,
+        includeAssessmentInsights = binding.includeAssessmentInsightsSwitch.isChecked,
+        exportAssessmentInsights = binding.exportAssessmentInsightsSwitch.isChecked,
+        hebrewSession = binding.hebrewSessionSwitch.isChecked,
+        perfectOnlyCounter = binding.perfectOnlyCounterSwitch.isChecked,
+        targetBasedCompletion = binding.targetBasedCompletionSwitch.isChecked,
+        mediumCycleInstructionVideo = binding.mediumCycleInstructionVideoSwitch.isChecked,
         workoutContinuationTimerSeconds = binding.workoutContinuationTimerInput.text
             ?.toString()
             ?.toIntOrNull()
@@ -311,13 +422,20 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
         preExerciseCountdown = binding.preExerciseCountdownSwitch.isChecked,
         soundOnEachRep = binding.soundOnEachRepSwitch.isChecked,
         repMilestoneVoice = binding.repMilestoneVoiceSwitch.isChecked,
+        targetRepsCompletionVoice = binding.targetRepsCompletionVoiceSwitch.isChecked,
+        intentVoiceFeedback = binding.intentVoiceFeedbackSwitch.isChecked,
+        showTargetProgress = binding.showTargetProgressSwitch.isChecked,
         adaptiveRomFeedback = binding.adaptiveRomFeedbackSwitch.isChecked,
         stretchSetConfig = binding.stretchSetConfigSwitch.isChecked,
+        positionReps = binding.positionRepsSwitch.isChecked,
+        exerciseProgressDisplay = binding.exerciseProgressDisplaySwitch.isChecked,
     )
 
     private fun SMKitUI.Configuration.applyBasicSettings(settings: SdkFeatureSettings): SMKitUI.Configuration =
         setUseDefaultGuidanceMode(settings.useDefaultGuidanceMode)
+            .setGuidanceModeSuggestionEnabled(settings.guidanceModeSuggestion)
             .setGuidanceDebugLogging(settings.guidanceDebugLogging)
+            .setSmallBodyPartFocusEnabled(settings.smallBodyPartFocus)
             .setVariationMismatchFeedbackEnabled(settings.variationMismatchFeedback)
             .setPhoneMovementCountPreventionEnabled(settings.phoneMovementPrevention)
             .setStartTimerOnFirstActivity(settings.startTimerOnFirstActivity)
@@ -327,6 +445,19 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
             .setAllowAudioMixing(settings.allowAudioMixing)
             .setShowExternalAudioControl(settings.showExternalAudioControl)
             .setEnableButtonTutorial(settings.enableButtonTutorial)
+
+    private fun SdkFeatureSettings.sessionLanguage(): SMLanguage =
+        if (hebrewSession) SMLanguage.Hebrew else SMLanguage.English
+
+    private fun SdkFeatureSettings.instructionVideoConfig(): InstructionVideoConfig =
+        InstructionVideoConfig(
+            displayMode = if (mediumCycleInstructionVideo) {
+                VideoDisplayMode.MEDIUM_CYCLE
+            } else {
+                VideoDisplayMode.DEFAULT
+            },
+            mediumSizeCycles = 3,
+        )
 
     private fun getExampleModificationsJson(): String? {
         // Example 1: JSON format (recommended - easier to read and maintain)
@@ -362,10 +493,15 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
         }
     }
 
-    private fun requestPermmions() {
-        if (!hasPermissions(baseContext)) {
-            launcher.launch(PERMISSIONS_REQUIRED)
+    private fun requestCameraPermission() {
+        if (!hasPermission(Manifest.permission.CAMERA)) {
+            cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
         }
+    }
+
+    override fun onDestroy() {
+        _binding = null
+        super.onDestroy()
     }
 
     override fun didExitWorkout(summary: WorkoutSummaryData) {
@@ -393,24 +529,14 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
         Log.d(tag, "workoutDidFinish: $summary")
     }
 
-    private val launcher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-        // Handle Permission granted/rejected
-        var permissionGranted = true
-        permissions.entries.forEach {
-            if (it.key in PERMISSIONS_REQUIRED && !it.value) permissionGranted = false
+    private val cameraPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            if (!granted) {
+                Toast.makeText(baseContext, "Camera permission is required", Toast.LENGTH_LONG).show()
+            }
         }
-        if (!permissionGranted) {
-            Toast.makeText(baseContext, "Permission request denied", Toast.LENGTH_LONG).show()
-        }
-    }
 
-    companion object {
-        private val PERMISSIONS_REQUIRED = arrayOf(Manifest.permission.CAMERA)
-
-        /** Convenience method used to check if all permissions required by this app are granted */
-        fun hasPermissions(context: Context) = PERMISSIONS_REQUIRED.all {
-            ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
-        }
-    }
+    private fun hasPermission(permission: String): Boolean =
+        ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
 
 }
