@@ -37,13 +37,11 @@ android {
         }
         release {
             minifyEnabled false
-            debuggable true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
             buildConfigField 'boolean', 'IS_PROD', "true"
 
             manifestPlaceholders = [appIcon: "@mipmap/ic_launcher_prod"]
-            signingConfig signingConfigs.debug
         }
     }
     compileOptions {

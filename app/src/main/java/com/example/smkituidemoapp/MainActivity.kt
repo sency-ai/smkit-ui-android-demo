@@ -7,7 +7,12 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.CheckBox
+import android.widget.CompoundButton
+import android.widget.SeekBar
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -17,6 +22,7 @@ import com.example.smkituidemoapp.databinding.MainActivityBinding
 import com.example.smkituidemoapp.viewModels.MainViewModel
 import com.example.smkituidemoapp.viewModels.SdkFeatureSettings
 import com.sency.smkit.PoseModelChoice
+import com.sency.smbase.nativeclient.model.FormFeedbackType
 import com.sency.smkitui.SMKitUI
 import com.sency.smkitui.listener.SMKitUIConfigurationListener
 import com.sency.smkitui.listener.SMKitUIWorkoutListener
@@ -29,16 +35,24 @@ import com.sency.smkitui.model.WorkoutSummaryData
 import com.sency.smkitui.model.workoutConfig.CounterPreference
 import com.sency.smkitui.model.workoutConfig.EndExercisePreference
 import com.sency.smkitui.model.SkeletonPreset
+import com.sency.smkitui.model.SkeletonColorOption
+import com.sency.smkitui.model.SkeletonConnectionStyle
+import com.sency.smkitui.model.SkeletonJointShape
 import com.sency.smkitui.model.InstructionVideoConfig
 import com.sency.smkitui.model.UIColorTheme
 import com.sency.smkitui.model.VideoDisplayMode
 import com.sency.smkitui.presentation.fragment.PauseDialogTypes
+import com.sency.smkitui.model.smkitui.AssessmentType
+import com.sency.smkitui.model.smkitui.Body360
+import com.sency.smkitui.model.smkitui.Cardio
 import com.sency.smkitui.model.smkitui.Fitness
+import com.sency.smkitui.model.smkitui.Strength
 import com.sency.smkitui.model.workoutConfig.BodyZone
 import com.sency.smkitui.model.workoutConfig.DifficultyLevel
 import com.sency.smkitui.model.workoutConfig.SMLanguage
 import com.sency.smkitui.model.workoutConfig.WorkoutConfig
 import com.sency.smkitui.model.workoutConfig.WorkoutDuration
+import java.util.Locale
 
 class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
 
@@ -49,6 +63,17 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
     private var smKitUI: SMKitUI? = null
     private val selectedSdkFeatureDetectors = linkedSetOf<String>()
     private val sdkFeatureExerciseChecks = mutableMapOf<String, CheckBox>()
+    private val settingsPreferences by lazy {
+        getSharedPreferences("smkitui_demo_settings", MODE_PRIVATE)
+    }
+    private var restoringSettings = false
+
+    private val builtInAssessmentOptions: List<Pair<String, AssessmentType>> = listOf(
+        "Fitness" to Fitness,
+        "Body 360" to Body360,
+        "Cardio" to Cardio,
+        "Strength" to Strength,
+    )
 
     private val tag = this::class.java.simpleName
 
@@ -83,6 +108,7 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
         setContentView(binding.root)
         requestCameraPermission()
         observeConfiguration()
+        setupSettingsControls()
         setClickListeners()
         populateSdkFeatureExerciseMenu()
         configureSdk()
@@ -94,28 +120,21 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
         binding.progressBar.visibility = View.VISIBLE
         smKitUI = SMKitUI.Configuration(applicationContext)
             .setUIKey(apiPublicKey)
-            .setPoseModelChoice(PoseModelChoice.AdaptiveChoice)
-            .setConfigureLanguage(settings.sessionLanguage())
+            .setPoseModelChoice(settings.poseModelChoice)
+            .setConfigureLanguage(settings.sessionLanguage)
             .setInstructionVideoConfig(settings.instructionVideoConfig())
             .setSmallBodyPartFocusEnabled(settings.smallBodyPartFocus)
             .setExerciseSummaryTimingMetricsEnabled(settings.exerciseSummaryTimingMetrics)
             .setIncludeAssessmentInsights(settings.includeAssessmentInsights)
             .setGuidanceModeSuggestionEnabled(settings.guidanceModeSuggestion)
-            .setColorTheme(UIColorTheme.GREEN)
+            .setColorTheme(settings.colorTheme)
             .setButtonTutorialCompletionAudioUri(null)
-            .applySkeletonSettings { skeletonPreset = SkeletonPreset.DEFAULT }
+            .applySkeletonSettings { applyDemoSettings(settings) }
             .applyBasicSettings(settings)
             .configure(configurationResult)
 
         applyBasicSettingsToSdk(settings)
-        smKitUI?.setPauseTypes(
-            arrayOf(
-                PauseDialogTypes.Resume,
-                PauseDialogTypes.Skip,
-                PauseDialogTypes.StartOver,
-                PauseDialogTypes.Quit,
-            )
-        )
+        smKitUI?.setPauseTypes(settings.pauseTypes.toTypedArray())
     }
 
     private fun setClickListeners() {
@@ -141,7 +160,8 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
             startSdkFeaturesWorkout()
         }
         binding.startAssessment.setOnClickListener {
-            applyBasicSettingsToSdk()
+            val settings = readBasicSettings()
+            applyBasicSettingsToSdk(settings)
             val modifications = getExampleModificationsJson()
 
             // Configure instruction video cycling (optional - uncomment to test)
@@ -153,12 +173,12 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
             // )
 
             smKitUI?.startAssessment(
-                assessmentType = Fitness,
+                assessmentType = settings.assessmentType,
                 listener = this,
                 userData = UserData(14, Gender.Male),
                 showSummary = true,
                 modifications = modifications, // Pass modifications dict here
-                showPhoneCalibration = true
+                showPhoneCalibration = settings.showPhoneCalibration
             )
         }
         binding.startCustomWorkout.setOnClickListener {
@@ -186,7 +206,7 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
                     smWorkout,
                     listener = this,
                     modifications = modifications,
-                    showPhoneCalibration = true
+                    showPhoneCalibration = settings.showPhoneCalibration
                 )
             }
         }
@@ -209,7 +229,7 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
                 showSummary = true,
                 listener = this,
                 modifications = getExampleModificationsJson(),
-                showPhoneCalibration = true,
+                showPhoneCalibration = settings.showPhoneCalibration,
             )
         }
         binding.startWorkoutProgram.setOnClickListener {
@@ -227,12 +247,12 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
                     bodyZone = BodyZone.FullBody,
                     difficultyLevel = DifficultyLevel.MidDifficulty,
                     workoutDuration = WorkoutDuration.Short,
-                    language = settings.sessionLanguage(),
+                    language = settings.sessionLanguage,
                     shortIntro = settings.shortIntro,
                 ),
                 listener = this,
                 modifications = getExampleModificationsJson(),
-                showPhoneCalibration = true,
+                showPhoneCalibration = settings.showPhoneCalibration,
             )
         }
         binding.applySdkConfiguration.setOnClickListener {
@@ -305,53 +325,170 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
             smWorkout,
             listener = this,
             modifications = getExampleModificationsJson(),
-            showPhoneCalibration = true,
+            showPhoneCalibration = settings.showPhoneCalibration,
         )
     }
 
-    private fun bindBasicSettings() {
-        val settingSwitches = listOf(
-            binding.useDefaultGuidanceModeSwitch,
-            binding.guidanceModeSuggestionSwitch,
-            binding.guidanceDebugLoggingSwitch,
-            binding.smallBodyPartFocusSwitch,
-            binding.variationMismatchFeedbackSwitch,
-            binding.phoneMovementPreventionSwitch,
-            binding.startTimerOnFirstActivitySwitch,
-            binding.exerciseSummaryTimingMetricsSwitch,
-            binding.includeAssessmentInsightsSwitch,
-            binding.exportAssessmentInsightsSwitch,
-            binding.hebrewSessionSwitch,
-            binding.perfectOnlyCounterSwitch,
-            binding.targetBasedCompletionSwitch,
-            binding.mediumCycleInstructionVideoSwitch,
-            binding.playPhoneCalibrationAudioSwitch,
-            binding.playBodyCalibrationAudioSwitch,
-            binding.allowAudioMixingSwitch,
-            binding.showExternalAudioControlSwitch,
-            binding.enableButtonTutorialSwitch,
-            binding.shortIntroSwitch,
-            binding.preExerciseCountdownSwitch,
-            binding.soundOnEachRepSwitch,
-            binding.repMilestoneVoiceSwitch,
-            binding.targetRepsCompletionVoiceSwitch,
-            binding.intentVoiceFeedbackSwitch,
-            binding.showTargetProgressSwitch,
-            binding.adaptiveRomFeedbackSwitch,
-            binding.stretchSetConfigSwitch,
-            binding.positionRepsSwitch,
-            binding.exerciseProgressDisplaySwitch,
+    private fun setupSettingsControls() {
+        restoringSettings = true
+
+        bindSpinner(
+            binding.builtInAssessmentTypeSpinner,
+            builtInAssessmentOptions.map { it.first },
         )
-        settingSwitches.forEach { settingSwitch ->
-            settingSwitch.setOnCheckedChangeListener { _, _ ->
+        bindSpinner(binding.poseModelChoiceSpinner, PoseModelChoice.values().map { it.name })
+        bindSpinner(binding.colorThemeSpinner, UIColorTheme.values().map { it.name.toDisplayName() })
+        bindSpinner(binding.sessionLanguageSpinner, SMLanguage.values().map { it.name })
+        bindSpinner(binding.phoneCalibrationLanguageSpinner, SMLanguage.values().map { it.name })
+        bindSpinner(binding.skeletonPresetSpinner, SkeletonPreset.values().map { it.name.toDisplayName() })
+        bindSpinner(
+            binding.skeletonConnectionStyleSpinner,
+            SkeletonConnectionStyle.values().map { it.name.toDisplayName() },
+        )
+        bindSpinner(binding.skeletonJointShapeSpinner, SkeletonJointShape.values().map { it.name.toDisplayName() })
+        val skeletonColors = listOf("Preset") + SkeletonColorOption.values().map { it.name.toDisplayName() }
+        bindSpinner(binding.skeletonDotsInnerColorSpinner, skeletonColors)
+        bindSpinner(binding.skeletonDotsOuterColorSpinner, skeletonColors)
+        bindSpinner(binding.skeletonConnectionsInnerColorSpinner, skeletonColors)
+        bindSpinner(binding.skeletonConnectionsOuterColorSpinner, skeletonColors)
+
+        settingsSwitches().forEach { settingSwitch ->
+            val key = settingSwitch.preferenceKey()
+            settingSwitch.isChecked = settingsPreferences.getBoolean(key, settingSwitch.isChecked)
+        }
+        settingsSeekBars().forEach { seekBar ->
+            val key = seekBar.preferenceKey()
+            seekBar.progress = settingsPreferences.getInt(key, seekBar.progress)
+        }
+        binding.workoutContinuationTimerInput.setText(
+            settingsPreferences.getString("workoutContinuationTimerInput", binding.workoutContinuationTimerInput.text?.toString())
+        )
+        binding.instructionVideoCyclesInput.setText(
+            settingsPreferences.getString("instructionVideoCyclesInput", binding.instructionVideoCyclesInput.text?.toString())
+        )
+        binding.sdkConfigStringInput.setText(
+            settingsPreferences.getString("sdkConfigStringInput", "")
+        )
+
+        restoringSettings = false
+    }
+
+    private fun bindSpinner(spinner: Spinner, labels: List<String>) {
+        spinner.adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item,
+            labels,
+        ).apply { setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
+        val key = spinner.preferenceKey()
+        spinner.setSelection(settingsPreferences.getInt(key, spinner.selectedItemPosition).coerceIn(labels.indices))
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (restoringSettings) return
+                settingsPreferences.edit().putInt(key, position).apply()
                 applyBasicSettingsToSdk()
             }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) = Unit
+        }
+    }
+
+    private fun settingsSwitches(): List<CompoundButton> = listOf(
+        binding.showPhoneCalibrationSwitch,
+        binding.useDefaultGuidanceModeSwitch,
+        binding.guidanceModeSuggestionSwitch,
+        binding.guidanceDebugLoggingSwitch,
+        binding.smallBodyPartFocusSwitch,
+        binding.variationMismatchFeedbackSwitch,
+        binding.phoneMovementPreventionSwitch,
+        binding.startTimerOnFirstActivitySwitch,
+        binding.exerciseSummaryTimingMetricsSwitch,
+        binding.includeAssessmentInsightsSwitch,
+        binding.exportAssessmentInsightsSwitch,
+        binding.perfectOnlyCounterSwitch,
+        binding.targetBasedCompletionSwitch,
+        binding.mediumCycleInstructionVideoSwitch,
+        binding.playPhoneCalibrationAudioSwitch,
+        binding.playBodyCalibrationAudioSwitch,
+        binding.allowAudioMixingSwitch,
+        binding.showExternalAudioControlSwitch,
+        binding.enableButtonTutorialSwitch,
+        binding.intelligenceRestSwitch,
+        binding.excludePushupKneesFeedbackSwitch,
+        binding.skeletonHiddenSwitch,
+        binding.pauseResumeSwitch,
+        binding.pauseSkipSwitch,
+        binding.pauseStartOverSwitch,
+        binding.pauseQuitSwitch,
+        binding.pauseRestSwitch,
+        binding.pauseSwitchSwitch,
+        binding.shortIntroSwitch,
+        binding.preExerciseCountdownSwitch,
+        binding.soundOnEachRepSwitch,
+        binding.repMilestoneVoiceSwitch,
+        binding.targetRepsCompletionVoiceSwitch,
+        binding.intentVoiceFeedbackSwitch,
+        binding.showTargetProgressSwitch,
+        binding.adaptiveRomFeedbackSwitch,
+        binding.stretchSetConfigSwitch,
+        binding.positionRepsSwitch,
+        binding.exerciseProgressDisplaySwitch,
+    )
+
+    private fun settingsSeekBars(): List<SeekBar> = listOf(
+        binding.skeletonDotsOpacitySeekBar,
+        binding.skeletonConnectionsOpacitySeekBar,
+        binding.skeletonDotsGlowSeekBar,
+        binding.skeletonConnectionsGlowSeekBar,
+        binding.skeletonLineWidthSeekBar,
+        binding.skeletonOutlineSeekBar,
+        binding.skeletonSoftnessSeekBar,
+        binding.skeletonAnimationSeekBar,
+    )
+
+    private fun bindBasicSettings() {
+        settingsSwitches().forEach { settingSwitch ->
+            settingSwitch.setOnCheckedChangeListener { _, isChecked ->
+                if (restoringSettings) return@setOnCheckedChangeListener
+                settingsPreferences.edit().putBoolean(settingSwitch.preferenceKey(), isChecked).apply()
+                applyBasicSettingsToSdk()
+            }
+        }
+        settingsSeekBars().forEach { seekBar ->
+            seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                    if (!fromUser || restoringSettings) return
+                    settingsPreferences.edit().putInt(seekBar.preferenceKey(), progress).apply()
+                    applyBasicSettingsToSdk()
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit
+                override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
+            })
         }
         binding.workoutContinuationTimerInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
             override fun afterTextChanged(s: Editable?) {
+                if (restoringSettings) return
+                settingsPreferences.edit().putString("workoutContinuationTimerInput", s?.toString()).apply()
                 applyBasicSettingsToSdk()
+            }
+        })
+        binding.instructionVideoCyclesInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
+            override fun afterTextChanged(s: Editable?) {
+                if (restoringSettings) return
+                settingsPreferences.edit().putString("instructionVideoCyclesInput", s?.toString()).apply()
+                applyBasicSettingsToSdk()
+            }
+        })
+        binding.sdkConfigStringInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
+            override fun afterTextChanged(s: Editable?) {
+                if (restoringSettings) return
+                settingsPreferences.edit().putString("sdkConfigStringInput", s?.toString()).apply()
             }
         })
     }
@@ -361,15 +498,15 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
     }
 
     private fun applyBasicSettingsToSdk(settings: SdkFeatureSettings) {
-        smKitUI?.setSessionLanguage(settings.sessionLanguage())
-        smKitUI?.setPhoneCalibrationLanguage(settings.sessionLanguage())
+        smKitUI?.setSessionLanguage(settings.sessionLanguage)
+        smKitUI?.setPhoneCalibrationLanguage(settings.phoneCalibrationLanguage)
         smKitUI?.setCounterPreferences(
             if (settings.perfectOnlyCounter) CounterPreference.PerfectOnly else CounterPreference.Default
         )
         smKitUI?.setEndExercisePreferences(
             if (settings.targetBasedCompletion) EndExercisePreference.TargetBased else EndExercisePreference.Default
         )
-        smKitUI?.setIntelligenceRestEnabled(true)
+        smKitUI?.setIntelligenceRestEnabled(settings.intelligenceRest)
         smKitUI?.setInstructionVideoConfig(settings.instructionVideoConfig())
         smKitUI?.setSmallBodyPartFocusEnabled(settings.smallBodyPartFocus)
         smKitUI?.setUseDefaultGuidanceMode(settings.useDefaultGuidanceMode)
@@ -385,15 +522,44 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
         smKitUI?.setShowExternalAudioControl(settings.showExternalAudioControl)
         smKitUI?.setEnableButtonTutorial(settings.enableButtonTutorial)
         smKitUI?.setButtonTutorialCompletionAudioUri(null)
-        smKitUI?.setColorTheme(UIColorTheme.GREEN)
-        smKitUI?.applySkeletonSettings { skeletonPreset = SkeletonPreset.DEFAULT }
-        smKitUI?.setFeedbacksUIToExclude(emptySet())
+        smKitUI?.setColorTheme(settings.colorTheme)
+        smKitUI?.applySkeletonSettings { applyDemoSettings(settings) }
+        smKitUI?.setPauseTypes(settings.pauseTypes.toTypedArray())
+        smKitUI?.setFeedbacksUIToExclude(
+            if (settings.excludePushupKneesFeedback) {
+                setOf(FormFeedbackType.PushupKneesOnFloor)
+            } else {
+                emptySet()
+            }
+        )
         smKitUI?.setConfigString(
             binding.sdkConfigStringInput.text?.toString()?.trim()?.takeIf(String::isNotEmpty)
         )
     }
 
     private fun readBasicSettings() = SdkFeatureSettings(
+        assessmentType = builtInAssessmentOptions[binding.builtInAssessmentTypeSpinner.selectedItemPosition].second,
+        showPhoneCalibration = binding.showPhoneCalibrationSwitch.isChecked,
+        poseModelChoice = PoseModelChoice.values()[binding.poseModelChoiceSpinner.selectedItemPosition],
+        colorTheme = UIColorTheme.values()[binding.colorThemeSpinner.selectedItemPosition],
+        sessionLanguage = SMLanguage.values()[binding.sessionLanguageSpinner.selectedItemPosition],
+        phoneCalibrationLanguage = SMLanguage.values()[binding.phoneCalibrationLanguageSpinner.selectedItemPosition],
+        skeletonHidden = binding.skeletonHiddenSwitch.isChecked,
+        skeletonPreset = SkeletonPreset.values()[binding.skeletonPresetSpinner.selectedItemPosition],
+        skeletonConnectionStyle = SkeletonConnectionStyle.values()[binding.skeletonConnectionStyleSpinner.selectedItemPosition],
+        skeletonJointShape = SkeletonJointShape.values()[binding.skeletonJointShapeSpinner.selectedItemPosition],
+        skeletonDotsInnerColor = binding.skeletonDotsInnerColorSpinner.selectedSkeletonColor(),
+        skeletonDotsOuterColor = binding.skeletonDotsOuterColorSpinner.selectedSkeletonColor(),
+        skeletonConnectionsInnerColor = binding.skeletonConnectionsInnerColorSpinner.selectedSkeletonColor(),
+        skeletonConnectionsOuterColor = binding.skeletonConnectionsOuterColorSpinner.selectedSkeletonColor(),
+        skeletonDotsOpacity = binding.skeletonDotsOpacitySeekBar.progress / 100f,
+        skeletonConnectionsOpacity = binding.skeletonConnectionsOpacitySeekBar.progress / 100f,
+        skeletonDotsGlow = binding.skeletonDotsGlowSeekBar.progress / 100f,
+        skeletonConnectionsGlow = binding.skeletonConnectionsGlowSeekBar.progress / 100f,
+        skeletonLineWidthScale = (binding.skeletonLineWidthSeekBar.progress + 50) / 100f,
+        skeletonOutlineScale = (binding.skeletonOutlineSeekBar.progress + 50) / 100f,
+        skeletonSoftness = binding.skeletonSoftnessSeekBar.progress / 100f,
+        skeletonAnimationDurationSeconds = binding.skeletonAnimationSeekBar.progress / 1000f,
         useDefaultGuidanceMode = binding.useDefaultGuidanceModeSwitch.isChecked,
         guidanceModeSuggestion = binding.guidanceModeSuggestionSwitch.isChecked,
         guidanceDebugLogging = binding.guidanceDebugLoggingSwitch.isChecked,
@@ -404,10 +570,11 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
         exerciseSummaryTimingMetrics = binding.exerciseSummaryTimingMetricsSwitch.isChecked,
         includeAssessmentInsights = binding.includeAssessmentInsightsSwitch.isChecked,
         exportAssessmentInsights = binding.exportAssessmentInsightsSwitch.isChecked,
-        hebrewSession = binding.hebrewSessionSwitch.isChecked,
         perfectOnlyCounter = binding.perfectOnlyCounterSwitch.isChecked,
         targetBasedCompletion = binding.targetBasedCompletionSwitch.isChecked,
         mediumCycleInstructionVideo = binding.mediumCycleInstructionVideoSwitch.isChecked,
+        instructionVideoCycles = binding.instructionVideoCyclesInput.text
+            ?.toString()?.toIntOrNull()?.coerceIn(1, 5) ?: 3,
         workoutContinuationTimerSeconds = binding.workoutContinuationTimerInput.text
             ?.toString()
             ?.toIntOrNull()
@@ -418,6 +585,9 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
         allowAudioMixing = binding.allowAudioMixingSwitch.isChecked,
         showExternalAudioControl = binding.showExternalAudioControlSwitch.isChecked,
         enableButtonTutorial = binding.enableButtonTutorialSwitch.isChecked,
+        intelligenceRest = binding.intelligenceRestSwitch.isChecked,
+        excludePushupKneesFeedback = binding.excludePushupKneesFeedbackSwitch.isChecked,
+        pauseTypes = selectedPauseTypes(),
         shortIntro = binding.shortIntroSwitch.isChecked,
         preExerciseCountdown = binding.preExerciseCountdownSwitch.isChecked,
         soundOnEachRep = binding.soundOnEachRepSwitch.isChecked,
@@ -446,9 +616,6 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
             .setShowExternalAudioControl(settings.showExternalAudioControl)
             .setEnableButtonTutorial(settings.enableButtonTutorial)
 
-    private fun SdkFeatureSettings.sessionLanguage(): SMLanguage =
-        if (hebrewSession) SMLanguage.Hebrew else SMLanguage.English
-
     private fun SdkFeatureSettings.instructionVideoConfig(): InstructionVideoConfig =
         InstructionVideoConfig(
             displayMode = if (mediumCycleInstructionVideo) {
@@ -456,8 +623,44 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
             } else {
                 VideoDisplayMode.DEFAULT
             },
-            mediumSizeCycles = 3,
+            mediumSizeCycles = instructionVideoCycles,
         )
+
+    private fun selectedPauseTypes(): Set<PauseDialogTypes> = buildSet {
+        if (binding.pauseResumeSwitch.isChecked) add(PauseDialogTypes.Resume)
+        if (binding.pauseSkipSwitch.isChecked) add(PauseDialogTypes.Skip)
+        if (binding.pauseStartOverSwitch.isChecked) add(PauseDialogTypes.StartOver)
+        if (binding.pauseQuitSwitch.isChecked) add(PauseDialogTypes.Quit)
+        if (binding.pauseRestSwitch.isChecked) add(PauseDialogTypes.Rest)
+        if (binding.pauseSwitchSwitch.isChecked) add(PauseDialogTypes.Switch)
+    }.ifEmpty { setOf(PauseDialogTypes.Resume) }
+
+    private fun com.sency.smkitui.model.SkeletonSettings.applyDemoSettings(settings: SdkFeatureSettings) {
+        skeletonHidden = settings.skeletonHidden
+        skeletonPreset = settings.skeletonPreset
+        skeletonConnectionStyle = settings.skeletonConnectionStyle
+        skeletonJointShape = settings.skeletonJointShape
+        skeletonDotsOpacity = settings.skeletonDotsOpacity
+        skeletonConnectionsOpacity = settings.skeletonConnectionsOpacity
+        skeletonDotsInnerColorOption = settings.skeletonDotsInnerColor
+        skeletonDotsOuterColorOption = settings.skeletonDotsOuterColor
+        skeletonConnectionsInnerColorOption = settings.skeletonConnectionsInnerColor
+        skeletonConnectionsOuterColorOption = settings.skeletonConnectionsOuterColor
+        skeletonDotsGlow = settings.skeletonDotsGlow
+        skeletonConnectionsGlow = settings.skeletonConnectionsGlow
+        skeletonLineWidthScale = settings.skeletonLineWidthScale
+        skeletonOutlineScale = settings.skeletonOutlineScale
+        skeletonSoftness = settings.skeletonSoftness
+        skeletonAnimationDurationSeconds = settings.skeletonAnimationDurationSeconds
+    }
+
+    private fun Spinner.selectedSkeletonColor(): SkeletonColorOption? =
+        selectedItemPosition.takeIf { it > 0 }?.let { SkeletonColorOption.values()[it - 1] }
+
+    private fun View.preferenceKey(): String = resources.getResourceEntryName(id)
+
+    private fun String.toDisplayName(): String =
+        lowercase(Locale.ROOT).replace('_', ' ').replaceFirstChar(Char::uppercase)
 
     private fun getExampleModificationsJson(): String? {
         // Example 1: JSON format (recommended - easier to read and maintain)

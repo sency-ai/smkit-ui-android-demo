@@ -40,12 +40,23 @@
                 android:visibility="invisible"
                 tools:visibility="visible" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Built-in assessment"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/builtInAssessmentTypeSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <Button
                 android:id="@+id/startAssessment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="Start Assessment" />
+                android:text="Start Built-In Assessment" />
 
             <Button
                 android:id="@+id/startCustomWorkout"
@@ -128,190 +139,514 @@
                 android:text="Settings" />
         </LinearLayout>
 
-        <LinearLayout
+        <ScrollView
             android:id="@+id/sdkFeatureSettingsPanel"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="300dp"
             android:layout_marginTop="12dp"
-            android:orientation="vertical"
+            android:fillViewport="true"
             android:visibility="gone"
             tools:visibility="visible">
 
-            <Switch
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingEnd="8dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Configuration"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/showPhoneCalibrationSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Show phone calibration" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pose model (reconfigure)" />
+
+            <Spinner
+                android:id="@+id/poseModelChoiceSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Color theme" />
+
+            <Spinner
+                android:id="@+id/colorThemeSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Session language" />
+
+            <Spinner
+                android:id="@+id/sessionLanguageSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Phone calibration language" />
+
+            <Spinner
+                android:id="@+id/phoneCalibrationLanguageSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Session behavior"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/useDefaultGuidanceModeSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Use default guidance mode" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/guidanceDebugLoggingSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Guidance debug logging" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/guidanceModeSuggestionSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Guidance suggestions" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/smallBodyPartFocusSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Instruction-video body-part focus" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/variationMismatchFeedbackSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Variation mismatch feedback" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/phoneMovementPreventionSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Phone movement count prevention" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/startTimerOnFirstActivitySwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:checked="true"
                 android:text="Start timer on first activity" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/exerciseSummaryTimingMetricsSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Export exercise timing metrics (reconfigure)" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/includeAssessmentInsightsSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Download assessment insights (reconfigure)" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/exportAssessmentInsightsSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Export assessment insights" />
 
-            <Switch
-                android:id="@+id/hebrewSessionSwitch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Hebrew session and calibration" />
-
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/perfectOnlyCounterSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Count perfect reps only" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/targetBasedCompletionSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Target-based exercise completion" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/mediumCycleInstructionVideoSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Medium-cycle instruction video" />
 
-            <Switch
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Medium-size video cycles (1–5)" />
+
+            <EditText
+                android:id="@+id/instructionVideoCyclesInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:inputType="number"
+                android:maxLines="1"
+                android:text="3" />
+
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/playPhoneCalibrationAudioSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Phone calibration audio" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/playBodyCalibrationAudioSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Body calibration audio" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/allowAudioMixingSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Allow audio mixing" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/showExternalAudioControlSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Show external audio control" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/enableButtonTutorialSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Enable button tutorial" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/intelligenceRestSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Intelligence rest" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/excludePushupKneesFeedbackSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hide push-up knees feedback in UI" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Skeleton appearance"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/skeletonHiddenSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hide skeleton" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Skeleton preset" />
+
+            <Spinner
+                android:id="@+id/skeletonPresetSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Connection style" />
+
+            <Spinner
+                android:id="@+id/skeletonConnectionStyleSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Joint shape" />
+
+            <Spinner
+                android:id="@+id/skeletonJointShapeSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dots inner color" />
+
+            <Spinner
+                android:id="@+id/skeletonDotsInnerColorSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dots outer color" />
+
+            <Spinner
+                android:id="@+id/skeletonDotsOuterColorSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Connections inner color" />
+
+            <Spinner
+                android:id="@+id/skeletonConnectionsInnerColorSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Connections outer color" />
+
+            <Spinner
+                android:id="@+id/skeletonConnectionsOuterColorSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dots opacity" />
+
+            <SeekBar
+                android:id="@+id/skeletonDotsOpacitySeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="100"
+                android:progress="100" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Connections opacity" />
+
+            <SeekBar
+                android:id="@+id/skeletonConnectionsOpacitySeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="100"
+                android:progress="100" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dots glow" />
+
+            <SeekBar
+                android:id="@+id/skeletonDotsGlowSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="100" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Connections glow" />
+
+            <SeekBar
+                android:id="@+id/skeletonConnectionsGlowSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="100" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Line width (0.5–2.0)" />
+
+            <SeekBar
+                android:id="@+id/skeletonLineWidthSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="150"
+                android:progress="50" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Outline width (0.5–2.0)" />
+
+            <SeekBar
+                android:id="@+id/skeletonOutlineSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="150"
+                android:progress="50" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Softness" />
+
+            <SeekBar
+                android:id="@+id/skeletonSoftnessSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="100" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Animation duration (0–50 ms)" />
+
+            <SeekBar
+                android:id="@+id/skeletonAnimationSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="50"
+                android:progress="50" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Pause buttons"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/pauseResumeSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Resume" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/pauseSkipSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Skip" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/pauseStartOverSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Start over" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/pauseQuitSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Quit" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/pauseRestSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Rest" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/pauseSwitchSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Switch" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Per-exercise options"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/shortIntroSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Short intro" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/preExerciseCountdownSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Pre-exercise countdown" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/soundOnEachRepSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Sound on each rep" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/repMilestoneVoiceSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Rep milestone voice" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/targetRepsCompletionVoiceSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Target-reps completion voice" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/intentVoiceFeedbackSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Exercise intent voice feedback" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/showTargetProgressSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Show target-reps progress" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/adaptiveRomFeedbackSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Adaptive ROM feedback" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/stretchSetConfigSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Stretch set config" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/positionRepsSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Repeated position holds" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/exerciseProgressDisplaySwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -356,7 +691,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Clear Adaptive ROM Cache" />
-        </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
 
         <TextView
             android:id="@+id/sdkFeatureSelectedCount"
