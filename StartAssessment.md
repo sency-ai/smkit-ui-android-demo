@@ -12,7 +12,7 @@ Sency Blueprint Assessments are standardized tests developed by Sency’s medica
 ## Starting an Assessment
 ```kotlin
 smKitUI.startAssessment(
-    assessmentType = Fitness, // or 360, Strength, Cardio, Custom
+    assessmentType = Fitness, // or Body360, Strength, Cardio, Custom("id")
     listener = object: SMKitUIWorkoutListener {
         override fun handleWorkoutErrors(error: Error) { /* handle error */ }
         override fun workoutDidFinish(summary: WorkoutSummaryData) { /* handle summary */ }
@@ -58,7 +58,7 @@ smKitUI.startAssessment(
 | Name      | Description | More info |
 |-----------|-------------|-----------|
 | Fitness   | Physical abilities, strength, endurance | [Fitness](https://github.com/sency-ai/smkit-sdk/blob/main/Assessments/AI-Fitness-Assessment.md) |
-| 360       | Preventative/medical support | [360](https://github.com/sency-ai/smkit-sdk/blob/main/Assessments/360-Body-Assessment.md) |
+| Body360   | Preventative/medical support | [360](https://github.com/sency-ai/smkit-sdk/blob/main/Assessments/360-Body-Assessment.md) |
 | Strength  | Core/endurance strength | [Strength](https://github.com/sency-ai/smkit-sdk/blob/main/Assessments/Strength.md) |
 | Cardio    | Cardiovascular | [Cardio](https://github.com/sency-ai/smkit-sdk/blob/main/Assessments/Cardio.md) |
 | Custom    | Tailored by Sency | |

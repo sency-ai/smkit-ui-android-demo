@@ -4,7 +4,7 @@ This application is the customer-facing reference for SMKitUI 1.8.0 camera-based
 
 ## What the demo covers
 
-- Standard fitness assessment
+- Built-in Fitness, Body 360, Cardio, and Strength assessments
 - Customized assessment
 - Customized workout and continuation workout
 - Workout from a Sency program ID
@@ -14,7 +14,7 @@ This application is the customer-facing reference for SMKitUI 1.8.0 camera-based
 - Exercise summary timing metrics and assessment insights
 - Counter, completion, language, instruction-video, audio, and pause behavior
 - Adaptive ROM, stretch sets, position repetitions, target progress, and exercise display sections/circuits
-- UI colors, skeleton presets, feedback exclusions, and SDK configuration JSON
+- Persisted demo settings for calibration, languages, model choice, UI colors, complete skeleton styling, pause actions, feedback exclusions, and SDK configuration text
 - Workout callbacks, continuation callbacks, and internal-insight export
 
 The main integration is in [`MainActivity.kt`](app/src/main/java/com/example/smkituidemoapp/MainActivity.kt). Per-exercise model examples are in [`MainViewModel.kt`](app/src/main/java/com/example/smkituidemoapp/viewModels/MainViewModel.kt).
@@ -83,6 +83,24 @@ val smKitUI = SMKitUI.Configuration(applicationContext)
 
 The demo's settings panel drives both configuration-time and runtime setters. Press **Apply / reconfigure SDK** after changing an option that is consumed during configuration.
 
+The selected pose model, assessment-insight download, exercise timing metrics, and other configuration-builder values take effect after reconfiguration. Runtime setters such as theme, skeleton styling, language, pause actions, audio, and timer behavior apply immediately and are also included on the next configuration.
+
+## Native demo features
+
+The app makes the Android 1.8.0 session and configuration APIs directly discoverable:
+
+- **Built-in assessment picker** starts Fitness, Body 360, Cardio, or Strength.
+- **Custom assessment** demonstrates reps, time, and ROM scoring.
+- **Custom workout** demonstrates a main workout plus a continuation workout.
+- **SDK Features Demo** provides a selectable Android detector catalog and wires advanced per-exercise properties.
+- **Settings** persists pose-model, appearance, skeleton, language, audio, calibration, pause, and session-behavior choices between launches.
+
+The exercise picker uses an explicit catalog versioned for this Android 1.8.0 demo.
+
+## Model and asset delivery
+
+SMKitUI 1.8.0 downloads required SDK configuration, models, and session assets from the server and stores valid downloads in the app cache. Keep the device online for first configuration and for any session whose assets have not been cached. A valid prior server-derived cache can be reused when a refresh is unavailable; it is not a substitute for completing the initial online setup.
+
 ## Start a session
 
 The home screen has runnable examples for all four public entry points:
@@ -145,16 +163,10 @@ Open **SDK Features Demo** to select detectors and build a custom workout. The s
 - Target-rep exercises can display target progress and play target-completion vocals.
 - `internalInsightsKey` and `exportInternalInsights` demonstrate insight attribution/export.
 - `SMExerciseDisplayContext` groups exercises into named sections and circuits.
+- `SkeletonSettings` exposes presets, connection styles, joint shapes, colors, opacity, glow, width, softness, and animation duration.
+- `setPauseTypes` demonstrates Resume, Skip, Start Over, Quit, Rest, and Switch.
 
-## Test against an unpublished local SDK
-
-The demo normally resolves artifacts from Sency Artifactory. SDK maintainers can verify a local publication without editing repository URLs:
-
-```bash
-./gradlew assembleDebug -PsmkitLocalRepo=/absolute/path/to/smkit_android/repo
-```
-
-The equivalent environment variable is `SMKIT_LOCAL_REPO`. This repository is inserted before the remote repository only when explicitly supplied.
+See [Session options](SessionOptionsFull.md) for the complete Android configuration reference.
 
 ## 1.8.0 integration notes
 

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sency.smkit.PoseModelChoice
 import com.sency.smkitui.data.entity.ScoringParams
 import com.sency.smkitui.data.entity.UiElement
 import com.sency.smkitui.model.SMExercise
@@ -12,6 +13,14 @@ import com.sency.smkitui.model.SMExerciseDisplayGroup
 import com.sency.smkitui.model.SMExerciseDisplayGroupKind
 import com.sency.smkitui.model.SMPositionRepConfig
 import com.sency.smkitui.model.SMStretchSetConfig
+import com.sency.smkitui.model.SkeletonColorOption
+import com.sency.smkitui.model.SkeletonConnectionStyle
+import com.sency.smkitui.model.SkeletonJointShape
+import com.sency.smkitui.model.SkeletonPreset
+import com.sency.smkitui.model.UIColorTheme
+import com.sency.smkitui.model.smkitui.AssessmentType
+import com.sency.smkitui.model.workoutConfig.SMLanguage
+import com.sency.smkitui.presentation.fragment.PauseDialogTypes
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
@@ -468,6 +477,28 @@ class MainViewModel : ViewModel() {
 }
 
 data class SdkFeatureSettings(
+    val assessmentType: AssessmentType,
+    val showPhoneCalibration: Boolean,
+    val poseModelChoice: PoseModelChoice,
+    val colorTheme: UIColorTheme,
+    val sessionLanguage: SMLanguage,
+    val phoneCalibrationLanguage: SMLanguage,
+    val skeletonHidden: Boolean,
+    val skeletonPreset: SkeletonPreset,
+    val skeletonConnectionStyle: SkeletonConnectionStyle,
+    val skeletonJointShape: SkeletonJointShape,
+    val skeletonDotsInnerColor: SkeletonColorOption?,
+    val skeletonDotsOuterColor: SkeletonColorOption?,
+    val skeletonConnectionsInnerColor: SkeletonColorOption?,
+    val skeletonConnectionsOuterColor: SkeletonColorOption?,
+    val skeletonDotsOpacity: Float,
+    val skeletonConnectionsOpacity: Float,
+    val skeletonDotsGlow: Float,
+    val skeletonConnectionsGlow: Float,
+    val skeletonLineWidthScale: Float,
+    val skeletonOutlineScale: Float,
+    val skeletonSoftness: Float,
+    val skeletonAnimationDurationSeconds: Float,
     val useDefaultGuidanceMode: Boolean,
     val guidanceModeSuggestion: Boolean,
     val guidanceDebugLogging: Boolean,
@@ -478,16 +509,19 @@ data class SdkFeatureSettings(
     val exerciseSummaryTimingMetrics: Boolean,
     val includeAssessmentInsights: Boolean,
     val exportAssessmentInsights: Boolean,
-    val hebrewSession: Boolean,
     val perfectOnlyCounter: Boolean,
     val targetBasedCompletion: Boolean,
     val mediumCycleInstructionVideo: Boolean,
+    val instructionVideoCycles: Int,
     val workoutContinuationTimerSeconds: Int,
     val playPhoneCalibrationAudio: Boolean,
     val playBodyCalibrationAudio: Boolean,
     val allowAudioMixing: Boolean,
     val showExternalAudioControl: Boolean,
     val enableButtonTutorial: Boolean,
+    val intelligenceRest: Boolean,
+    val excludePushupKneesFeedback: Boolean,
+    val pauseTypes: Set<PauseDialogTypes>,
     val shortIntro: Boolean,
     val preExerciseCountdown: Boolean,
     val soundOnEachRep: Boolean,
