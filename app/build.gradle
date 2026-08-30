@@ -12,6 +12,25 @@ if (localPropertiesFile.exists()) {
     localProperties.load(new FileInputStream(localPropertiesFile))
 }
 def sdkAuthKey = localProperties.getProperty("sdk_auth_key", "")
+def cameraXCompatibilityVersion = "1.1.0"
+def appCompatCompatibilityVersion = "1.4.2"
+def coroutinesCompatibilityVersion = "1.5.0"
+
+// Exercise SMKitUI's published compatibility floor instead of allowing newer
+// transitive AndroidX/Lifecycle dependencies to silently upgrade these modules.
+configurations.configureEach {
+    resolutionStrategy.force(
+        "androidx.camera:camera-core:${cameraXCompatibilityVersion}",
+        "androidx.camera:camera-camera2:${cameraXCompatibilityVersion}",
+        "androidx.camera:camera-lifecycle:${cameraXCompatibilityVersion}",
+        "androidx.camera:camera-view:${cameraXCompatibilityVersion}",
+        "androidx.appcompat:appcompat:${appCompatCompatibilityVersion}",
+        "androidx.appcompat:appcompat-resources:${appCompatCompatibilityVersion}",
+        "org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutinesCompatibilityVersion}",
+        "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:${coroutinesCompatibilityVersion}",
+        "org.jetbrains.kotlinx:kotlinx-coroutines-android:${coroutinesCompatibilityVersion}",
+    )
+}
 
 android {
     namespace 'com.example.smkituidemoapp'
@@ -22,7 +41,7 @@ android {
         minSdk 24
         targetSdk 36
         versionCode 1
-        versionName "1.8.0"
+        versionName "1.8.1"
 
         buildConfigField 'boolean', 'IS_PROD', "false"
         buildConfigField "String", "sdk_auth_key", "\"${sdkAuthKey}\""
@@ -62,14 +81,14 @@ android {
 }
 
 dependencies {
-    implementation 'com.sency.smkitui:smkitui:1.8.0'
+    implementation 'com.sency.smkitui:smkitui:1.8.1'
     // SMKitUI's public configuration surface exposes PoseModelChoice from SMKit.
-    implementation 'com.sency.smkit:smkit:1.8.0'
+    implementation 'com.sency.smkit:smkit:1.8.1'
     // FormFeedbackType is also part of the public SMKitUI API surface.
-    implementation 'com.sency.smbase.nativeclient:smbase-native-client:1.8.0'
+    implementation 'com.sency.smbase.nativeclient:smbase-native-client:1.8.1'
 
     implementation 'androidx.core:core-ktx:1.12.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation "androidx.appcompat:appcompat:${appCompatCompatibilityVersion}"
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation "androidx.work:work-runtime-ktx:2.9.0"
@@ -90,7 +109,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2"
 
     // Kotlin components
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutinesCompatibilityVersion}"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:${coroutinesCompatibilityVersion}"
 
 }
