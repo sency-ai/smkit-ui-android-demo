@@ -1,6 +1,6 @@
 # SMKitUI Android Demo
 
-This application is the customer-facing reference for SMKitUI 1.8.0 camera-based assessments and workouts. It demonstrates SDK configuration, every supported session entry point, runtime options, per-exercise options, result callbacks, and advanced 1.8.0 exercise features in one small Android app.
+This application is the customer-facing reference for SMKitUI 1.8.1 camera-based assessments and workouts. It demonstrates SDK configuration, every supported session entry point, runtime options, per-exercise options, result callbacks, and advanced 1.8.1 exercise features in one small Android app.
 
 ## What the demo covers
 
@@ -30,7 +30,7 @@ The main integration is in [`MainActivity.kt`](app/src/main/java/com/example/smk
 
 See [PREREQUISITES.md](PREREQUISITES.md) for the complete build setup.
 
-## Install SMKitUI 1.8.0
+## Install SMKitUI 1.8.1
 
 Add the Sency repository:
 
@@ -46,13 +46,15 @@ Add the SDK and the public feedback-model dependency used by typed feedback-excl
 
 ```groovy
 dependencies {
-    implementation "com.sency.smkitui:smkitui:1.8.0"
-    implementation "com.sency.smkit:smkit:1.8.0"
-    implementation "com.sency.smbase.nativeclient:smbase-native-client:1.8.0"
+    implementation "com.sency.smkitui:smkitui:1.8.1"
+    implementation "com.sency.smkit:smkit:1.8.1"
+    implementation "com.sency.smbase.nativeclient:smbase-native-client:1.8.1"
 }
 ```
 
 The explicit SMKit dependency supplies `PoseModelChoice`, which is part of SMKitUI's public configuration surface. The native-client dependency supplies the public feedback model used by typed feedback-exclusion APIs.
+
+SMKitUI 1.8.1 is validated with CameraX 1.1.0, AppCompat 1.4.2, and Kotlin Coroutines 1.5.0. This demo pins that exact compatibility graph so newer Material, Lifecycle, or ML Kit transitive requirements do not silently upgrade it. Navigation remains an application dependency and is not required by the SDK.
 
 ## Configure the demo
 
@@ -87,7 +89,7 @@ The selected pose model, assessment-insight download, exercise timing metrics, a
 
 ## Native demo features
 
-The app makes the Android 1.8.0 session and configuration APIs directly discoverable:
+The app makes the Android 1.8.1 session and configuration APIs directly discoverable:
 
 - **Built-in assessment picker** starts Fitness, Body 360, Cardio, or Strength.
 - **Custom assessment** demonstrates reps, time, and ROM scoring.
@@ -95,11 +97,11 @@ The app makes the Android 1.8.0 session and configuration APIs directly discover
 - **SDK Features Demo** provides a selectable Android detector catalog and wires advanced per-exercise properties.
 - **Settings** persists pose-model, appearance, skeleton, language, audio, calibration, pause, and session-behavior choices between launches.
 
-The exercise picker uses an explicit catalog versioned for this Android 1.8.0 demo.
+The exercise picker uses an explicit catalog versioned for this Android 1.8.1 demo.
 
 ## Model and asset delivery
 
-SMKitUI 1.8.0 downloads required SDK configuration, models, and session assets from the server and stores valid downloads in the app cache. Keep the device online for first configuration and for any session whose assets have not been cached. A valid prior server-derived cache can be reused when a refresh is unavailable; it is not a substitute for completing the initial online setup.
+SMKitUI 1.8.1 downloads required SDK configuration, models, and session assets from the server and stores valid downloads in the app cache. Keep the device online for first configuration and for any session whose assets have not been cached. A valid prior server-derived cache can be reused when a refresh is unavailable; it is not a substitute for completing the initial online setup.
 
 ## Start a session
 
@@ -168,7 +170,7 @@ Open **SDK Features Demo** to select detectors and build a custom workout. The s
 
 See [Session options](SessionOptionsFull.md) for the complete Android configuration reference.
 
-## 1.8.0 integration notes
+## 1.8.1 integration notes
 
 - Minimum Android API is 24.
 - Guidance-mode suggestions, reset/rearm behavior, and small-body-part focus are represented in the demo.
