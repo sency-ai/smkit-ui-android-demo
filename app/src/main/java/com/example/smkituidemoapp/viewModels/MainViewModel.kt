@@ -216,6 +216,7 @@ class MainViewModel : ViewModel() {
                     null
                 },
             ).also { exercise ->
+                exercise.useWideAngleCamera = settings.useWideAngleCamera && detector != "Rest"
                 if (settings.exerciseProgressDisplay && detector != "Rest") {
                     exercise.displayContext = sdkDisplayContext(index)
                 }
@@ -522,6 +523,7 @@ data class SdkFeatureSettings(
     val intelligenceRest: Boolean,
     val excludePushupKneesFeedback: Boolean,
     val pauseTypes: Set<PauseDialogTypes>,
+    val useWideAngleCamera: Boolean,
     val shortIntro: Boolean,
     val preExerciseCountdown: Boolean,
     val soundOnEachRep: Boolean,
