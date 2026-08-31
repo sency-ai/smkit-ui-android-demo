@@ -1,6 +1,6 @@
 # SMKitUI Android prerequisites
 
-SMKitUI 1.8.1 supports Android API 24 and later and includes native libraries compatible with Android's 16 KB page-size requirements.
+SMKitUI 1.8.2 supports Android API 24 and later and includes native libraries compatible with Android's 16 KB page-size requirements.
 
 ## Build requirements
 
@@ -41,15 +41,15 @@ repositories {
 }
 
 dependencies {
-    implementation "com.sency.smkitui:smkitui:1.8.1"
-    implementation "com.sency.smkit:smkit:1.8.1"
-    implementation "com.sency.smbase.nativeclient:smbase-native-client:1.8.1"
+    implementation "com.sency.smkitui:smkitui:1.8.2"
+    implementation "com.sency.smkit:smkit:1.8.2"
+    implementation "com.sency.smbase.nativeclient:smbase-native-client:1.8.2"
 }
 ```
 
 The SMKit dependency exposes `PoseModelChoice`; the native-client dependency exposes public feedback model types used by APIs such as `setFeedbacksUIToExclude`.
 
-The published compatibility floor is CameraX 1.1.0, AppCompat 1.4.2, and Kotlin Coroutines 1.5.0. The demo pins those versions explicitly in `app/build.gradle` to validate the floor against newer transitive dependency requests.
+The published compatibility floor is CameraX 1.1.0, AppCompat 1.4.2, and Kotlin Coroutines 1.5.0. CameraX's managed APIs remain at 1.1.0, while `camera-core` resolves to Sency's `1.1.0.1-sency16kb` compatibility artifact so the native helper supports Android 16 KB page sizes. The demo pins those versions explicitly in `app/build.gradle` to validate the floor against newer transitive dependency requests.
 
 ## Permissions and features
 

@@ -13,6 +13,7 @@ if (localPropertiesFile.exists()) {
 }
 def sdkAuthKey = localProperties.getProperty("sdk_auth_key", "")
 def cameraXCompatibilityVersion = "1.1.0"
+def cameraXCoreCompatibilityVersion = "1.1.0.1-sency16kb"
 def appCompatCompatibilityVersion = "1.4.2"
 def coroutinesCompatibilityVersion = "1.5.0"
 
@@ -20,7 +21,7 @@ def coroutinesCompatibilityVersion = "1.5.0"
 // transitive AndroidX/Lifecycle dependencies to silently upgrade these modules.
 configurations.configureEach {
     resolutionStrategy.force(
-        "androidx.camera:camera-core:${cameraXCompatibilityVersion}",
+        "androidx.camera:camera-core:${cameraXCoreCompatibilityVersion}",
         "androidx.camera:camera-camera2:${cameraXCompatibilityVersion}",
         "androidx.camera:camera-lifecycle:${cameraXCompatibilityVersion}",
         "androidx.camera:camera-view:${cameraXCompatibilityVersion}",
@@ -41,7 +42,7 @@ android {
         minSdk 24
         targetSdk 36
         versionCode 1
-        versionName "1.8.1"
+        versionName "1.8.2"
 
         buildConfigField 'boolean', 'IS_PROD', "false"
         buildConfigField "String", "sdk_auth_key", "\"${sdkAuthKey}\""
@@ -81,11 +82,11 @@ android {
 }
 
 dependencies {
-    implementation 'com.sency.smkitui:smkitui:1.8.1'
+    implementation 'com.sency.smkitui:smkitui:1.8.2'
     // SMKitUI's public configuration surface exposes PoseModelChoice from SMKit.
-    implementation 'com.sency.smkit:smkit:1.8.1'
+    implementation 'com.sency.smkit:smkit:1.8.2'
     // FormFeedbackType is also part of the public SMKitUI API surface.
-    implementation 'com.sency.smbase.nativeclient:smbase-native-client:1.8.1'
+    implementation 'com.sency.smbase.nativeclient:smbase-native-client:1.8.2'
 
     implementation 'androidx.core:core-ktx:1.12.0'
     implementation "androidx.appcompat:appcompat:${appCompatCompatibilityVersion}"

@@ -587,6 +587,12 @@
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/useWideAngleCameraSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Wide-angle camera" />
+
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/shortIntroSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
