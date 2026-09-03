@@ -1,4 +1,4 @@
-# SMKitUI Android 1.8.2 session options
+# SMKitUI Android 1.8.4 session options
 
 The demo settings panel is a runnable catalog of the Android APIs below. Settings are stored in `SharedPreferences`, applied through runtime setters when possible, and reused the next time the SDK is configured.
 
@@ -27,7 +27,7 @@ val smKitUI = SMKitUI.Configuration(applicationContext)
 
 ## Built-in assessments and phone calibration
 
-Android 1.8.2 exposes four built-in assessment categories:
+Android 1.8.4 exposes four built-in assessment categories:
 
 ```kotlin
 val type: AssessmentType = Body360 // Fitness, Body360, Cardio, or Strength
@@ -53,7 +53,7 @@ smKitUI.setSessionLanguage(SMLanguage.English)
 smKitUI.setPhoneCalibrationLanguage(SMLanguage.Hebrew)
 ```
 
-Android 1.8.2 publishes English and Hebrew.
+Android 1.8.4 publishes English and Hebrew.
 
 ## Pause actions
 
@@ -159,7 +159,7 @@ Guidance is applied only to detectors supported by the SDK's built-in policy. Th
 
 ## Per-exercise options
 
-`SMExercise` exposes the following Android 1.8.2 options. `MainViewModel.kt` populates the catalog-driven options; `guidanceVideoSegments` remains available for host-provided video timelines:
+`SMExercise` exposes the following Android 1.8.4 options. `MainViewModel.kt` populates the catalog-driven options; `guidanceVideoSegments` remains available for host-provided video timelines:
 
 - `shortIntro`, `playPreExerciseCountdown`, and `playSoundOnEachRep`
 - `playRepMilestoneVoice` and `repMilestoneInterval`
@@ -196,9 +196,9 @@ val workout = SMWorkout(
 )
 ```
 
-## Android 1.8.2 scope
+## Android 1.8.4 scope
 
-Every setting in this document maps to a public Android 1.8.2 type or method and is represented directly in the demo without reflection or placeholder controls.
+Every setting in this document maps to a public Android 1.8.4 type or method and is represented directly in the demo without reflection or placeholder controls.
 
 ## Results
 
