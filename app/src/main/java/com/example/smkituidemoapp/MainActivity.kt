@@ -419,7 +419,6 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
         binding.pauseSkipSwitch,
         binding.pauseStartOverSwitch,
         binding.pauseQuitSwitch,
-        binding.pauseRestSwitch,
         binding.pauseSwitchSwitch,
         binding.useWideAngleCameraSwitch,
         binding.shortIntroSwitch,
@@ -633,7 +632,6 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
         if (binding.pauseSkipSwitch.isChecked) add(PauseDialogTypes.Skip)
         if (binding.pauseStartOverSwitch.isChecked) add(PauseDialogTypes.StartOver)
         if (binding.pauseQuitSwitch.isChecked) add(PauseDialogTypes.Quit)
-        if (binding.pauseRestSwitch.isChecked) add(PauseDialogTypes.Rest)
         if (binding.pauseSwitchSwitch.isChecked) add(PauseDialogTypes.Switch)
     }.ifEmpty { setOf(PauseDialogTypes.Resume) }
 

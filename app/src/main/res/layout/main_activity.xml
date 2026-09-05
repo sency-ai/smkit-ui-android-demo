@@ -565,13 +565,6 @@
                 android:text="Quit" />
 
             <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/pauseRestSwitch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="Rest" />
-
-            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/pauseSwitchSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
