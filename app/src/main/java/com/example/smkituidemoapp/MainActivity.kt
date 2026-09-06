@@ -344,6 +344,7 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
         bindSpinner(
             binding.skeletonConnectionStyleSpinner,
             SkeletonConnectionStyle.values().map { it.name.toDisplayName() },
+            defaultSelection = SkeletonConnectionStyle.SOLID.ordinal,
         )
         bindSpinner(binding.skeletonJointShapeSpinner, SkeletonJointShape.values().map { it.name.toDisplayName() })
         val skeletonColors = listOf("Preset") + SkeletonColorOption.values().map { it.name.toDisplayName() }
@@ -373,14 +374,18 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
         restoringSettings = false
     }
 
-    private fun bindSpinner(spinner: Spinner, labels: List<String>) {
+    private fun bindSpinner(
+        spinner: Spinner,
+        labels: List<String>,
+        defaultSelection: Int = 0,
+    ) {
         spinner.adapter = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_item,
             labels,
         ).apply { setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
         val key = spinner.preferenceKey()
-        spinner.setSelection(settingsPreferences.getInt(key, spinner.selectedItemPosition).coerceIn(labels.indices))
+        spinner.setSelection(settingsPreferences.getInt(key, defaultSelection).coerceIn(labels.indices))
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (restoringSettings) return
