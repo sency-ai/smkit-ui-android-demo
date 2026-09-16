@@ -1,6 +1,6 @@
 # SMKitUI Android prerequisites
 
-SMKitUI 1.9.1 supports Android API 24 and later and includes native libraries compatible with Android's 16 KB page-size requirements.
+SMKitUI 1.9.3 supports Android API 24 and later and includes native libraries compatible with Android's 16 KB page-size requirements.
 
 ## Build requirements
 
@@ -41,9 +41,9 @@ repositories {
 }
 
 dependencies {
-    implementation "com.sency.smkitui:smkitui:1.9.1"
-    implementation "com.sency.smkit:smkit:1.9.1"
-    implementation "com.sency.smbase.nativeclient:smbase-native-client:1.9.1"
+    implementation "com.sency.smkitui:smkitui:1.9.3"
+    implementation "com.sency.smkit:smkit:1.9.3"
+    implementation "com.sency.smbase.nativeclient:smbase-native-client:1.9.3"
 }
 ```
 
@@ -80,16 +80,10 @@ sdk_auth_key=your_sency_sdk_key_here
 
 ## Verify
 
-For a published release:
+Build against the published 1.9.3 artifacts:
 
 ```bash
 ./gradlew clean assembleDebug
-```
-
-For an SDK build published to a local Maven directory:
-
-```bash
-./gradlew assembleDebug -PsmkitLocalRepo=/absolute/path/to/smkit_android/repo
 ```
 
 No additional runtime work is required for 16 KB page-size support.
