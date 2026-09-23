@@ -16,6 +16,14 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        // Resolve Sency's Android 1.9.4 artifacts only from the sibling checkout.
+        exclusiveContent {
+            forRepository { maven { url rootProject.file('../smkit_android/repo').toURI() } }
+            filter {
+                includeGroupByRegex 'com\\.sency.*'
+                includeVersion 'androidx.camera', 'camera-core', '1.1.0.1-sency16kb'
+            }
+        }
         maven {
             url "https://artifacts.sency.ai/artifactory/release"
         }
