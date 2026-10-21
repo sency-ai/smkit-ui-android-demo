@@ -16,16 +16,17 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        // Resolve Sency's Android 1.9.4 artifacts only from the sibling checkout.
+        // An explicit local candidate repository keeps every SDK layer on the same release.
+        def localSdkRepo = providers.gradleProperty("smkitLocalRepo")
+            .orElse(providers.environmentVariable("SMKIT_LOCAL_REPO"))
         exclusiveContent {
-            forRepository { maven { url rootProject.file('../smkit_android/repo').toURI() } }
+            forRepository { maven {
+                url localSdkRepo.isPresent() ? uri(localSdkRepo.get()) : uri("https://artifacts.sency.ai/artifactory/release")
+            } }
             filter {
                 includeGroupByRegex 'com\\.sency.*'
                 includeVersion 'androidx.camera', 'camera-core', '1.1.0.1-sency16kb'
             }
-        }
-        maven {
-            url "https://artifacts.sency.ai/artifactory/release"
         }
     }
 }
