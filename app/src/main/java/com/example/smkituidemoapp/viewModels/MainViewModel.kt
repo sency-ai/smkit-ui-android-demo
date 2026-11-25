@@ -11,6 +11,9 @@ import com.sency.smkitui.model.SMExercise
 import com.sency.smkitui.model.SMExerciseDisplayContext
 import com.sency.smkitui.model.SMExerciseDisplayGroup
 import com.sency.smkitui.model.SMExerciseDisplayGroupKind
+import com.sency.smkitui.model.SMMobilityFlowBlock
+import com.sency.smkitui.model.SMMobilityFlowConfig
+import com.sency.smkitui.model.SMMobilityRepConfig
 import com.sency.smkitui.model.SMPositionRepConfig
 import com.sency.smkitui.model.SMStretchSetConfig
 import com.sency.smkitui.model.SkeletonColorOption
@@ -146,6 +149,90 @@ class MainViewModel : ViewModel() {
                 guidanceMode = false,
             )
         }
+
+    /** One 10-second hold each: rhomboid stretch, then seated thoracic side bending left and right. */
+    fun mobilityFlowPresetExercises(): List<SMExercise> = listOf(
+        SMExercise.mobilityFlow(
+            SMMobilityFlowConfig(
+                blocks = listOf(
+                    SMMobilityFlowBlock(detector = "RhomboidStretch", repetitions = 1, secondsPerRep = 10),
+                    SMMobilityFlowBlock(detector = "SeatedThoracicSideBendingLeft", repetitions = 1, secondsPerRep = 10),
+                    SMMobilityFlowBlock(detector = "SeatedThoracicSideBendingRight", repetitions = 1, secondsPerRep = 10),
+                ),
+            )
+        )
+    )
+
+    /**
+     * Every exercise has adaptive ROM feedback, the guidance-mode suggestion, a rep-count voice
+     * every 5 reps and the pre-exercise countdown; push-ups also play a sound on each rep.
+     */
+    fun exampleWorkoutPresetExercises(): List<SMExercise> = listOf(
+        presetExercise(
+            "ArnoldShoulderPress", "Arnold Shoulder Press", seconds = 40,
+            uiElements = setOf(UiElement.timer, UiElement.repsCounter),
+        ),
+        presetExercise(
+            "JeffersonCurl", "Jefferson Curl", seconds = 45,
+            uiElements = setOf(UiElement.timer, UiElement.gaugeOfMotion),
+            guidanceMode = true,
+        ),
+        // Combo01 keeps the SDK's default reps per movement (no combination options).
+        presetExercise(
+            "Combo01", "Combo01", seconds = 60,
+            uiElements = setOf(UiElement.repsCounter, UiElement.timer),
+            videoInstruction = "",
+            exerciseIntro = "ComboSequenceIntro",
+        ).also { it.targetReps = 4 },
+        presetExercise(
+            "TherapySquat", "Therapy Squat", seconds = 45,
+            uiElements = setOf(UiElement.timer, UiElement.repsCounter, UiElement.gaugeOfMotion),
+        ),
+        presetExercise(
+            "PushupRegular", "Push-ups", seconds = 40,
+            uiElements = setOf(UiElement.repsCounter, UiElement.timer),
+            playSoundOnEachRep = true,
+        ),
+        // A mobility movement counted as reps instead of a timed hold.
+        presetExercise(
+            "StandingBowArrowThoracicMobilityRight", "Standing Bow and Arrow Right", seconds = 60,
+            uiElements = setOf(UiElement.repsCounter, UiElement.timer),
+        ).also { it.mobilityRepConfig = SMMobilityRepConfig(targetReps = 5) },
+    )
+
+    private fun presetExercise(
+        detector: String,
+        prettyName: String,
+        seconds: Int,
+        uiElements: Set<UiElement>,
+        guidanceMode: Boolean = false,
+        playSoundOnEachRep: Boolean = false,
+        // Android resolves instruction videos by detector name, like the demo's other workouts.
+        videoInstruction: String = detector,
+        exerciseIntro: String = "",
+    ) = SMExercise(
+        prettyName = prettyName,
+        totalSeconds = seconds,
+        videoInstruction = videoInstruction,
+        uiElements = uiElements,
+        detector = detector,
+        scoringParams = null,
+        summaryMainMetricTitle = "",
+        summaryTitle = "",
+        summarySubTitle = "",
+        summaryMainMetricSubTitle = "",
+        exerciseIntro = exerciseIntro,
+        exerciseClosure = "",
+        closureFailedSound = null,
+        side = detector.side(),
+        playPreExerciseCountdown = true,
+        playSoundOnEachRep = playSoundOnEachRep,
+        playRepMilestoneVoice = true,
+        repMilestoneInterval = 5,
+        guidanceMode = guidanceMode,
+        enableGuidanceModeSuggestion = true,
+        adaptiveRomFeedbackEnabled = true,
+    )
 
     fun sdkFeatureDetectors(): List<String> =
         sdkDetectorCatalog
