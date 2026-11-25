@@ -6,12 +6,21 @@ plugins {
     id('kotlin-parcelize')
 }
 
-def localProperties = new Properties()
-def localPropertiesFile = rootProject.file("local.properties")
-if (localPropertiesFile.exists()) {
-    localProperties.load(new FileInputStream(localPropertiesFile))
+// Sency SDK key. Copy AuthKey.local.properties.example to AuthKey.local.properties (git-ignored)
+// and set SMKIT_UI_AUTH_KEY. Also read: `sdk_auth_key` in local.properties, or the SMKIT_UI_AUTH_KEY environment variable.
+def authKeyProperties = new Properties()
+["local.properties", "AuthKey.local.properties"].each { name ->
+    def file = rootProject.file(name)
+    if (file.exists()) file.withInputStream { authKeyProperties.load(it) }
 }
-def sdkAuthKey = localProperties.getProperty("sdk_auth_key", "")
+def sdkAuthKey = (authKeyProperties.getProperty("SMKIT_UI_AUTH_KEY")
+        ?: authKeyProperties.getProperty("sdk_auth_key")
+        ?: System.getenv("SMKIT_UI_AUTH_KEY")
+        ?: "").trim()
+if (sdkAuthKey.isEmpty()) {
+    logger.warn("No SDK key: create AuthKey.local.properties from AuthKey.local.properties.example.")
+}
+def sdkAuthKeyLiteral = "\"" + sdkAuthKey.replace("\\", "\\\\").replace("\"", "\\\"") + "\""
 def cameraXCompatibilityVersion = "1.1.0"
 def cameraXCoreCompatibilityVersion = "1.1.0.1-sency16kb"
 def appCompatCompatibilityVersion = "1.4.2"
@@ -42,10 +51,10 @@ android {
         minSdk 24
         targetSdk 36
         versionCode 1
-        versionName "1.9.6"
+        versionName "1.9.9"
 
         buildConfigField 'boolean', 'IS_PROD', "false"
-        buildConfigField "String", "sdk_auth_key", "\"${sdkAuthKey}\""
+        buildConfigField "String", "sdk_auth_key", sdkAuthKeyLiteral
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -82,11 +91,11 @@ android {
 }
 
 dependencies {
-    implementation 'com.sency.smkitui:smkitui:1.9.6'
+    implementation 'com.sency.smkitui:smkitui:1.9.9'
     // SMKitUI's public configuration surface exposes PoseModelChoice from SMKit.
-    implementation 'com.sency.smkit:smkit:1.9.6'
+    implementation 'com.sency.smkit:smkit:1.9.9'
     // FormFeedbackType is also part of the public SMKitUI API surface.
-    implementation 'com.sency.smbase.nativeclient:smbase-native-client:1.9.6'
+    implementation 'com.sency.smbase.nativeclient:smbase-native-client:1.9.9'
 
     implementation 'androidx.core:core-ktx:1.12.0'
     implementation "androidx.appcompat:appcompat:${appCompatCompatibilityVersion}"

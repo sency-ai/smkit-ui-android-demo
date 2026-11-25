@@ -49,3 +49,9 @@ relatedProjects/gd/libs/native-libs.jar
 *crashlytics-build.properties
 OpenCV/
 !OpenCV/build.gradle
+
+# Local SDK key (never commit)
+/AuthKey.local.properties
+
+# Kotlin compiler caches
+.kotlin/

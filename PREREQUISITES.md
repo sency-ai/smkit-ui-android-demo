@@ -1,6 +1,6 @@
 # SMKitUI Android prerequisites
 
-SMKitUI 1.9.6 supports Android API 24 and later and includes native libraries compatible with Android's 16 KB page-size requirements.
+SMKitUI 1.9.9 supports Android API 24 and later and includes native libraries compatible with Android's 16 KB page-size requirements.
 
 ## Build requirements
 
@@ -41,9 +41,9 @@ repositories {
 }
 
 dependencies {
-    implementation "com.sency.smkitui:smkitui:1.9.6"
-    implementation "com.sency.smkit:smkit:1.9.6"
-    implementation "com.sency.smbase.nativeclient:smbase-native-client:1.9.6"
+    implementation "com.sency.smkitui:smkitui:1.9.9"
+    implementation "com.sency.smkit:smkit:1.9.9"
+    implementation "com.sency.smbase.nativeclient:smbase-native-client:1.9.9"
 }
 ```
 
@@ -72,15 +72,21 @@ Lock the hosting activity to portrait:
 
 ## SDK key
 
-Put the key in the untracked `local.properties` file:
+Copy the template in the project root and paste your key into the copy:
+
+```bash
+cp AuthKey.local.properties.example AuthKey.local.properties
+```
 
 ```properties
-sdk_auth_key=your_sency_sdk_key_here
+SMKIT_UI_AUTH_KEY=your_sency_sdk_key_here
 ```
+
+`AuthKey.local.properties` is git-ignored, so the key never shows up in `git status` or a commit. The build also reads `sdk_auth_key` from `local.properties` or the `SMKIT_UI_AUTH_KEY` environment variable (useful for CI). The app exposes the key as `BuildConfig.sdk_auth_key`.
 
 ## Verify
 
-Build against the published 1.9.6 artifacts:
+Build against the published 1.9.9 artifacts:
 
 ```bash
 ./gradlew clean assembleDebug

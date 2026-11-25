@@ -48,7 +48,7 @@ val smExercise = SMExercise(
     summaryTitle = "Info for the SummaryPage", // String | Exercise' Title in Summary Page
     summarySubTitle = "Info for the SummaryPage", // String | Exercise' SubTitle in Summary Page
     summaryMainMetricSubTitle = "Info for the SummaryPage", // String | Exercise' title in Summary Page
-    exerciseIntro = com.sency.smkitapp.R.raw.simple.toString(), // String | .mp3 https url or R.raw.sample 
+    exerciseIntro = "YOUR_ASSET", // String | .mp3 https url or R.raw.sample 
     exerciseClosure = null, // String | .mp3 https url or R.raw.sample 
     side = null // String | Left Or Right. 
     // if you want to pair two exercises to be shown together inside summary page give them the same detector name only postfix changes to Right or Left.
@@ -105,7 +105,7 @@ val exercises: List<SMExercise> = listOf(
     summaryTitle = "Info for the SummaryPage",
     summarySubTitle = "Info for the SummaryPage",
     summaryMainMetricSubTitle = "Info for the SummaryPage",
-    exerciseIntro = com.sency.smkitapp.R.raw.simple.toString(),
+    exerciseIntro = "YOUR_ASSET",
     exerciseClosure = null,
     side = null
   ),

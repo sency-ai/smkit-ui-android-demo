@@ -1,8 +1,8 @@
 # SMKitUI Android Demo
 
-This application demonstrates SMKitUI 1.9.6 camera-based assessments and workouts. It covers SDK configuration, session entry points, runtime options, per-exercise options, result callbacks, and advanced exercise features.
+This application demonstrates SMKitUI 1.9.9 camera-based assessments and workouts. It covers SDK configuration, session entry points, runtime options, per-exercise options, result callbacks, and advanced exercise features.
 
-Build with `./gradlew :app:assembleDebug`. Configure the SDK key in the ignored `local.properties` file.
+Build with `./gradlew :app:assembleDebug`. Put the SDK key in the git-ignored `AuthKey.local.properties` file (see [Configure the demo](#configure-the-demo)).
 
 ## What the demo covers
 
@@ -32,7 +32,7 @@ The main integration is in [`MainActivity.kt`](app/src/main/java/com/example/smk
 
 See [PREREQUISITES.md](PREREQUISITES.md) for the complete build setup.
 
-## Use SMKitUI 1.9.6
+## Use SMKitUI 1.9.9
 
 Add the Sency repository:
 
@@ -48,27 +48,31 @@ Add the SDK and the public feedback-model dependency used by typed feedback-excl
 
 ```groovy
 dependencies {
-    implementation "com.sency.smkitui:smkitui:1.9.6"
-    implementation "com.sency.smkit:smkit:1.9.6"
-    implementation "com.sency.smbase.nativeclient:smbase-native-client:1.9.6"
+    implementation "com.sency.smkitui:smkitui:1.9.9"
+    implementation "com.sency.smkit:smkit:1.9.9"
+    implementation "com.sency.smbase.nativeclient:smbase-native-client:1.9.9"
 }
 ```
 
 The explicit SMKit dependency supplies `PoseModelChoice`, which is part of SMKitUI's public configuration surface. The native-client dependency supplies the public feedback model used by typed feedback-exclusion APIs.
 
-Run `./gradlew assembleDebug` to resolve the 1.9.6 SDK artifacts from the repository configured in `build.gradle`.
+Run `./gradlew assembleDebug` to resolve the 1.9.9 SDK artifacts from the repository configured in `build.gradle`.
 
-SMKitUI 1.9.6 retains compatibility with CameraX 1.1.0, AppCompat 1.4.2, and Kotlin Coroutines 1.5.0. CameraX's managed APIs remain at 1.1.0; the SDK resolves `camera-core` to Sency's `1.1.0.1-sency16kb` compatibility artifact, which replaces only CameraX's native image-processing helper for Android 16 KB page-size support. This demo pins that compatibility graph so newer transitive requirements do not silently upgrade it. Navigation remains an application dependency and is not required by the SDK.
+SMKitUI 1.9.9 retains compatibility with CameraX 1.1.0, AppCompat 1.4.2, and Kotlin Coroutines 1.5.0. CameraX's managed APIs remain at 1.1.0; the SDK resolves `camera-core` to Sency's `1.1.0.1-sency16kb` compatibility artifact, which replaces only CameraX's native image-processing helper for Android 16 KB page-size support. This demo pins that compatibility graph so newer transitive requirements do not silently upgrade it. Navigation remains an application dependency and is not required by the SDK.
 
 ## Configure the demo
 
-Create or update `local.properties` in the project root:
+Copy the template in the project root and paste your key into the copy:
 
-```properties
-sdk_auth_key=your_sency_sdk_key_here
+```bash
+cp AuthKey.local.properties.example AuthKey.local.properties
 ```
 
-Do not commit a real key. The app exposes it as `BuildConfig.sdk_auth_key`.
+```properties
+SMKIT_UI_AUTH_KEY=your_sency_sdk_key_here
+```
+
+`AuthKey.local.properties` is git-ignored, so the key never shows up in `git status` or a commit. The build also reads `sdk_auth_key` from `local.properties` or the `SMKIT_UI_AUTH_KEY` environment variable (useful for CI). The app exposes the key as `BuildConfig.sdk_auth_key`.
 
 SMKitUI must be configured before starting a session:
 
@@ -107,7 +111,7 @@ The exercise picker uses an explicit Android detector catalog maintained with th
 
 ## Model and asset delivery
 
-SMKitUI 1.9.6 downloads required SDK configuration, models, and session assets from the server and stores valid downloads in the app cache. Keep the device online for first configuration and for any session whose assets have not been cached. A valid prior server-derived cache can be reused when a refresh is unavailable; it is not a substitute for completing the initial online setup.
+SMKitUI 1.9.9 downloads required SDK configuration, models, and session assets from the server and stores valid downloads in the app cache. Keep the device online for first configuration and for any session whose assets have not been cached. A valid prior server-derived cache can be reused when a refresh is unavailable; it is not a substitute for completing the initial online setup.
 
 The SDK retains startup asset coordination: workouts opened immediately after configuration wait for catalog staging, cold assessments prepare their selected assessment resources before resolving the detector closure, and reused asset generations receive compatibility and file checks. The public configuration and session entry points shown by the demo are unchanged.
 
@@ -175,7 +179,7 @@ Open **SDK Features Demo** to select detectors and build a custom workout. The s
 - `internalInsightsKey` and `exportInternalInsights` demonstrate insight attribution/export.
 - `SMExerciseDisplayContext` groups exercises into named sections and circuits.
 - `SkeletonSettings` exposes presets, connection styles, joint shapes, colors, opacity, glow, width, softness, and animation duration.
-- `setPauseTypes` demonstrates Resume, Skip, Start Over, Quit, and Switch.
+- `setPauseTypes` demonstrates Resume, Skip, Start Over, Quit, and Switch. `PauseDialogTypes.Rest` is also available.
 
 See [Session options](SessionOptionsFull.md) for the complete Android configuration reference.
 
@@ -187,7 +191,13 @@ val exercise = SMExercise(/* ... */).also {
 }
 ```
 
-`null` and `false` use standard mode. In wide mode SMKitUI requests the minimum zoom ratio reported by CameraX and shows the complete 4:3 camera frame. Devices that cannot zoom below 1× remain at 1× without failing the session. Calibration, Rest, and Cooldown continue to use standard mode.
+The default is `true` for wide-angle catalog detectors (for example `BackSuperman` and `BirdDog`) and `false` otherwise; `false` uses standard mode. In wide mode SMKitUI requests the minimum zoom ratio reported by CameraX and shows the complete 4:3 camera frame. Devices that cannot zoom below 1× remain at 1× without failing the session. Calibration, Rest, and Cooldown continue to use standard mode.
+
+## 1.9.9 integration notes
+
+- 1.9.9 removes the in-workout voice coach from the SDK. Apps that don't call the voice-coach APIs need no source changes.
+- `SMExercise.useWideAngleCamera` defaults to `true` for wide-angle catalog detectors.
+- `WorkoutSummaryData.modifications` records host-driven changes with source `host`.
 
 ## 1.9.6 integration notes
 

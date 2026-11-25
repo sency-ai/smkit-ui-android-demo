@@ -28,7 +28,7 @@ val exercises: List<SMExercise> = listOf(
     summaryTitle = "Info for the SummaryPage",
     summarySubTitle = "Info for the SummaryPage",
     summaryMainMetricSubTitle = "Info for the SummaryPage",
-    exerciseIntro = com.sency.smkitapp.R.raw.simple.toString(),
+    exerciseIntro = "YOUR_ASSET",
     exerciseClosure = null,
     side = null
   ),
