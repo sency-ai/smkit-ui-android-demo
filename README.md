@@ -99,6 +99,7 @@ The selected pose model, assessment-insight download, exercise timing metrics, a
 
 The app makes the Android session and configuration APIs directly discoverable:
 
+- **Mobility Flow** and **Example workout** presets at the top of the home screen start ready-made workouts in the blue color theme; the selected theme is restored when the session ends. Mobility Flow predownloads its assets first.
 - **Built-in assessment picker** starts Fitness, Body 360, Cardio, or Strength.
 - **Custom assessment** demonstrates reps, time, and ROM scoring.
 - **Custom workout** demonstrates a main workout plus a continuation workout.

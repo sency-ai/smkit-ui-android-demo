@@ -18,16 +18,19 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.smkituidemoapp.databinding.MainActivityBinding
 import com.example.smkituidemoapp.viewModels.MainViewModel
 import com.example.smkituidemoapp.viewModels.SdkFeatureSettings
 import com.sency.smkit.PoseModelChoice
 import com.sency.smbase.nativeclient.model.FormFeedbackType
 import com.sency.smkitui.SMKitUI
+import com.sency.smkitui.predownloadWorkoutAssets
 import com.sency.smkitui.listener.SMKitUIConfigurationListener
 import com.sency.smkitui.listener.SMKitUIWorkoutListener
 import com.sency.smkitui.model.ExerciseData
 import com.sency.smkitui.model.Gender
+import com.sency.smkitui.model.SMExercise
 import com.sency.smkitui.model.SMWorkout
 import com.sency.smkitui.model.SMWorkoutContinuation
 import com.sency.smkitui.model.UserData
@@ -53,6 +56,10 @@ import com.sency.smkitui.model.workoutConfig.SMLanguage
 import com.sency.smkitui.model.workoutConfig.WorkoutConfig
 import com.sency.smkitui.model.workoutConfig.WorkoutDuration
 import java.util.Locale
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 
 class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
 
@@ -67,6 +74,8 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
         getSharedPreferences("smkitui_demo_settings", MODE_PRIVATE)
     }
     private var restoringSettings = false
+    /** True while a home-screen preset runs with its own blue theme. */
+    private var presetThemeActive = false
 
     private val builtInAssessmentOptions: List<Pair<String, AssessmentType>> = listOf(
         "Fitness" to Fitness,
@@ -210,6 +219,12 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
                 )
             }
         }
+        binding.startMobilityFlowPreset.setOnClickListener {
+            startPreset("Mobility Flow", viewModel.mobilityFlowPresetExercises(), prepareFirst = true)
+        }
+        binding.startExampleWorkoutPreset.setOnClickListener {
+            startPreset("Example workout", viewModel.exampleWorkoutPresetExercises(), guidanceSuggestion = true)
+        }
         binding.startCustomAssessment.setOnClickListener {
             val settings = readBasicSettings()
             applyBasicSettingsToSdk(settings)
@@ -263,6 +278,73 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
             smKitUI?.clearAdaptiveRomCache()
             Toast.makeText(baseContext, "Adaptive ROM cache cleared", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    /**
+     * Starts a home-screen preset with the current settings, but always in the blue color theme.
+     * [guidanceSuggestion] also turns on the SDK-wide guidance-mode suggestion (it then shows as on
+     * in Settings). [prepareFirst] downloads the workout's assets before starting; on failure the
+     * session starts anyway and downloads what it still needs.
+     */
+    private fun startPreset(
+        name: String,
+        exercises: List<SMExercise>,
+        guidanceSuggestion: Boolean = false,
+        prepareFirst: Boolean = false,
+    ) {
+        val sdk = smKitUI ?: return
+        if (guidanceSuggestion) binding.guidanceModeSuggestionSwitch.isChecked = true
+        val settings = readBasicSettings()
+        applyBasicSettingsToSdk(settings)
+        val smWorkout = SMWorkout(
+            id = "demo-${name.lowercase(Locale.ROOT).replace(' ', '-')}",
+            name = name,
+            workoutIntro = "",
+            soundtrack = "",
+            exercises = exercises,
+            workoutClosure = "",
+            getInFrame = "",
+            bodycalFinished = "",
+            exportInternalInsights = settings.exportAssessmentInsights,
+        )
+        lifecycleScope.launch {
+            if (prepareFirst) prepareBeforeStart(sdk, name, smWorkout)
+            // Blue for this session only; the selected theme is restored when it ends.
+            presetThemeActive = true
+            sdk.setColorTheme(UIColorTheme.BLUE)
+            sdk.startCustomizedWorkout(
+                smWorkout,
+                listener = this@MainActivity,
+                modifications = getExampleModificationsJson(),
+                showPhoneCalibration = settings.showPhoneCalibration,
+            )
+        }
+    }
+
+    private suspend fun prepareBeforeStart(sdk: SMKitUI, name: String, workout: SMWorkout) {
+        val button = binding.startMobilityFlowPreset
+        button.isEnabled = false
+        button.text = "Preparing $name…"
+        try {
+            // A first download can take ~25 s; on stage, start after 15 s anyway. The download
+            // keeps running in the background; only the wait for it is capped.
+            val download = lifecycleScope.async { sdk.predownloadWorkoutAssets(workout) }
+            val ready = withTimeoutOrNull(15_000) { download.await() }
+            Log.d(tag, "predownloadWorkoutAssets($name) returned ${ready ?: "nothing within 15 s"}")
+        } catch (error: CancellationException) {
+            throw error
+        } catch (error: Exception) {
+            Log.w(tag, "predownloadWorkoutAssets($name) failed", error)
+        } finally {
+            button.isEnabled = true
+            button.text = name
+        }
+    }
+
+    private fun restoreThemeAfterPreset() {
+        if (!presetThemeActive) return
+        presetThemeActive = false
+        applyBasicSettingsToSdk()
     }
 
     private fun showSdkFeaturesScreen() {
@@ -715,6 +797,7 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
     override fun didExitWorkout(summary: WorkoutSummaryData) {
         Log.d(tag, "didExitWorkout: $summary")
         smKitUI?.quitWorkout()
+        runOnUiThread { restoreThemeAfterPreset() }
     }
 
     override fun workoutContinuationPromptDidAppear() {
@@ -731,6 +814,7 @@ class MainActivity : AppCompatActivity(), SMKitUIWorkoutListener {
 
     override fun handleWorkoutErrors(error: Error) {
         Log.d(tag, "handleWorkoutErrors: $error")
+        runOnUiThread { restoreThemeAfterPreset() }
     }
 
     override fun workoutDidFinish(summary: WorkoutSummaryData) {

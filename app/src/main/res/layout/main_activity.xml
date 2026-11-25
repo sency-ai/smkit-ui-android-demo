@@ -31,6 +31,19 @@
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
+            <Button
+                android:id="@+id/startMobilityFlowPreset"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Mobility Flow" />
+
+            <Button
+                android:id="@+id/startExampleWorkoutPreset"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Example workout" />
+
             <ProgressBar
                 android:id="@+id/progressBar"
                 android:layout_width="wrap_content"
