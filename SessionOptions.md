@@ -29,7 +29,9 @@ enum class PauseDialogTypes {
     Resume,
     Skip,
     StartOver,
-    Quit
+    Quit,
+    Rest,
+    Switch
 }
 ```
 
